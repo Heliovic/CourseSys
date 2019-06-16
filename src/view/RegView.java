@@ -4,6 +4,7 @@ import DAO.MySQLDAO;
 import model.Account;
 import model.EduOrg;
 import model.Parent;
+import model.Teacher;
 import utils.Constants;
 
 import javax.swing.*;
@@ -151,48 +152,57 @@ class EduOrgPanel extends RegPanel {
 }
 
 class TeaPanel extends RegPanel {
+    private JTextField
+            mTeacherNameTextField = new JTextField(10),
+            mTeacherBirthdayTextField = new JTextField(10),
+            mEduField = new JTextField(10),
+            mEduYear = new JTextField(10),
+            mEduAge = new JTextField(10),
+            mTeacherIdNumber = new JTextField(10),
+            mTeacherContact = new JTextField(10),
+            mTeacherIntroduction = new JTextField(10);
+    private JComboBox mTeacherGenderCombox = new JComboBox();
     public TeaPanel() {
         setLayout(new GridLayout(12, 1));
 
         JPanel teaNamePanel = new JPanel();
         teaNamePanel.add(new JLabel(LABEL_TEXT_TEA_NAME));
-        teaNamePanel.add(new JTextField(10));
+        teaNamePanel.add(mTeacherNameTextField);
 
 
         JPanel teaGenderPanel = new JPanel();
-        JComboBox comboBox = new JComboBox();
-        comboBox.addItem("男");
-        comboBox.addItem("女");
+        mTeacherGenderCombox.addItem("男");
+        mTeacherGenderCombox.addItem("女");
         teaGenderPanel.add(new JLabel(LABEL_TEXT_TEA_GENDER));
-        teaGenderPanel.add(comboBox);
+        teaGenderPanel.add(mTeacherGenderCombox);
 
         JPanel teaBirthdayPanel = new JPanel();
         teaBirthdayPanel.add(new JLabel(LABEL_TEXT_TEA_BIRTHDAY));
-        teaBirthdayPanel.add(new JTextField(10));
+        teaBirthdayPanel.add(mTeacherBirthdayTextField);
 
         JPanel teaFieldPanel = new JPanel();
         teaFieldPanel.add(new JLabel(LABEL_TEXT_TEA_EDU_FIELD));
-        teaFieldPanel.add(new JTextField(10));
+        teaFieldPanel.add(mEduField);
 
         JPanel eduYearPanel = new JPanel();
         eduYearPanel.add(new JLabel(LABEL_TEXT_TEA_EDU_YEAR));
-        eduYearPanel.add(new JTextField(10));
+        eduYearPanel.add(mEduYear);
 
         JPanel eduAgePanel = new JPanel();
         eduAgePanel.add(new JLabel(LABEL_TEXT_TEA_EDU_AGE));
-        eduAgePanel.add(new JTextField(10));
+        eduAgePanel.add(mEduAge);
 
         JPanel idNumberPanel = new JPanel();
         idNumberPanel.add(new JLabel(LABEL_TEXT_TEA_ID_NUMBER));
-        idNumberPanel.add(new JTextField(10));
+        idNumberPanel.add(mTeacherIdNumber);
 
         JPanel contactPanel = new JPanel();
         contactPanel.add(new JLabel(LABEL_TEXT_TEA_CONTACT));
-        contactPanel.add(new JTextField(10));
+        contactPanel.add(mTeacherContact);
 
         JPanel introPanel = new JPanel();
         introPanel.add(new JLabel(LABEL_TEXT_TEA_INTRODUCTION));
-        introPanel.add(new JTextField(10));
+        introPanel.add(mTeacherIntroduction);
 
         this.add(mUserNamePanel);
         this.add(mPasswordPanel);
@@ -217,7 +227,22 @@ class TeaPanel extends RegPanel {
 
     @Override
     public void updateDatabase() {
-
+        Teacher p = new Teacher();
+        p.setUsername(mUsernameTextField.getText());
+        p.setPassword(new String(mPasswordTextField.getPassword()));
+        p.setEmail(mEmailTextField.getText());
+        p.setTel(mTelTextField.getText());
+        p.setUserType(Account.UserType.TEACHER);
+        p.setmTeacherName(mTeacherNameTextField.getText());
+        p.setmTeacherGender(mTeacherGenderCombox.getSelectedItem().equals("男") ? Account.Gender.MALE: Account.Gender.FEMALE);
+        p.setmTeacherBirthday(mTeacherBirthdayTextField.getText());
+        p.setmTeacherIdNumber(mTeacherIdNumber.getText());
+        p.setmTeacherContact(mTeacherContact.getText());
+        p.setmTeacherIntroduction(mTeacherIntroduction.getText());
+        p.setmEduAge(Integer.parseInt(mEduAge.getText()));
+        p.setmEduYear(Integer.parseInt(mEduYear.getText()));
+        p.setmTeacherIntroduction(mTeacherIntroduction.getText());
+        MySQLDAO.getInstance().insertTeacher(p);
     }
 }
 
