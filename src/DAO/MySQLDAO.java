@@ -1,10 +1,7 @@
 package DAO;
 
 import com.mysql.cj.xdevapi.SqlDataResult;
-import model.Account;
-import model.EduOrg;
-import model.Parent;
-import model.Teacher;
+import model.*;
 import utils.Constants;
 
 import java.sql.*;
@@ -144,6 +141,29 @@ public class MySQLDAO {
             teacher.setmEduAge(rs.getInt("edu_age"));
             teacher.setmQualified(rs.getString("qualified").equals("YES"));
             return teacher;
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Sysadmin getSyaadminByUsername (String username){
+        String sql = "SELECT * FROM sysadmin where user_name = '" + username + "';";
+        try{
+            Sysadmin sysadmin = new Sysadmin();
+            Account account = getAccountByUsername(username);
+            sysadmin.setUsername(account.getUsername());
+            sysadmin.setPassword(account.getPassword());
+            sysadmin.setEmail(account.getEmail());
+            sysadmin.setTel(account.getTel());
+            sysadmin.setUserType(account.getUserType());
+
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            rs.next();
+
+            sysadmin.setPageItemCount(rs.getString("page_item_count"));
+            return sysadmin;
         }catch (SQLException e) {
             e.printStackTrace();
         }
