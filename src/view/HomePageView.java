@@ -7,8 +7,8 @@ import java.awt.event.ActionListener;
 
 public class HomePageView extends JFrame {
     private static final String FRAME_NAME = "主页";
-    private static final String BUTTON_NAME_LOGIN = "登录";
-    private static final String BUTTON_NAME_REGISTER = "注册";
+    private static final String BUTTON_TEXT_LOGIN = "登录";
+    private static final String BUTTON_TEXT_REGISTER = "注册";
     private static final int LOCATION_X = 600;
     private static final int LOCATION_Y = 300;
     private static final int FRAME_X = 800;
@@ -20,8 +20,8 @@ public class HomePageView extends JFrame {
     public HomePageView() {
         super(FRAME_NAME);
 
-        mLoginButton = new JButton(BUTTON_NAME_LOGIN);
-        mRegButton = new JButton(BUTTON_NAME_REGISTER);
+        mLoginButton = new JButton(BUTTON_TEXT_LOGIN);
+        mRegButton = new JButton(BUTTON_TEXT_REGISTER);
 
         mLoginButton.addActionListener(new ActionListener() {
             @Override
