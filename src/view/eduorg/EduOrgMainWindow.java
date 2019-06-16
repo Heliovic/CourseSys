@@ -1,7 +1,11 @@
 package view.eduorg;
 
+import model.EduOrg;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class EduOrgMainWindow extends JFrame {
     private static final String FRAME_NAME = "教育机构用户";
@@ -27,8 +31,19 @@ public class EduOrgMainWindow extends JFrame {
             mNotiButton = new JButton(BUTTON_TEXT_NOTIFICATION),
             mPersonalInfoButton = new JButton(BUTTON_TEXT_PERSONAL_INFO);
 
-    public EduOrgMainWindow() {
+    private EduOrg mEduOrgAccount;
+
+    public EduOrgMainWindow(EduOrg org) {
         super(FRAME_NAME);
+
+        this.mEduOrgAccount = org;
+
+        mInfoEditButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new EduOrgEditInfoView(mEduOrgAccount);
+            }
+        });
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(3, 2));

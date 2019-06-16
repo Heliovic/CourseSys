@@ -78,7 +78,7 @@ public class LoginView extends JFrame implements ActionListener {
             EduOrg org = MySQLDAO.getInstance().getEduOrgByUsername(a.getUsername());
             if (org.getPassword().equals(password)) {
                 if (org.isQualified()) {
-                    new EduOrgMainWindow();
+                    new EduOrgMainWindow(org);
                     JOptionPane.showMessageDialog(null, "教育机构登录成功！");
                 } else {
                     JOptionPane.showMessageDialog(null, "等待审核");
