@@ -265,11 +265,12 @@ public class MySQLDAO {
 
     public void updateAccount(Account account) {
         try {
-            String sql = "UPDATE account SET password = ?, tel = ?, email = ?";
+            String sql = "UPDATE account SET password = ?, tel = ?, email = ? WHERE user_name = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, account.getPassword());
             statement.setString(2, account.getTel());
             statement.setString(3, account.getEmail());
+            statement.setString(4, account.getUsername());
             statement.executeUpdate();
 
             System.out.println("更新成功！");
@@ -285,13 +286,14 @@ public class MySQLDAO {
 
         try {
 
-            String sql = "UPDATE eduorg SET org_address = ?, org_contact = ?, org_introduction = ?, edu_field = ?, edu_age = ?";
+            String sql = "UPDATE eduorg SET org_address = ?, org_contact = ?, org_introduction = ?, edu_field = ?, edu_age = ? WHERE user_name = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, org.getOrgAddress());
             statement.setString(2, org.getOrgContact());
             statement.setString(3, org.getOrgIntroduction());
             statement.setString(4, org.getOrgEduField().toString());
             statement.setInt(5, org.getOrgEduAge());
+            statement.setString(6, org.getUsername());
             statement.executeUpdate();
 
             System.out.println("更新成功！");
