@@ -1,5 +1,6 @@
 package DAO;
 
+import com.mysql.cj.xdevapi.SqlDataResult;
 import model.Account;
 import model.EduOrg;
 import model.Parent;
@@ -82,6 +83,68 @@ public class MySQLDAO {
             org.setQualified(rs.getString("qualified").equals("YES"));
             return org;
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Parent getParentByUsername (String username) {
+        String sql = "SELECT * FROM parent where user_name = '" + username + "';";
+        try{
+            Parent par = new Parent();
+            Account account = getAccountByUsername(username);
+            par.setUsername(account.getUsername());
+            par.setPassword(account.getPassword());
+            par.setEmail(account.getEmail());
+            par.setTel(account.getTel());
+            par.setUserType(account.getUserType());
+
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            rs.next();
+
+            par.setChildName(rs.getString("child_name"));
+            par.setChildBirthday(rs.getString("child_birthday"));
+            par.setChildGender(Account.Gender.valueOf(rs.getString("child_gender")));
+            par.setParentName(rs.getString("parent_name"));
+            par.setParentContact(rs.getString("parent_contact"));
+            par.setCourseField(Constants.CourseField.valueOf(rs.getString("course_field")));
+            par.setCourseCost(rs.getInt("course_cost"));
+            par.setCoursePlace(rs.getString("course_place"));
+            return par;
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Teacher getTeacherByUsername (String username) {
+        String sql = "SELECT * FROM teacher where user_name = '" + username + "';";
+        try{
+            Teacher teacher = new Teacher();
+            Account account = getAccountByUsername(username);
+            teacher.setUsername(account.getUsername());
+            teacher.setPassword(account.getPassword());
+            teacher.setEmail(account.getEmail());
+            teacher.setTel(account.getTel());
+            teacher.setUserType(account.getUserType());
+
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            rs.next();
+
+            teacher.setmTeacherName(rs.getString("tea_name"));
+            teacher.setmTeacherGender(Account.Gender.valueOf(rs.getString("tea_gender")));
+            teacher.setmTeacherBirthday(rs.getString("tea_birthday"));
+            teacher.setmTeacherIdNumber(rs.getString("tea_id_number"));
+            teacher.setmTeacherContact(rs.getString("tea_contact"));
+            teacher.setmTeacherIntroduction(rs.getString("tea_introduction"));
+            teacher.setmCourseField(Constants.CourseField.valueOf((rs.getString("edu_field"))));
+            teacher.setmEduYear(rs.getInt("edu_year"));
+            teacher.setmEduAge(rs.getInt("edu_age"));
+            teacher.setmQualified(rs.getString("qualified").equals("YES"));
+            return teacher;
+        }catch (SQLException e) {
             e.printStackTrace();
         }
         return null;

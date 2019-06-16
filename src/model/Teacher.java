@@ -17,7 +17,7 @@ public class Teacher extends Account{
     private Constants.CourseField mCourseField = Constants.CourseField.DEFAULT;
     private int mEduYear;
     private int mEduAge;
-    private boolean mQualified;
+    private boolean mQualified = false;
     private String mTeacherIntroduction;
 
     public String getmTeacherName() {
@@ -102,6 +102,10 @@ public class Teacher extends Account{
 
     public void setmQualified(boolean mQualified) {
         this.mQualified = mQualified;
+    }
+
+    public boolean isQualified() {
+        return mQualified;
     }
 
     public String getmTeacherIntroduction() {
