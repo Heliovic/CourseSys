@@ -2,6 +2,7 @@ package DAO;
 
 import model.Account;
 import model.Parent;
+import model.Teacher;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -74,13 +75,7 @@ public class MySQLDAO {
 
     public void insertParent(Parent parent) {
 
-        Account account = new Account();
-        account.setUsername(parent.getUsername());
-        account.setPassword(parent.getPassword());
-        account.setTel(parent.getTel());
-        account.setEmail(parent.getEmail());
-        account.setUserType(parent.getUserType());
-        insertAccount(account);
+        insertAccount(parent);
 
         String sql = "INSERT INTO parent (user_name, child_name, child_birthday, child_gender, parent_name, " +
                 "parent_contact, course_field, course_cost, course_place) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -101,5 +96,31 @@ public class MySQLDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void insertTeacher (Teacher teacher){
+        insertAccount(teacher);
+
+        String sql = "INSERT INTO teacher (user_name, tea_name, tea_gender, tea_birthday, tea_id_number, " +
+                "tea_contact, edu_field, edu_year, edu_age, tea_introduction) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, teacher.getUsername());
+            statement.setString(2, teacher.getmTeacherName());
+            statement.setString(3, teacher.getmTeacherGender().toString());
+            statement.setString(4, teacher.getmTeacherBirthday());
+            statement.setString(5, teacher.getmTeacherIdNumber());
+            statement.setString(6, teacher.getmTeacherContact());
+            statement.setString(7, teacher.getmCourseField().toString());
+            statement.setInt(8, teacher.getmEduYear());
+            statement.setInt(9, teacher.getmEduAge());
+            statement.setString(10, teacher.getmTeacherIntroduction());
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
