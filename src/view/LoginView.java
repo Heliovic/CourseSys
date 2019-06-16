@@ -2,6 +2,7 @@ package view;
 
 import DAO.MySQLDAO;
 import model.Account;
+import model.EduOrg;
 
 import javax.swing.*;
 import java.awt.*;
@@ -66,10 +67,23 @@ public class LoginView extends JFrame implements ActionListener {
         String username = mUsernameTextField.getText();
         String password = new String(mPasswordTextField.getPassword());
         Account a = MySQLDAO.getInstance().getAccountByUsername(username);
-        if (a.getPassword().equals(password)) {
-
-        } else {
-            System.out.println("Wrong password");
+        if (a == null) {
+            JOptionPane.showMessageDialog(null, "用户名不存在");
+            return;
         }
+        if (a.getUserType() == Account.UserType.EDUORG) {
+            EduOrg org = MySQLDAO.getInstance().getEduOrgByUsername(a.getUsername());
+            if (org.getPassword().equals(password)) {
+                if (org.isQualified()) {
+                    JOptionPane.showMessageDialog(null, "登录成功！");
+                } else {
+                    JOptionPane.showMessageDialog(null, "等待审核");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "用户名或密码错误！");
+            }
+
+        }
+
     }
 }

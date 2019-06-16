@@ -4,6 +4,7 @@ import model.Account;
 import model.EduOrg;
 import model.Parent;
 import model.Teacher;
+import utils.Constants;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -48,8 +49,38 @@ public class MySQLDAO {
             account.setUsername(rs.getString("user_name"));
             account.setPassword(rs.getString("password"));
             account.setEmail(rs.getString("email"));
-            account.setTel("tel");
+            account.setTel(rs.getString("tel"));
+            account.setUserType(Account.UserType.valueOf(rs.getString("user_type")));
             return account;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public EduOrg getEduOrgByUsername(String username) {
+        String sql = "SELECT * FROM eduorg where user_name = '" + username + "';";
+        try {
+            EduOrg org = new EduOrg();
+            Account account = getAccountByUsername(username);
+            org.setUsername(account.getUsername());
+            org.setPassword(account.getPassword());
+            org.setEmail(account.getEmail());
+            org.setTel(account.getTel());
+            org.setUserType(account.getUserType());
+
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            rs.next();
+
+            org.setOrgCode(rs.getString("org_code"));
+            org.setOrgAddress(rs.getString("org_address"));
+            org.setOrgContact(rs.getString("org_contact"));
+            org.setOrgIntroduction(rs.getString("org_introduction"));
+            org.setOrgEduField(Constants.CourseField.valueOf(rs.getString("edu_field")));
+            org.setOrgEduAge(rs.getInt("edu_age"));
+            org.setQualified(rs.getString("qualified").equals("YES"));
+            return org;
         } catch (SQLException e) {
             e.printStackTrace();
         }
