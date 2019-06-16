@@ -1,6 +1,7 @@
 package DAO;
 
 import model.Account;
+import model.Parent;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -51,5 +52,54 @@ public class MySQLDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void insertAccount(Account account) {
+        String sql = "INSERT INTO account (user_name, password, tel, email, user_type) " +
+                "VALUES (?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, account.getUsername());
+            statement.setString(2, account.getPassword());
+            statement.setString(3, account.getTel());
+            statement.setString(4, account.getEmail());
+            statement.setString(5, account.getUserType().toString());
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertParent(Parent parent) {
+
+        Account account = new Account();
+        account.setUsername(parent.getUsername());
+        account.setPassword(parent.getPassword());
+        account.setTel(parent.getTel());
+        account.setEmail(parent.getEmail());
+        account.setUserType(parent.getUserType());
+        insertAccount(account);
+
+        String sql = "INSERT INTO parent (user_name, child_name, child_birthday, child_gender, parent_name, " +
+                "parent_contact, course_field, course_cost, course_place) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, parent.getUsername());
+            statement.setString(2, parent.getChildName());
+            statement.setString(3, parent.getChildBirthday());
+            statement.setString(4, parent.getChildGender().toString());
+            statement.setString(5, parent.getParentName());
+            statement.setString(6, parent.getParentContact());
+            statement.setString(7, parent.getCourseField().toString());
+            statement.setInt(8, parent.getCourseCost());
+            statement.setString(9, parent.getCoursePlace());
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

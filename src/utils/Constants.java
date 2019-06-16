@@ -5,6 +5,7 @@ public class Constants {
         MATH,
         CHEMISTRY,
         PHYSICS,
-        BIOLOGY
+        BIOLOGY,
+        DEFAULT
     }
 }
