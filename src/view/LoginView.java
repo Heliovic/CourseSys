@@ -3,6 +3,7 @@ package view;
 import DAO.MySQLDAO;
 import model.Account;
 import model.EduOrg;
+import view.eduorg.EduOrgMainWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,6 +77,7 @@ public class LoginView extends JFrame implements ActionListener {
             if (org.getPassword().equals(password)) {
                 if (org.isQualified()) {
                     JOptionPane.showMessageDialog(null, "登录成功！");
+                    new EduOrgMainWindow();
                 } else {
                     JOptionPane.showMessageDialog(null, "等待审核");
                 }

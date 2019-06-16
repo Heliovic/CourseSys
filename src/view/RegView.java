@@ -336,7 +336,7 @@ public class RegView extends JFrame implements ActionListener {
     private JButton mRegisterButton;
 
     public RegView() {
-       super(FRAME_NAME);
+        super(FRAME_NAME);
 
         this.setLayout(new BorderLayout());
 
