@@ -3,6 +3,8 @@ package view;
 import DAO.MySQLDAO;
 import model.Account;
 import model.EduOrg;
+import model.Parent;
+import model.Teacher;
 import view.eduorg.EduOrgMainWindow;
 
 import javax.swing.*;
@@ -76,8 +78,8 @@ public class LoginView extends JFrame implements ActionListener {
             EduOrg org = MySQLDAO.getInstance().getEduOrgByUsername(a.getUsername());
             if (org.getPassword().equals(password)) {
                 if (org.isQualified()) {
-                    JOptionPane.showMessageDialog(null, "登录成功！");
                     new EduOrgMainWindow();
+                    JOptionPane.showMessageDialog(null, "教育机构登录成功！");
                 } else {
                     JOptionPane.showMessageDialog(null, "等待审核");
                 }
@@ -86,6 +88,25 @@ public class LoginView extends JFrame implements ActionListener {
             }
 
         }
-
+        if (a.getUserType() == Account.UserType.PARENT) {
+            Parent par = MySQLDAO.getInstance().getParentByUsername(a.getUsername());
+            if (par.getPassword().equals(password))
+                JOptionPane.showMessageDialog(null, "学生家长登录成功！");
+            else {
+                JOptionPane.showMessageDialog(null, "用户名或密码错误！");
+            }
+        }
+        if (a.getUserType() == Account.UserType.TEACHER) {
+            Teacher teacher = MySQLDAO.getInstance().getTeacherByUsername(a.getUsername());
+            if (teacher.getPassword().equals(password)){
+                if (teacher.isQualified()) {
+                    JOptionPane.showMessageDialog(null, "个人教师登录成功！");
+                } else {
+                    JOptionPane.showMessageDialog(null, "等待审核");
+                }
+        } else {
+            JOptionPane.showMessageDialog(null, "用户名或密码错误！");
+        }
+        }
     }
 }
