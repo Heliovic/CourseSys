@@ -262,4 +262,42 @@ public class MySQLDAO {
         }
 
     }
+
+    public void updateAccount(Account account) {
+        try {
+            String sql = "UPDATE account SET password = ?, tel = ?, email = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, account.getPassword());
+            statement.setString(2, account.getTel());
+            statement.setString(3, account.getEmail());
+            statement.executeUpdate();
+
+            System.out.println("更新成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void updateEduOrg(EduOrg org) {
+
+        updateAccount(org);
+
+        try {
+
+            String sql = "UPDATE eduorg SET org_address = ?, org_contact = ?, org_introduction = ?, edu_field = ?, edu_age = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, org.getOrgAddress());
+            statement.setString(2, org.getOrgContact());
+            statement.setString(3, org.getOrgIntroduction());
+            statement.setString(4, org.getOrgEduField().toString());
+            statement.setInt(5, org.getOrgEduAge());
+            statement.executeUpdate();
+
+            System.out.println("更新成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

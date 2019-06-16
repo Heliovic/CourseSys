@@ -1,9 +1,14 @@
 package view.eduorg;
 
+import DAO.MySQLDAO;
+import model.Account;
 import model.EduOrg;
+import utils.Constants;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class EduOrgEditInfoView extends JFrame {
 
@@ -129,5 +134,23 @@ public class EduOrgEditInfoView extends JFrame {
         this.setVisible(true);
 
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        mEditButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mEduOrgAccount.setUsername(mUsernameTextField.getText());
+                mEduOrgAccount.setPassword(new String(mPasswordTextField.getPassword()));
+                mEduOrgAccount.setTel(mTelTextField.getText());
+                mEduOrgAccount.setEmail(mEmailTextField.getText());
+                mEduOrgAccount.setUserType(Account.UserType.EDUORG);
+                mEduOrgAccount.setOrgCode(mCodeTextField.getText());
+                mEduOrgAccount.setOrgAddress(mAddressTextField.getText());
+                mEduOrgAccount.setOrgContact(mContactTextField.getText());
+                mEduOrgAccount.setOrgIntroduction(mIntroTextField.getText());
+                mEduOrgAccount.setOrgEduField(Constants.CourseField.DEFAULT);
+                mEduOrgAccount.setOrgEduAge(Integer.parseInt(mEduAgeTextField.getText()));
+                MySQLDAO.getInstance().updateEduOrg(mEduOrgAccount);
+            }
+        });
     }
 }
