@@ -2,7 +2,9 @@ package view;
 
 import DAO.MySQLDAO;
 import model.Account;
+import model.EduOrg;
 import model.Parent;
+import utils.Constants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -75,32 +77,42 @@ abstract class RegPanel extends JPanel{
 }
 
 class EduOrgPanel extends RegPanel {
+
+    private JTextField
+            mEduFieldTextField = new JTextField(10),
+            mCodeTextField = new JTextField(10),
+            mAddressTextField = new JTextField(10),
+            mEduAgeTextField = new JTextField(10),
+            mContactTextField = new JTextField(10),
+            mIntroTextField = new JTextField(10);
+
+
     public EduOrgPanel() {
         setLayout(new GridLayout(10, 1));
 
         JPanel eduFieldPanel = new JPanel();
         eduFieldPanel.add(new JLabel(LABEL_TEXT_ORG_EDU_FIELD));
-        eduFieldPanel.add(new JTextField(10));
+        eduFieldPanel.add(mEduFieldTextField);
 
         JPanel codePanel = new JPanel();
         codePanel.add(new JLabel(LABEL_TEXT_ORG_CODE));
-        codePanel.add(new JTextField(10));
+        codePanel.add(mCodeTextField);
 
         JPanel addressPanel = new JPanel();
         addressPanel.add(new JLabel(LABEL_TEXT_ORG_ADDRESS));
-        addressPanel.add(new JTextField(10));
+        addressPanel.add(mAddressTextField);
 
         JPanel eduAgePanel = new JPanel();
         eduAgePanel.add(new JLabel(LABEL_TEXT_ORG_EDU_AGE));
-        eduAgePanel.add(new JTextField(10));
+        eduAgePanel.add(mEduAgeTextField);
 
         JPanel contactPanel = new JPanel();
         contactPanel.add(new JLabel(LABEL_TEXT_ORG_CONTACT));
-        contactPanel.add(new JTextField(10));
+        contactPanel.add(mContactTextField);
 
         JPanel introPanel = new JPanel();
         introPanel.add(new JLabel(LABEL_TEXT_ORG_INTRODUCTION));
-        introPanel.add(new JTextField(10));
+        introPanel.add(mIntroTextField);
 
         this.add(mUserNamePanel);
         this.add(mPasswordPanel);
@@ -122,7 +134,19 @@ class EduOrgPanel extends RegPanel {
 
     @Override
     public void updateDatabase() {
-
+        EduOrg org = new EduOrg();
+        org.setUsername(mUsernameTextField.getText());
+        org.setPassword(new String(mPasswordTextField.getPassword()));
+        org.setTel(mTelTextField.getText());
+        org.setEmail(mEmailTextField.getText());
+        org.setUserType(Account.UserType.EDUORG);
+        org.setOrgCode(mCodeTextField.getText());
+        org.setOrgAddress(mAddressTextField.getText());
+        org.setOrgContact(mContactTextField.getText());
+        org.setOrgIntroduction(mIntroTextField.getText());
+        org.setOrgEduField(Constants.CourseField.DEFAULT);
+        org.setOrgEduAge(Integer.parseInt(mEduAgeTextField.getText()));
+        MySQLDAO.getInstance().insertEduOrg(org);
     }
 }
 

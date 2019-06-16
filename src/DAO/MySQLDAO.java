@@ -1,6 +1,7 @@
 package DAO;
 
 import model.Account;
+import model.EduOrg;
 import model.Parent;
 
 import java.sql.*;
@@ -72,6 +73,7 @@ public class MySQLDAO {
         }
     }
 
+
     public void insertParent(Parent parent) {
 
         Account account = new Account();
@@ -95,6 +97,30 @@ public class MySQLDAO {
             statement.setString(7, parent.getCourseField().toString());
             statement.setInt(8, parent.getCourseCost());
             statement.setString(9, parent.getCoursePlace());
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertEduOrg(EduOrg org) {
+
+        insertAccount(org);
+
+        String sql = "INSERT INTO eduorg (user_name, org_code, org_address, org_contact, org_introduction, edu_field, " +
+                "edu_age, qualified) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, org.getUsername());
+            statement.setString(2, org.getOrgCode());
+            statement.setString(3, org.getOrgAddress());
+            statement.setString(4, org.getOrgContact());
+            statement.setString(5, org.getOrgIntroduction());
+            statement.setString(6, org.getOrgEduField().toString());
+            statement.setString(7, Integer.toString(org.getOrgEduAge()));
+            statement.setString(8, org.isQualified() ? "YES" : "NO");
             statement.executeUpdate();
 
             System.out.println("插入成功！");
