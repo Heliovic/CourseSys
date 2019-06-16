@@ -9,7 +9,7 @@ import java.util.List;
 public class MySQLDAO {
 
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/course_sys?";
+    private static final String DB_URL = "jdbc:mysql://47.100.195.116:3306/course_sys";
     private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "31415926";
 
