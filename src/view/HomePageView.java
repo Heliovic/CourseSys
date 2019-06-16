@@ -23,12 +23,9 @@ public class HomePageView extends JFrame {
         mLoginButton = new JButton(BUTTON_TEXT_LOGIN);
         mRegButton = new JButton(BUTTON_TEXT_REGISTER);
 
-        mLoginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new LoginView();
-            }
-        });
+        mLoginButton.addActionListener(e -> new LoginView());
+
+        mRegButton.addActionListener(e -> new RegView());
 
         this.setLayout(new FlowLayout(FlowLayout.CENTER));
         this.getContentPane().add(mLoginButton);

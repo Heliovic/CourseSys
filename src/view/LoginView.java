@@ -5,8 +5,10 @@ import model.Account;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class LoginView extends JFrame {
+public class LoginView extends JFrame implements ActionListener {
 
     private static final String FRAME_NAME = "登录";
     private static final String BUTTON_TEXT_LOGIN = "登录";
@@ -24,7 +26,7 @@ public class LoginView extends JFrame {
     private JPasswordField mPasswordTextField;
 
     public LoginView() {
-
+        super(FRAME_NAME);
 
         mUsernameLabel = new JLabel(LABEL_TEXT_USERNAME);
         mPasswordLabel = new JLabel(LABEL_TEXT_PASSWORD);
@@ -52,8 +54,22 @@ public class LoginView extends JFrame {
         this.setLocation(LOCATION_X, LOCATION_Y);
         this.setSize(FRAME_X, FRAME_Y);
         this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        Account a = MySQLDAO.getInstance().getAccountByUsername("jlu01");
+        mLoginButton.addActionListener(this);
+
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String username = mUsernameTextField.getText();
+        String password = new String(mPasswordTextField.getPassword());
+        Account a = MySQLDAO.getInstance().getAccountByUsername(username);
+        if (a.getPassword().equals(password)) {
+
+        } else {
+            System.out.println("Wrong password");
+        }
     }
 }
