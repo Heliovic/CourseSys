@@ -245,5 +245,4 @@ public class MainWindow {
         mPriceRangeComboBox.addItem("2000以上");
     }
 
-
 }
