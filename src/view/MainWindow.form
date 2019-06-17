@@ -92,7 +92,7 @@
               </vspacer>
             </children>
           </grid>
-          <grid id="f3aba" binding="AccountInfoPanel" layout-manager="GridLayoutManager" row-count="4" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="f3aba" binding="AccountInfoPanel" layout-manager="GridLayoutManager" row-count="13" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <card name="AccountInfo"/>
@@ -150,26 +150,6 @@
                 <properties>
                   <text value="孩子性别："/>
                   <visible value="false"/>
-                </properties>
-              </component>
-              <component id="de1fd" class="javax.swing.JTextField" binding="TelephoneField">
-                <constraints>
-                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <editable value="false"/>
-                </properties>
-              </component>
-              <component id="7e0d1" class="javax.swing.JTextField" binding="EmailField">
-                <constraints>
-                  <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <editable value="false"/>
                 </properties>
               </component>
               <component id="a917b" class="javax.swing.JTextField" binding="ChildNameField">
@@ -242,6 +222,343 @@
               <component id="4b473" class="javax.swing.JTextField" binding="ParentNameField">
                 <constraints>
                   <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="6d517" class="javax.swing.JLabel" binding="ParentContactLabel">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="联系方式："/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="f0de6" class="javax.swing.JTextField" binding="ParentContactField">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="df640" class="javax.swing.JFormattedTextField" binding="TelephoneField">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                </properties>
+              </component>
+              <component id="b066e" class="javax.swing.JTextField" binding="EmailField">
+                <constraints>
+                  <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                </properties>
+              </component>
+              <component id="bbb14" class="javax.swing.JLabel" binding="OrgCodeLabel">
+                <constraints>
+                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="标示码："/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="3e7e9" class="javax.swing.JLabel" binding="OrgAddressLabel">
+                <constraints>
+                  <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="店面地址："/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="e8ae" class="javax.swing.JLabel" binding="OrgEduFieldLabel">
+                <constraints>
+                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="教育领域："/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="99440" class="javax.swing.JLabel" binding="OrgEduAgeLabel">
+                <constraints>
+                  <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="教育适龄："/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="83c5" class="javax.swing.JLabel" binding="OrgContactLabel">
+                <constraints>
+                  <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="联系方式："/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="6fcc9" class="javax.swing.JLabel" binding="OrgIntroductionLabel">
+                <constraints>
+                  <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="简介："/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="1057d" class="javax.swing.JTextField" binding="OrgCodeField">
+                <constraints>
+                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="52fdf" class="javax.swing.JTextField" binding="OrgAddressField">
+                <constraints>
+                  <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="adc4f" class="javax.swing.JTextField" binding="OrgEduFieldField">
+                <constraints>
+                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="bd670" class="javax.swing.JFormattedTextField" binding="OrgEduAgeField">
+                <constraints>
+                  <grid row="6" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="42030" class="javax.swing.JTextField" binding="OrgContactField">
+                <constraints>
+                  <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="ef7ad" class="javax.swing.JTextField" binding="OrgIntroductionField">
+                <constraints>
+                  <grid row="7" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="2472f" class="javax.swing.JLabel" binding="TeacherIntroductionLabel">
+                <constraints>
+                  <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="简介："/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="3d812" class="javax.swing.JLabel" binding="TeacherEduAgeLabel">
+                <constraints>
+                  <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="教育适龄："/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="f9404" class="javax.swing.JLabel" binding="TeacherEduFieldLabel">
+                <constraints>
+                  <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="教育领域："/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="bbefd" class="javax.swing.JLabel" binding="TeacherAgeLabel">
+                <constraints>
+                  <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="年龄："/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="744d4" class="javax.swing.JLabel" binding="TeacherNameLabel">
+                <constraints>
+                  <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="姓名："/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="34893" class="javax.swing.JLabel" binding="TeacherGenderLabel">
+                <constraints>
+                  <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="性别："/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="2a758" class="javax.swing.JLabel" binding="TeacherIDLabel">
+                <constraints>
+                  <grid row="9" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="身份证号："/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="1d080" class="javax.swing.JLabel" binding="TeacherYearLabel">
+                <constraints>
+                  <grid row="10" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="从教年限："/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="b90d5" class="javax.swing.JLabel" binding="TeacherContactLabel">
+                <constraints>
+                  <grid row="11" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="联系方式："/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="e0572" class="javax.swing.JTextField" binding="TeacherNameField">
+                <constraints>
+                  <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="f3784" class="javax.swing.JComboBox" binding="TeacherGenderComboBox">
+                <constraints>
+                  <grid row="8" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="7a0f4" class="javax.swing.JFormattedTextField" binding="TeacherYearLabelField">
+                <constraints>
+                  <grid row="10" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="abedd" class="javax.swing.JFormattedTextField" binding="TeacherEduAgeField">
+                <constraints>
+                  <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="79114" class="javax.swing.JTextField" binding="TeacherContactField">
+                <constraints>
+                  <grid row="11" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="f0ad7" class="javax.swing.JTextField" binding="TeacherIntroductionField">
+                <constraints>
+                  <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="274cc" class="javax.swing.JFormattedTextField" binding="TeacherAgeField">
+                <constraints>
+                  <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="e24da" class="javax.swing.JFormattedTextField" binding="TeacherIDField">
+                <constraints>
+                  <grid row="9" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="2d46b" class="javax.swing.JTextField" binding="TeacherEduFieldField">
+                <constraints>
+                  <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>

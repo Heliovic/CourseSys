@@ -7,6 +7,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
+import java.util.zip.DataFormatException;
+import java.text.*;
+import javax.swing.text.*;
+
 
 public class MainWindow {
     private JPanel MainWindowPanel;
@@ -22,8 +27,6 @@ public class MainWindow {
     private JPanel AccountInfoPanel;
     private JPanel CourseListPanel;
     private JTextField UserField;
-    private JTextField TelephoneField;
-    private JTextField EmailField;
     private JTextField ChildNameField;
     private JLabel UserLabel;
     private JLabel PasswdLabel;
@@ -48,20 +51,110 @@ public class MainWindow {
     private JLabel EduAgeLabel;
     private JLabel PriceRangeLabel;
     private JButton mCourseQueryButton;
+    private JLabel ParentContactLabel;
+    private JTextField ParentContactField;
+    private JFormattedTextField TelephoneField;
+    private JTextField EmailField;
+    private JLabel OrgCodeLabel;
+    private JTextField OrgCodeField;
+    private JLabel OrgAddressLabel;
+    private JTextField OrgAddressField;
+    private JLabel OrgEduFieldLabel;
+    private JTextField OrgEduFieldField;
+    private JLabel OrgEduAgeLabel;
+    private JFormattedTextField OrgEduAgeField;
+    private JLabel OrgContactLabel;
+    private JTextField OrgContactField;
+    private JLabel OrgIntroductionLabel;
+    private JTextField OrgIntroductionField;
+    private JTextField TeacherNameField;
+    private JComboBox TeacherGenderComboBox;
+    private JFormattedTextField TeacherYearLabelField;
+    private JFormattedTextField TeacherEduAgeField;
+    private JTextField TeacherContactField;
+    private JTextField TeacherIntroductionField;
+    private JLabel TeacherIntroductionLabel;
+    private JLabel TeacherEduAgeLabel;
+    private JLabel TeacherEduFieldLabel;
+    private JLabel TeacherAgeLabel;
+    private JLabel TeacherNameLabel;
+    private JLabel TeacherGenderLabel;
+    private JLabel TeacherIDLabel;
+    private JFormattedTextField TeacherAgeField;
+    private JFormattedTextField TeacherIDField;
+    private JTextField TeacherEduFieldField;
+    private JLabel TeacherYearLabel;
+    private JLabel TeacherContactLabel;
     private CardLayout cl;
 
-    public MainWindow(Account user) {
+    public MainWindow(Account user) throws ParseException {
+        // 卡片布局
         cl = (CardLayout) CardPanel.getLayout();
 
+        // JFormattedTextField 限制
+        DateFormatter dateform = new DateFormatter(new SimpleDateFormat("yyyy-MM-dd")); // 日期
+        MaskFormatter phoneform = new MaskFormatter("###########");     // 电话
+        MaskFormatter yearform = new MaskFormatter("####");             // 年
+        MaskFormatter IDform = new MaskFormatter("#################*"); // 身份证号
+        ChildBirField.setValue(dateform);
+        TelephoneField.setValue(phoneform);
+        OrgEduAgeField.setValue(NumberFormat.getIntegerInstance());     // 数字
+        TeacherYearLabelField.setValue(yearform);
+        TeacherEduAgeField.setValue(NumberFormat.getIntegerInstance());
+        TeacherAgeField.setValue(NumberFormat.getIntegerInstance());
+        TeacherIDField.setValue(IDform);
+
+        // 各个用户界面
         switch (user.getUserType()) {
             case SYSADMIN:
                 break;
             case EDUORG:
-                //CourseQueryButton.setVisible(true);
+                // 信息
+                OrgCodeLabel.setVisible(true);
+                OrgCodeField.setVisible(true);
+                OrgAddressLabel.setVisible(true);
+                OrgAddressField.setVisible(true);
+                OrgEduFieldLabel.setVisible(true);
+                OrgEduFieldField.setVisible(true);
+                OrgEduAgeLabel.setVisible(true);
+                OrgEduAgeField.setVisible(true);
+                OrgContactLabel.setVisible(true);
+                OrgContactField.setVisible(true);
+                OrgIntroductionLabel.setVisible(true);
+                OrgIntroductionField.setVisible(true);
                 break;
             case TEACHER:
+                // 信息
+                TeacherNameField.setVisible(true);
+                TeacherGenderComboBox.setVisible(true);
+                TeacherYearLabelField.setVisible(true);
+                TeacherEduAgeField.setVisible(true);
+                TeacherContactField.setVisible(true);
+                TeacherIntroductionField.setVisible(true);
+                TeacherIntroductionLabel.setVisible(true);
+                TeacherEduAgeLabel.setVisible(true);
+                TeacherEduFieldLabel.setVisible(true);
+                TeacherAgeLabel.setVisible(true);
+                TeacherNameLabel.setVisible(true);
+                TeacherGenderLabel.setVisible(true);
+                TeacherIDLabel.setVisible(true);
+                TeacherAgeField.setVisible(true);
+                TeacherIDField.setVisible(true);
+                TeacherEduFieldField.setVisible(true);
+                TeacherYearLabel.setVisible(true);
+                TeacherContactLabel.setVisible(true);
                 break;
             case PARENT:
+                // 信息
+                ChildNameLabel.setVisible(true);
+                ChildBirLabel.setVisible(true);
+                ChildBirField.setVisible(true);
+                ChildGenderLabel.setVisible(true);
+                ChildGenderComboBox.setVisible(true);
+                ParentNameLabel.setVisible(true);
+                ParentNameField.setVisible(true);
+                ParentContactLabel.setVisible(true);
+                ParentContactField.setVisible(true);
                 break;
         }
 
