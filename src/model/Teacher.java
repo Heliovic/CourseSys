@@ -2,6 +2,7 @@ package model;
 
 import utils.Constants;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -41,6 +42,39 @@ public class Teacher extends Account{
 
         try {
             calendar.add(Calendar.YEAR, -Integer.parseInt(TeacherBirthday));
+        } catch (NumberFormatException e) {
+            calendar.add(Calendar.YEAR, 0);
+        }
+
+        mTeacherBirthday = format.format(calendar.getTime());
+    }
+
+    public int getTeaAge() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = format.parse(mTeacherBirthday);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            int year = calendar.get(Calendar.YEAR);
+            Calendar curc = Calendar.getInstance();
+            curc.setTime(new Date());
+            return curc.get(Calendar.YEAR) - year;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public void setTeaAge(String age) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        mTeacherBirthday = format.format(new Date());
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+
+        try {
+            calendar.add(Calendar.YEAR, -Integer.parseInt(age));
         } catch (NumberFormatException e) {
             calendar.add(Calendar.YEAR, 0);
         }

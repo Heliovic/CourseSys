@@ -2,6 +2,8 @@ package model;
 
 import utils.Constants;
 
+import javax.xml.crypto.Data;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,21 +30,41 @@ public class Parent extends Account {
         return mChildBirthday;
     }
 
-    public void setChildBirthday(String childBirthday) {
+    public int getChildAge() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = format.parse(mChildBirthday);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            int year = calendar.get(Calendar.YEAR);
+            Calendar curc = Calendar.getInstance();
+            curc.setTime(new Date());
+            return curc.get(Calendar.YEAR) - year;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return 0;
+    }
+
+    public void setChildBirthday(String childBirthday) {
+        mChildBirthday = childBirthday;
+    }
+
+    public void setChildAge(String age) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         mChildBirthday = format.format(new Date());
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
 
         try {
-            calendar.add(Calendar.YEAR, -Integer.parseInt(childBirthday));
+            calendar.add(Calendar.YEAR, -Integer.parseInt(age));
         } catch (NumberFormatException e) {
             calendar.add(Calendar.YEAR, 0);
         }
 
-
+        format = new SimpleDateFormat("yyyy-MM-dd");
         mChildBirthday = format.format(calendar.getTime());
     }
 
