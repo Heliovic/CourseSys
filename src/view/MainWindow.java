@@ -1,6 +1,6 @@
 package view;
 
-import model.Account;
+import model.account.Account;
 import utils.Constants;
 
 import javax.swing.*;
@@ -38,7 +38,7 @@ public class MainWindow {
     private JLabel EmailLabel;
     private JTextField ParentNameField;
     private JPanel CourseQueryPanel;
-    private JTable mTable1;
+    private JTable mCourseQueryTable;
     private JComboBox mCourseFieldComboBox;
     private JTextField mTextField1;
     private JSpinner mSpinner1;
@@ -94,6 +94,7 @@ public class MainWindow {
                 cl.show(CardPanel, "CourseQuery");
             }
         });
+
 
         initUI();
     }

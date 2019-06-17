@@ -1,8 +1,8 @@
 package view.teacher;
 
 import DAO.MySQLDAO;
-import model.Account;
-import model.Teacher;
+import model.account.Account;
+import model.account.Teacher;
 
 import javax.swing.*;
 import java.awt.*;

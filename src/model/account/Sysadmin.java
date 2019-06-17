@@ -1,4 +1,4 @@
-package model;
+package model.account;
 
 public class Sysadmin extends Account{
     private String PageItemCount;

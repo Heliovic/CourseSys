@@ -1,10 +1,8 @@
 package view.parent;
 
 import DAO.MySQLDAO;
-import model.Account;
-import model.EduOrg;
-import model.Parent;
-import utils.Constants;
+import model.account.Account;
+import model.account.Parent;
 
 import javax.swing.*;
 import java.awt.*;

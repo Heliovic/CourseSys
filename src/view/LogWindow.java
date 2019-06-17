@@ -1,14 +1,11 @@
 package view;
 
-import model.Account;
-import model.Parent;
+import model.account.Account;
+import model.account.Parent;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 public class LogWindow {
     private JPanel MainPanel;

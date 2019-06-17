@@ -1,7 +1,7 @@
 package DAO;
 
-import com.mysql.cj.xdevapi.SqlDataResult;
-import model.*;
+import model.Course;
+import model.account.*;
 import utils.Constants;
 
 import java.sql.*;
@@ -349,5 +349,44 @@ public class MySQLDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public List getCourseInfo(Constants.CourseField field, String place, int age, int minPrice, int maxPrice) {
+        String sql = "SELECT * FROM course WHERE course_field = ? AND place = ? AND age_recommend = ? " +
+                "AND price >= ? AND price <= ?";
+
+        List<Course> courses = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setString(1, field.toString());
+            statement.setString(2, place);
+            statement.setInt(3, age);
+            statement.setInt(4, minPrice);
+            statement.setInt(5, maxPrice);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Course course = new Course();
+                course.setCourseId(rs.getString("course_id"));
+                course.setCourseName(rs.getString("course_name"));
+                course.setTime(rs.getString("time"));
+                course.setPlace(rs.getString("place"));
+                course.setContent(rs.getString("content"));
+                course.setTeachId(rs.getString("teach_id"));
+                course.setAgeRecommend(rs.getInt("age_recommend"));
+                course.setPrice(rs.getInt("price"));
+                course.setCourseField(Constants.CourseField.valueOf(rs.getString("course_field")));
+                course.setHomeWork(rs.getString("homework"));
+
+                courses.add(course);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return courses;
     }
 }

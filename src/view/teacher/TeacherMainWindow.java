@@ -1,8 +1,6 @@
 package view.teacher;
 
-import model.EduOrg;
-import model.Teacher;
-import view.eduorg.EduOrgEditInfoView;
+import model.account.Teacher;
 
 import javax.swing.*;
 import java.awt.*;

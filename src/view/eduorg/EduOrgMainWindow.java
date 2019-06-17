@@ -1,6 +1,6 @@
 package view.eduorg;
 
-import model.EduOrg;
+import model.account.EduOrg;
 
 import javax.swing.*;
 import java.awt.*;

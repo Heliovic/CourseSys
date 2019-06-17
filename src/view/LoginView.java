@@ -1,7 +1,7 @@
 package view;
 
 import DAO.MySQLDAO;
-import model.*;
+import model.account.*;
 import view.eduorg.EduOrgMainWindow;
 import view.parent.ParentMainWindow;
 import view.teacher.TeacherMainWindow;

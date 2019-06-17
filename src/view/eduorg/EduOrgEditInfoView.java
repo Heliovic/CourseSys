@@ -1,8 +1,8 @@
 package view.eduorg;
 
 import DAO.MySQLDAO;
-import model.Account;
-import model.EduOrg;
+import model.account.Account;
+import model.account.EduOrg;
 import utils.Constants;
 
 import javax.swing.*;

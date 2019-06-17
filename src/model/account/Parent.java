@@ -1,8 +1,7 @@
-package model;
+package model.account;
 
 import utils.Constants;
 
-import javax.xml.crypto.Data;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

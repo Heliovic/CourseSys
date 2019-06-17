@@ -1,7 +1,6 @@
 package view.parent;
 
-import model.Parent;
-import view.teacher.TeacherEditInfoView;
+import model.account.Parent;
 
 import javax.swing.*;
 import java.awt.*;
