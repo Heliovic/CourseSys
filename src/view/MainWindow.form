@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="view.MainWindow">
+  <grid id="27dc6" binding="MainWindowPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="529" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="b6601" binding="ButtonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="1cbd0" class="javax.swing.JButton" binding="NotificationButton">
+            <constraints/>
+            <properties>
+              <label value="通知公告"/>
+              <text value="通知公告"/>
+            </properties>
+          </component>
+          <component id="45500" class="javax.swing.JButton" binding="PersonalInfoButton">
+            <constraints/>
+            <properties>
+              <text value="个人信息"/>
+            </properties>
+          </component>
+          <component id="60bc3" class="javax.swing.JButton" binding="CourseListButton">
+            <constraints/>
+            <properties>
+              <text value="课程表"/>
+            </properties>
+          </component>
+          <component id="c5fbc" class="javax.swing.JButton" binding="button4" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Button4"/>
+              <visible value="false"/>
+            </properties>
+          </component>
+          <component id="6ae0a" class="javax.swing.JButton" binding="button5Button" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Button5"/>
+              <visible value="false"/>
+            </properties>
+          </component>
+          <component id="d6619" class="javax.swing.JButton" binding="button6Button" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Button6"/>
+              <visible value="false"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="f07b8" binding="CardPanel" layout-manager="CardLayout" hgap="0" vgap="0">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="208ee" binding="NotificationPanel" layout-manager="CardLayout" hgap="0" vgap="0">
+            <constraints>
+              <card name="Card1"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children/>
+          </grid>
+          <grid id="f3aba" binding="PersonalInfoPanel" layout-manager="CardLayout" hgap="0" vgap="0">
+            <constraints>
+              <card name="Card2"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children/>
+          </grid>
+          <grid id="381b5" binding="CourseListPanel" layout-manager="CardLayout" hgap="0" vgap="0">
+            <constraints>
+              <card name="Card3"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children/>
+          </grid>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>
