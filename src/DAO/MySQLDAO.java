@@ -300,6 +300,54 @@ public class MySQLDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
+    public void updateTeacher(Teacher teacher) {
+
+        updateAccount(teacher);
+
+        try {
+            String sql = "UPDATE teacher SET tea_name = ?, tea_gender = ?, tea_birthday = ?, tea_id_number = ?, tea_contact = ?, edu_field = ?, edu_year = ?, edu_age = ?, tea_introduction = ? where user_name = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,teacher.getmTeacherName());
+            statement.setString(2,teacher.getmTeacherGender().toString());
+            statement.setString(3,teacher.getmTeacherBirthday());
+            statement.setString(4,teacher.getmTeacherIdNumber());
+            statement.setString(5,teacher.getmTeacherContact());
+            statement.setString(6,teacher.getmCourseField().toString());
+            statement.setInt(7,teacher.getmEduYear());
+            statement.setInt(8,teacher.getmEduAge());
+            statement.setString(9, teacher.getmTeacherIntroduction());
+            statement.setString(10,teacher.getUsername());
+            statement.executeUpdate();
+
+            System.out.println("更新成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateParent (Parent parent){
+
+        updateAccount(parent);
+
+        try {
+            String sql = "UPDATE parent SET child_name = ?, child_birthday = ?, child_gender = ?, parent_name = ?, parent_contact = ?, course_field = ?, course_cost = ?, course_place = ? WHERE user_name = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,parent.getChildName());
+            statement.setString(2,parent.getChildBirthday());
+            statement.setString(3,parent.getChildGender().toString());
+            statement.setString(4,parent.getParentName());
+            statement.setString(5,parent.getParentContact());
+            statement.setString(6,parent.getCourseField().toString());
+            statement.setInt(7,parent.getCourseCost());
+            statement.setString(8,parent.getCoursePlace());
+            statement.setString(9,parent.getUsername());
+            statement.executeUpdate();
+
+            System.out.println("更新成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,7 +1,12 @@
 package view.parent;
 
+import model.Parent;
+import view.teacher.TeacherEditInfoView;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ParentMainWindow extends JFrame {
     private static final String FRAME_NAME = "学生家长用户";
@@ -26,10 +31,16 @@ public class ParentMainWindow extends JFrame {
             mInfoEditButton = new JButton(BUTTON_TEXT_INFO_EDIT),
             mNotiButton = new JButton(BUTTON_TEXT_NOTIFICATION),
             mPersonalInfoButton = new JButton(BUTTON_TEXT_PERSONAL_INFO);
-
-    public ParentMainWindow() {
+    private  Parent mParentAccount;
+    public ParentMainWindow(Parent parent) {
         super(FRAME_NAME);
-
+        this.mParentAccount = parent;
+        mInfoEditButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ParentEditInfoView(mParentAccount);
+            }
+        });
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(3, 2));
         buttonPanel.add(mChooseAddrButton);
