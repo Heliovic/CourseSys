@@ -39,7 +39,7 @@ public class MainWindow {
     private CardLayout cl;
 
     public MainWindow(Account user) {
-        cl = new CardLayout(0, 0);
+        cl = (CardLayout) CardPanel.getLayout();
 
         switch (user.getUserType()) {
             case SYSADMIN:
@@ -61,7 +61,6 @@ public class MainWindow {
         NotificationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cl = (CardLayout) CardPanel.getLayout();
                 cl.show(CardPanel, "Notification");
             }
         });
