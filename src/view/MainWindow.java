@@ -91,6 +91,8 @@ public class MainWindow {
     private JTextField TeacherEduFieldField;
     private JLabel TeacherYearLabel;
     private JLabel TeacherContactLabel;
+    private JButton ChangeButton;
+    private JButton SaveButton;
     private CardLayout cl;
 
     public MainWindow(Account user) {
@@ -157,9 +159,12 @@ public class MainWindow {
                 TeacherContactLabel.setVisible(true);
                 break;
             case PARENT:
+                CourseQueryButton.setVisible(true);
+
                 // 信息
                 ChildNameLabel.setVisible(true);
                 ChildBirLabel.setVisible(true);
+                ChildNameField.setVisible(true);
                 ChildBirField.setVisible(true);
                 ChildGenderLabel.setVisible(true);
                 ChildGenderComboBox.setVisible(true);
@@ -185,6 +190,39 @@ public class MainWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cl.show(CardPanel, "AccountInfo");
+                SaveButton.setEnabled(false);
+                // 各个用户界面
+                switch (user.getUserType()) {
+                    case SYSADMIN:
+                        break;
+                    case EDUORG:
+                        OrgCodeField.setVisible(true);
+                        OrgAddressField.setVisible(true);
+                        OrgEduFieldField.setVisible(true);
+                        OrgEduAgeField.setVisible(true);
+                        OrgContactField.setVisible(true);
+                        OrgIntroductionField.setVisible(true);
+                        break;
+                    case TEACHER:
+                        TeacherNameField.setVisible(true);
+                        TeacherGenderComboBox.setVisible(true);
+                        TeacherYearLabelField.setVisible(true);
+                        TeacherEduAgeField.setVisible(true);
+                        TeacherContactField.setVisible(true);
+                        TeacherIntroductionField.setVisible(true);
+                        TeacherAgeField.setVisible(true);
+                        TeacherIDField.setVisible(true);
+                        TeacherEduFieldField.setVisible(true);
+                        TeacherContactLabel.setVisible(true);
+                        break;
+                    case PARENT:
+                        ChildBirField.setVisible(true);
+                        ChildNameField.setText("");
+                        ChildGenderComboBox.setVisible(true);
+                        ParentNameField.setVisible(true);
+                        ParentContactField.setVisible(true);
+                        break;
+                }
             }
         });
         CourseListButton.addActionListener(new ActionListener() {
@@ -235,6 +273,18 @@ public class MainWindow {
                 }
                 DefaultTableModel model = new DefaultTableModel(rowDataSet, names);
                 mCourseQueryTable.setModel(model);
+            }
+        });
+        ChangeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SaveButton.setEnabled(true);
+            }
+        });
+        SaveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
     }
