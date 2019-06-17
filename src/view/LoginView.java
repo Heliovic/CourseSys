@@ -90,7 +90,7 @@ public class LoginView extends JFrame implements ActionListener {
         if (a.getUserType() == Account.UserType.PARENT) {
             Parent par = MySQLDAO.getInstance().getParentByUsername(a.getUsername());
             if (par.getPassword().equals(password)) {
-                new ParentMainWindow();
+                new ParentMainWindow(par);
                 JOptionPane.showMessageDialog(null, "学生家长登录成功！");
             }
             else {
@@ -101,7 +101,7 @@ public class LoginView extends JFrame implements ActionListener {
             Teacher teacher = MySQLDAO.getInstance().getTeacherByUsername(a.getUsername());
             if (teacher.getPassword().equals(password)){
                 if (teacher.isQualified()) {
-                    new TeacherMainWindow();
+                    new TeacherMainWindow(teacher);
                     JOptionPane.showMessageDialog(null, "个人教师登录成功！");
                 } else {
                     JOptionPane.showMessageDialog(null, "等待审核");
