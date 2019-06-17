@@ -1,20 +1,22 @@
 package view;
 
+import DAO.MySQLDAO;
 import model.Course;
 import model.account.Account;
+import model.account.EduOrg;
+import model.account.Parent;
+import model.account.Teacher;
 import utils.Constants;
-import DAO.MySQLDAO;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DateFormatter;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
-import java.util.zip.DataFormatException;
-import java.text.*;
-import javax.swing.text.*;
-
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Vector;
 
@@ -93,6 +95,8 @@ public class MainWindow {
     private JLabel TeacherContactLabel;
     private JButton ChangeButton;
     private JButton SaveButton;
+    private JLabel ChildAgeLabel;
+    private JFormattedTextField ChildAgeField;
     private CardLayout cl;
 
     public MainWindow(Account user) {
@@ -108,8 +112,9 @@ public class MainWindow {
             MaskFormatter yearform = new MaskFormatter("####");             // 年
             MaskFormatter IDform = new MaskFormatter("#################*"); // 身份证号
             ChildBirField.setValue(dateform);
+            ChildAgeField.setValue(NumberFormat.getIntegerInstance());      // 数字
             TelephoneField.setValue(phoneform);
-            OrgEduAgeField.setValue(NumberFormat.getIntegerInstance());     // 数字
+            OrgEduAgeField.setValue(NumberFormat.getIntegerInstance());
             TeacherYearLabelField.setValue(yearform);
             TeacherEduAgeField.setValue(NumberFormat.getIntegerInstance());
             TeacherAgeField.setValue(NumberFormat.getIntegerInstance());
@@ -119,7 +124,7 @@ public class MainWindow {
         }
 
         // 各个用户界面
-        switch (user.getUserType()) {
+        switch (User.getUserType()) {
             case SYSADMIN:
                 break;
             case EDUORG:
@@ -163,6 +168,8 @@ public class MainWindow {
 
                 // 信息
                 ChildNameLabel.setVisible(true);
+                ChildAgeLabel.setVisible(true);
+                ChildAgeField.setVisible(true);
                 ChildBirLabel.setVisible(true);
                 ChildNameField.setVisible(true);
                 ChildBirField.setVisible(true);
@@ -190,37 +197,43 @@ public class MainWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cl.show(CardPanel, "AccountInfo");
+                ChangeButton.setEnabled(true);
                 SaveButton.setEnabled(false);
+
                 // 各个用户界面
-                switch (user.getUserType()) {
+                UserField.setText(User.getUsername());
+                PasswdField.setText(User.getPassword());
+                TelephoneField.setText(User.getTel());
+                EmailField.setText(User.getEmail());
+                switch (User.getUserType()) {
                     case SYSADMIN:
                         break;
                     case EDUORG:
-                        OrgCodeField.setVisible(true);
-                        OrgAddressField.setVisible(true);
-                        OrgEduFieldField.setVisible(true);
-                        OrgEduAgeField.setVisible(true);
-                        OrgContactField.setVisible(true);
-                        OrgIntroductionField.setVisible(true);
+                        OrgCodeField.setText(((EduOrg) User).getOrgCode());
+                        OrgAddressField.setText(((EduOrg) User).getOrgAddress());
+                        OrgEduFieldField.setText(((EduOrg) User).getOrgEduField().toString());
+                        OrgEduAgeField.setText(String.valueOf(((EduOrg) User).getOrgEduAge()));
+                        OrgContactField.setText(((EduOrg) User).getOrgContact());
+                        OrgIntroductionField.setText(((EduOrg) User).getOrgIntroduction());
                         break;
                     case TEACHER:
-                        TeacherNameField.setVisible(true);
-                        TeacherGenderComboBox.setVisible(true);
-                        TeacherYearLabelField.setVisible(true);
-                        TeacherEduAgeField.setVisible(true);
-                        TeacherContactField.setVisible(true);
-                        TeacherIntroductionField.setVisible(true);
-                        TeacherAgeField.setVisible(true);
-                        TeacherIDField.setVisible(true);
-                        TeacherEduFieldField.setVisible(true);
-                        TeacherContactLabel.setVisible(true);
+                        TeacherNameField.setText(((Teacher) User).getmTeacherName());
+                        TeacherYearLabelField.setText(String.valueOf(((Teacher) User).getmEduYear()));
+                        TeacherEduAgeField.setText(String.valueOf(((Teacher) User).getmEduAge()));
+                        TeacherContactField.setText(((Teacher) User).getmTeacherContact());
+                        TeacherIntroductionField.setText(((Teacher) User).getmTeacherIntroduction());
+                        TeacherAgeField.setText(String.valueOf(((Teacher) User).getTeaAge()));
+                        TeacherIDField.setText(((Teacher) User).getmTeacherIdNumber());
+                        TeacherEduFieldField.setText(((Teacher) User).getmCourseField().toString());
+                        //                        TeacherGenderComboBox.setText(((Teacher)User).getOrgCode());
                         break;
                     case PARENT:
-                        ChildBirField.setVisible(true);
-                        ChildNameField.setText("");
-                        ChildGenderComboBox.setVisible(true);
-                        ParentNameField.setVisible(true);
-                        ParentContactField.setVisible(true);
+                        ChildBirField.setText(((Parent) User).getChildBirthday());
+                        ChildAgeField.setText(String.valueOf(((Parent) User).getChildAge()));
+                        ChildNameField.setText(((Parent) User).getChildName());
+                        ParentNameField.setText(((Parent) User).getParentName());
+                        ParentContactField.setText(((Parent) User).getCoursePlace());
+                        // ChildGenderComboBox.setText(((Parent)User).getChildAge());
                         break;
                 }
             }
