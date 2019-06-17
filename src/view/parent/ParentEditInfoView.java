@@ -56,7 +56,7 @@ public class ParentEditInfoView extends JFrame {
 
         this.mParentAccount = parent;
 
-        mUsernameTextField.setText(mParentAccount.getParentName());
+        mUsernameTextField.setText(mParentAccount.getUsername());
         mUsernameTextField.setEditable(false);
         mPasswordTextField.setText(mParentAccount.getPassword());
         mTelTextField.setText(mParentAccount.getTel());

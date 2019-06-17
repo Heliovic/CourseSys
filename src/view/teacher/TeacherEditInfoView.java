@@ -67,7 +67,7 @@ public class TeacherEditInfoView extends JFrame {
 
         this.mTeacherAccount = teacher;
 
-        mUsernameTextField.setText(mTeacherAccount.getmTeacherName());
+        mUsernameTextField.setText(mTeacherAccount.getUsername());
         mUsernameTextField.setEditable(false);
         mPasswordTextField.setText(mTeacherAccount.getPassword());
         mTelTextField.setText(mTeacherAccount.getTel());
