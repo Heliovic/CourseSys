@@ -67,7 +67,7 @@ public class TeacherEditInfoView extends JFrame {
 
         this.mTeacherAccount = teacher;
 
-        mUsernameTextField.setText(mTeacherAccount.getmTeacherName());
+        mUsernameTextField.setText(mTeacherAccount.getUsername());
         mUsernameTextField.setEditable(false);
         mPasswordTextField.setText(mTeacherAccount.getPassword());
         mTelTextField.setText(mTeacherAccount.getTel());
@@ -75,7 +75,7 @@ public class TeacherEditInfoView extends JFrame {
         mTeacherIdNumber.setText(mTeacherAccount.getmTeacherIdNumber());
         mTeacherIdNumber.setEditable(false);
         mTeacherNameTextField.setText(mTeacherAccount.getmTeacherName());
-        mTeacherBirthdayTextField.setText(mTeacherAccount.getmTeacherBirthday());
+        mTeacherBirthdayTextField.setText(Integer.toString(mTeacherAccount.getTeaAge()));
         mTeacherContact.setText(mTeacherAccount.getmTeacherContact());
         mTeacherIntroduction.setText(mTeacherAccount.getmTeacherIntroduction());
         mEduField.setText(mTeacherAccount.getmCourseField().toString());
@@ -174,7 +174,7 @@ public class TeacherEditInfoView extends JFrame {
                 mTeacherAccount.setUserType(Account.UserType.TEACHER);
                 mTeacherAccount.setmTeacherName(mTeacherNameTextField.getText());
                 mTeacherAccount.setmTeacherGender(mTeacherGenderCombox.getSelectedItem().equals("男") ? Account.Gender.MALE: Account.Gender.FEMALE);
-                mTeacherAccount.setmTeacherBirthday(mTeacherBirthdayTextField.getText());
+                mTeacherAccount.setTeaAge(mTeacherBirthdayTextField.getText());
                 mTeacherAccount.setmTeacherIdNumber(mTeacherIdNumber.getText());
                 mTeacherAccount.setmTeacherContact(mTeacherContact.getText());
                 mTeacherAccount.setmTeacherIntroduction(mTeacherIntroduction.getText());

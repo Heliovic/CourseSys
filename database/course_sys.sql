@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 16/06/2019 18:30:07
+ Date: 17/06/2019 10:04:25
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,35 @@ CREATE TABLE `account`  (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES ('jlu01', '123456', NULL, NULL, NULL);
+INSERT INTO `account` VALUES ('', '', '', '', 'PARENT');
+INSERT INTO `account` VALUES ('00', '123', '123456', '123456789', 'EDUORG');
+INSERT INTO `account` VALUES ('24', '11', '0', '123456789', 'TEACHER');
+INSERT INTO `account` VALUES ('2452', '11', '0', '123456789', 'SYSADMIN');
+INSERT INTO `account` VALUES ('fa', '11', '0', '123456789', 'PARENT');
+INSERT INTO `account` VALUES ('jlu01', '11', '0', '123456789', NULL);
+
+-- ----------------------------
+-- Table structure for course
+-- ----------------------------
+DROP TABLE IF EXISTS `course`;
+CREATE TABLE `course`  (
+  `course_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `time` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `place` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `teach_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `cost` decimal(10, 0) NULL DEFAULT NULL,
+  `course_field` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `homework` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`course_id`) USING BTREE,
+  INDEX `course_teacher_id`(`teach_id`) USING BTREE,
+  CONSTRAINT `course_teacher_id` FOREIGN KEY (`teach_id`) REFERENCES `account` (`user_name`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of course
+-- ----------------------------
+INSERT INTO `course` VALUES ('001', '000', '00', '0', '2452', 0, '0', '0');
 
 -- ----------------------------
 -- Table structure for eduorg
@@ -51,6 +79,11 @@ CREATE TABLE `eduorg`  (
   INDEX `user_name_eduorg`(`user_name`) USING BTREE,
   CONSTRAINT `user_name_eduorg` FOREIGN KEY (`user_name`) REFERENCES `account` (`user_name`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of eduorg
+-- ----------------------------
+INSERT INTO `eduorg` VALUES ('00', '201', '0101', '1364846431', '测试测试', 'DEFAULT', 21, 'YES');
 
 -- ----------------------------
 -- Table structure for parent
@@ -71,6 +104,12 @@ CREATE TABLE `parent`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of parent
+-- ----------------------------
+INSERT INTO `parent` VALUES ('', '', '2019-06-16', 'MALE', '', '', 'DEFAULT', 1000, NULL);
+INSERT INTO `parent` VALUES ('fa', 'fas', '2005-06-16', 'MALE', '42', '42', 'DEFAULT', 1000, NULL);
+
+-- ----------------------------
 -- Table structure for sysadmin
 -- ----------------------------
 DROP TABLE IF EXISTS `sysadmin`;
@@ -80,6 +119,11 @@ CREATE TABLE `sysadmin`  (
   PRIMARY KEY (`user_name`) USING BTREE,
   CONSTRAINT `user_name_sysadmin` FOREIGN KEY (`user_name`) REFERENCES `account` (`user_name`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sysadmin
+-- ----------------------------
+INSERT INTO `sysadmin` VALUES ('2452', '1');
 
 -- ----------------------------
 -- Table structure for teacher
@@ -94,11 +138,17 @@ CREATE TABLE `teacher`  (
   `tea_contact` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `tea_introduction` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `edu_field` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `edu_year` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `edu_year` decimal(10, 0) NULL DEFAULT NULL,
   `edu_age` decimal(10, 0) NULL DEFAULT NULL,
   `qualified` enum('YES','NO') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`user_name`) USING BTREE,
   CONSTRAINT `user_name_teacher` FOREIGN KEY (`user_name`) REFERENCES `account` (`user_name`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of teacher
+-- ----------------------------
+INSERT INTO `teacher` VALUES ('24', '45', 'FEMALE', '1674-06-16', '34', '43', '34', 'DEFAULT', 345, 43, 'YES');
+INSERT INTO `teacher` VALUES ('2452', '45', 'FEMALE', '1674-06-16', '34', '43', '34', 'DEFAULT', 345, 43, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

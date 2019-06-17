@@ -56,14 +56,14 @@ public class ParentEditInfoView extends JFrame {
 
         this.mParentAccount = parent;
 
-        mUsernameTextField.setText(mParentAccount.getParentName());
+        mUsernameTextField.setText(mParentAccount.getUsername());
         mUsernameTextField.setEditable(false);
         mPasswordTextField.setText(mParentAccount.getPassword());
         mTelTextField.setText(mParentAccount.getTel());
         mEmailTextField.setText(mParentAccount.getEmail());
         mChildGenderCombox.setSelectedItem(mParentAccount.getChildGender().toString());
         mChildNameTextField.setText(mParentAccount.getChildName());
-        mChildBirthdayTextField.setText(mParentAccount.getChildBirthday());
+        mChildBirthdayTextField.setText(Integer.toString(mParentAccount.getChildAge()));
         mParentContactTextField.setText(mParentAccount.getParentContact());
         mParentNameTextField.setText(mParentAccount.getParentName());
 
@@ -140,7 +140,7 @@ public class ParentEditInfoView extends JFrame {
                 mParentAccount.setTel(mTelTextField.getText());
                 mParentAccount.setUserType(Account.UserType.PARENT);
                 mParentAccount.setChildName(mChildNameTextField.getText());
-                mParentAccount.setChildBirthday(mChildBirthdayTextField.getText());
+                mParentAccount.setChildAge(mChildBirthdayTextField.getText());
                 mParentAccount.setChildGender(mChildGenderCombox.getSelectedItem().equals("男") ? Account.Gender.MALE: Account.Gender.FEMALE);
                 mParentAccount.setParentName(mParentNameTextField.getText());
                 mParentAccount.setParentContact(mParentContactTextField.getText());

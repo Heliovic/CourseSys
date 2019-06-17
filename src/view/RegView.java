@@ -235,7 +235,7 @@ class TeaPanel extends RegPanel {
         p.setUserType(Account.UserType.TEACHER);
         p.setmTeacherName(mTeacherNameTextField.getText());
         p.setmTeacherGender(mTeacherGenderCombox.getSelectedItem().equals("男") ? Account.Gender.MALE: Account.Gender.FEMALE);
-        p.setmTeacherBirthday(mTeacherBirthdayTextField.getText());
+        p.setTeaAge(mTeacherBirthdayTextField.getText());
         p.setmTeacherIdNumber(mTeacherIdNumber.getText());
         p.setmTeacherContact(mTeacherContact.getText());
         p.setmTeacherIntroduction(mTeacherIntroduction.getText());
@@ -305,7 +305,7 @@ class ParPanel extends RegPanel {
         p.setTel(mTelTextField.getText());
         p.setUserType(Account.UserType.PARENT);
         p.setChildName(mChildNameTextField.getText());
-        p.setChildBirthday(mChildBirthdayTextField.getText());
+        p.setChildAge(mChildBirthdayTextField.getText());
         p.setChildGender(mChildGenderCombox.getSelectedItem().equals("男") ? Account.Gender.MALE: Account.Gender.FEMALE);
         p.setParentName(mParentNameTextField.getText());
         p.setParentContact(mParentContactTextField.getText());
