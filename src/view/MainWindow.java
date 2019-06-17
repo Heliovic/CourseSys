@@ -1,9 +1,12 @@
 package view;
 
+import model.Course;
 import model.account.Account;
 import utils.Constants;
+import DAO.MySQLDAO;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +15,8 @@ import java.util.zip.DataFormatException;
 import java.text.*;
 import javax.swing.text.*;
 
+import java.util.List;
+import java.util.Vector;
 
 public class MainWindow {
     private Account User;
@@ -44,8 +49,8 @@ public class MainWindow {
     private JPanel CourseQueryPanel;
     private JTable mCourseQueryTable;
     private JComboBox mCourseFieldComboBox;
-    private JTextField mTextField1;
-    private JSpinner mSpinner1;
+    private JTextField mPlaceField;
+    private JSpinner mAgeSpin;
     private JComboBox mPriceRangeComboBox;
     private JLabel FieldLabel;
     private JLabel PlaceLabel;
@@ -197,6 +202,41 @@ public class MainWindow {
 
 
         initUI();
+        mCourseQueryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Constants.CourseField field = Constants.CourseField.valueOf(mCourseFieldComboBox.getSelectedItem().toString());
+                String place = mPlaceField.getText();
+                int age = Integer.parseInt(mAgeSpin.getValue().toString());
+                int minprice[] = {1, 201, 501, 751, 1001, 2000};
+                int maxprice[] = {200, 500, 750, 1000, 2000, Integer.MAX_VALUE};
+                int index = mPriceRangeComboBox.getSelectedIndex();
+                int minPrice = minprice[index];
+                int maxPrice = maxprice[index];
+                List<Course> courses = MySQLDAO.getInstance().getCourseInfo(field, place, age, minPrice, maxPrice);
+                //System.out.println(field.toString() + place + String.valueOf(age) + minPrice + maxPrice);
+                Vector rowData = new Vector();
+                Vector rowDataSet = new Vector();
+                Vector names = new Vector();
+                names.add("course_id");
+                names.add("course_name");
+                names.add("course_time");
+                names.add("teach_id");
+                names.add("content");
+                for (Course course : courses){
+                    System.out.println(course.getCourseId() + course.getCourseName());
+                    rowData.clear();
+                    rowData.add(course.getCourseId());
+                    rowData.add(course.getCourseName());
+                    rowData.add(course.getTime());
+                    rowData.add(course.getTeachId());
+                    rowData.add(course.getContent());
+                    rowDataSet.add(rowData);
+                }
+                DefaultTableModel model = new DefaultTableModel(rowDataSet, names);
+                mCourseQueryTable.setModel(model);
+            }
+        });
     }
 
     private void initUI() {
