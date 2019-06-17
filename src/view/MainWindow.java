@@ -14,6 +14,7 @@ import javax.swing.text.*;
 
 
 public class MainWindow {
+    private Account User;
     private JPanel MainWindowPanel;
     private JPanel ButtonPanel;
     private JPanel CardPanel;
@@ -87,22 +88,28 @@ public class MainWindow {
     private JLabel TeacherContactLabel;
     private CardLayout cl;
 
-    public MainWindow(Account user) throws ParseException {
+    public MainWindow(Account user) {
+        User = user;
+
         // 卡片布局
         cl = (CardLayout) CardPanel.getLayout();
 
         // JFormattedTextField 限制
         DateFormatter dateform = new DateFormatter(new SimpleDateFormat("yyyy-MM-dd")); // 日期
-        MaskFormatter phoneform = new MaskFormatter("###########");     // 电话
-        MaskFormatter yearform = new MaskFormatter("####");             // 年
-        MaskFormatter IDform = new MaskFormatter("#################*"); // 身份证号
-        ChildBirField.setValue(dateform);
-        TelephoneField.setValue(phoneform);
-        OrgEduAgeField.setValue(NumberFormat.getIntegerInstance());     // 数字
-        TeacherYearLabelField.setValue(yearform);
-        TeacherEduAgeField.setValue(NumberFormat.getIntegerInstance());
-        TeacherAgeField.setValue(NumberFormat.getIntegerInstance());
-        TeacherIDField.setValue(IDform);
+        try {
+            MaskFormatter phoneform = new MaskFormatter("###########");     // 电话
+            MaskFormatter yearform = new MaskFormatter("####");             // 年
+            MaskFormatter IDform = new MaskFormatter("#################*"); // 身份证号
+            ChildBirField.setValue(dateform);
+            TelephoneField.setValue(phoneform);
+            OrgEduAgeField.setValue(NumberFormat.getIntegerInstance());     // 数字
+            TeacherYearLabelField.setValue(yearform);
+            TeacherEduAgeField.setValue(NumberFormat.getIntegerInstance());
+            TeacherAgeField.setValue(NumberFormat.getIntegerInstance());
+            TeacherIDField.setValue(IDform);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // 各个用户界面
         switch (user.getUserType()) {
