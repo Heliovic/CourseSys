@@ -43,7 +43,6 @@ public class MainWindow {
     private JLabel ChildBirLabel;
     private JFormattedTextField ChildBirField;
     private JLabel ChildGenderLabel;
-    private JComboBox ChildGenderComboBox;
     private JLabel ParentNameLabel;
     private JLabel TelephoneLabel;
     private JLabel EmailLabel;
@@ -76,7 +75,6 @@ public class MainWindow {
     private JLabel OrgIntroductionLabel;
     private JTextField OrgIntroductionField;
     private JTextField TeacherNameField;
-    private JComboBox TeacherGenderComboBox;
     private JFormattedTextField TeacherYearLabelField;
     private JFormattedTextField TeacherEduAgeField;
     private JTextField TeacherContactField;
@@ -97,6 +95,8 @@ public class MainWindow {
     private JButton SaveButton;
     private JLabel ChildAgeLabel;
     private JFormattedTextField ChildAgeField;
+    private JFormattedTextField TeacherGenderField;
+    private JFormattedTextField ChildGenderField;
     private CardLayout cl;
 
     public MainWindow(Account user) {
@@ -145,7 +145,7 @@ public class MainWindow {
             case TEACHER:
                 // 信息
                 TeacherNameField.setVisible(true);
-                TeacherGenderComboBox.setVisible(true);
+                TeacherGenderField.setVisible(true);
                 TeacherYearLabelField.setVisible(true);
                 TeacherEduAgeField.setVisible(true);
                 TeacherContactField.setVisible(true);
@@ -174,7 +174,7 @@ public class MainWindow {
                 ChildNameField.setVisible(true);
                 ChildBirField.setVisible(true);
                 ChildGenderLabel.setVisible(true);
-                ChildGenderComboBox.setVisible(true);
+                ChildGenderField.setVisible(true);
                 ParentNameLabel.setVisible(true);
                 ParentNameField.setVisible(true);
                 ParentContactLabel.setVisible(true);
@@ -187,6 +187,8 @@ public class MainWindow {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+
+        initUI();
         NotificationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -225,7 +227,7 @@ public class MainWindow {
                         TeacherAgeField.setText(String.valueOf(((Teacher) User).getTeaAge()));
                         TeacherIDField.setText(((Teacher) User).getmTeacherIdNumber());
                         TeacherEduFieldField.setText(((Teacher) User).getmCourseField().toString());
-                        //                        TeacherGenderComboBox.setText(((Teacher)User).getOrgCode());
+                        TeacherGenderField.setText(((Teacher) User).getmTeacherGender().toString());
                         break;
                     case PARENT:
                         ChildBirField.setText(((Parent) User).getChildBirthday());
@@ -233,7 +235,7 @@ public class MainWindow {
                         ChildNameField.setText(((Parent) User).getChildName());
                         ParentNameField.setText(((Parent) User).getParentName());
                         ParentContactField.setText(((Parent) User).getCoursePlace());
-                        // ChildGenderComboBox.setText(((Parent)User).getChildAge());
+                        ChildGenderField.setText(((Parent) User).getChildGender().toString());
                         break;
                 }
             }
@@ -250,9 +252,6 @@ public class MainWindow {
                 cl.show(CardPanel, "CourseQuery");
             }
         });
-
-
-        initUI();
         mCourseQueryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

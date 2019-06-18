@@ -404,14 +404,6 @@
                   <visible value="false"/>
                 </properties>
               </component>
-              <component id="f3784" class="javax.swing.JComboBox" binding="TeacherGenderComboBox">
-                <constraints>
-                  <grid row="8" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <visible value="false"/>
-                </properties>
-              </component>
               <component id="7a0f4" class="javax.swing.JFormattedTextField" binding="TeacherYearLabelField">
                 <constraints>
                   <grid row="10" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
@@ -575,15 +567,6 @@
                   <visible value="false"/>
                 </properties>
               </component>
-              <component id="f1505" class="javax.swing.JComboBox" binding="ChildGenderComboBox">
-                <constraints>
-                  <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <enabled value="false"/>
-                  <visible value="false"/>
-                </properties>
-              </component>
               <component id="4756f" class="javax.swing.JLabel" binding="ChildAgeLabel">
                 <constraints>
                   <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -596,6 +579,28 @@
               <component id="2a86b" class="javax.swing.JFormattedTextField" binding="ChildAgeField">
                 <constraints>
                   <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="1ad72" class="javax.swing.JFormattedTextField" binding="TeacherGenderField">
+                <constraints>
+                  <grid row="8" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <visible value="false"/>
+                </properties>
+              </component>
+              <component id="3c6a4" class="javax.swing.JFormattedTextField" binding="ChildGenderField">
+                <constraints>
+                  <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
