@@ -103,6 +103,25 @@ public class MainWindow {
     private JComboBox ChildGenderComboBox;
     private JComboBox TeacherCourseComboBox;
     private JComboBox OrgCourseComboBox;
+    private JTextField mCourseIdTextField;
+    private JTextField mCourseNameTextField;
+    private JLabel CourseIdLabel;
+    private JLabel CourseNameLabel;
+    private JTextField mCourseTimeTextField;
+    private JTextField mCoursePlaceTextField;
+    private JLabel CourseTimeLabel;
+    private JLabel CoursePlaceLabel;
+    private JTextField mCourseContentTextField;
+    private JSpinner mCourseAgeSpinner;
+    private JLabel CourseContentLabel;
+    private JLabel CourseAgeLabel;
+    private JLabel CoursePriceLabel;
+    private JSpinner mCoursePriceSpinner;
+    private JLabel CourseFieldLabel;
+    private JComboBox mInsertCourseFieldComboBox;
+    private JLabel CourseHomework;
+    private JTextField mCourseHomeworkTextField;
+    private JButton mInsertCourseButton;
     private CardLayout cl;
 
     public MainWindow(Account user) {
@@ -367,6 +386,23 @@ public class MainWindow {
             }
         });
 
+        mInsertCourseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Course course = new Course();
+                course.setCourseId(mCourseIdTextField.getText());
+                course.setCourseName(mCourseNameTextField.getText());
+                course.setTime(mCourseTimeTextField.getText());
+                course.setPlace(mCoursePlaceTextField.getText());
+                course.setContent(mCourseContentTextField.getText());
+                course.setTeachId(User.getUsername());
+                course.setAgeRecommend((Integer) mCourseAgeSpinner.getValue());
+                course.setPrice((Integer) mCoursePriceSpinner.getValue());
+                course.setCourseField(Constants.CourseField.valueOf((String) mInsertCourseFieldComboBox.getSelectedItem()));
+                course.setHomeWork(mCourseHomeworkTextField.getText());
+                MySQLDAO.getInstance().insertCourse(course);
+            }
+        });
     }
 
     private void initUI() {
@@ -396,6 +432,7 @@ public class MainWindow {
             case SYSADMIN:
                 break;
             case EDUORG:
+                CourseInsertButton.setVisible(true);
                 // 信息
                 OrgCodeLabel.setVisible(true);
                 OrgCodeField.setVisible(true);
@@ -411,6 +448,7 @@ public class MainWindow {
                 OrgIntroductionField.setVisible(true);
                 break;
             case TEACHER:
+                CourseInsertButton.setVisible(true);
                 // 信息
                 TeacherNameField.setVisible(true);
                 TeacherGenderComboBox.setVisible(true);
@@ -433,7 +471,7 @@ public class MainWindow {
                 break;
             case PARENT:
                 CourseQueryButton.setVisible(true);
-                CourseInsertButton.setVisible(true);
+
                 // 信息
                 ChildNameLabel.setVisible(true);
                 ChildAgeLabel.setVisible(true);
@@ -455,6 +493,7 @@ public class MainWindow {
             mCourseFieldComboBox.addItem(field.toString());
             TeacherCourseComboBox.addItem(field.toString());
             OrgCourseComboBox.addItem(field.toString());
+            mInsertCourseFieldComboBox.addItem(field.toString());
         }
 
         TeacherGenderComboBox.addItem("MALE");
@@ -468,6 +507,17 @@ public class MainWindow {
         mPriceRangeComboBox.addItem("751-1000");
         mPriceRangeComboBox.addItem("1001-2000");
         mPriceRangeComboBox.addItem("2000以上");
+
+
+        // Spinner 数值范围
+        SpinnerNumberModel spinnerAge = new SpinnerNumberModel(0, 0, 100, 1);
+        SpinnerNumberModel spinnerPrice = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
+
+        mCourseAgeSpinner.setModel(spinnerAge);
+        mAgeSpin.setModel(spinnerAge);
+
+
+        mCoursePriceSpinner.setModel(spinnerPrice);
 
         // JFrame界面
         JFrame frame = new JFrame("课程中介系统");

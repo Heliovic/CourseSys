@@ -49,7 +49,7 @@
           <component id="6ae0a" class="javax.swing.JButton" binding="CourseInsertButton">
             <constraints/>
             <properties>
-              <text value="课程查询"/>
+              <text value="发布课程"/>
               <visible value="false"/>
             </properties>
           </component>
@@ -720,7 +720,7 @@
               </scrollpane>
             </children>
           </grid>
-          <grid id="e3582" binding="CourseInsertPanel" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="e3582" binding="CourseInsertPanel" layout-manager="GridLayoutManager" row-count="6" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <card name="CourseInsert"/>
@@ -728,24 +728,152 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="a9335" class="javax.swing.JLabel">
+              <component id="63535" class="javax.swing.JLabel" binding="CourseIdLabel">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Label"/>
+                  <text value="课程ID"/>
                 </properties>
               </component>
-              <hspacer id="828a3">
+              <component id="74049" class="javax.swing.JLabel" binding="CourseNameLabel">
                 <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
-              </hspacer>
-              <vspacer id="7a01b">
+                <properties>
+                  <text value="课程名称"/>
+                </properties>
+              </component>
+              <component id="df34b" class="javax.swing.JTextField" binding="mCourseIdTextField">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
                 </constraints>
-              </vspacer>
+                <properties/>
+              </component>
+              <component id="22203" class="javax.swing.JTextField" binding="mCourseNameTextField">
+                <constraints>
+                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="1b150" class="javax.swing.JLabel" binding="CourseTimeLabel">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="时间"/>
+                </properties>
+              </component>
+              <component id="308e9" class="javax.swing.JTextField" binding="mCourseTimeTextField">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="9cc5" class="javax.swing.JLabel" binding="CoursePlaceLabel">
+                <constraints>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="地点"/>
+                </properties>
+              </component>
+              <component id="82c7c" class="javax.swing.JTextField" binding="mCoursePlaceTextField">
+                <constraints>
+                  <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="7d225" class="javax.swing.JLabel" binding="CourseContentLabel">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="课程内容"/>
+                </properties>
+              </component>
+              <component id="5feb7" class="javax.swing.JTextField" binding="mCourseContentTextField">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="95a30" class="javax.swing.JLabel" binding="CourseAgeLabel">
+                <constraints>
+                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="适合年龄"/>
+                </properties>
+              </component>
+              <component id="8ed37" class="javax.swing.JSpinner" binding="mCourseAgeSpinner">
+                <constraints>
+                  <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="63e81" class="javax.swing.JLabel" binding="CoursePriceLabel">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="价格"/>
+                </properties>
+              </component>
+              <component id="fc5e9" class="javax.swing.JSpinner" binding="mCoursePriceSpinner">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="ef624" class="javax.swing.JLabel" binding="CourseFieldLabel">
+                <constraints>
+                  <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="课程类别"/>
+                </properties>
+              </component>
+              <component id="92e02" class="javax.swing.JComboBox" binding="mInsertCourseFieldComboBox">
+                <constraints>
+                  <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="313bb" class="javax.swing.JLabel" binding="CourseHomework">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="作业"/>
+                </properties>
+              </component>
+              <component id="2dafa" class="javax.swing.JTextField" binding="mCourseHomeworkTextField">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="c9cae" class="javax.swing.JButton" binding="mInsertCourseButton">
+                <constraints>
+                  <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="发布"/>
+                </properties>
+              </component>
             </children>
           </grid>
         </children>
