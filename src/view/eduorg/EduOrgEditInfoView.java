@@ -1,9 +1,9 @@
 package view.eduorg;
 
 import DAO.MySQLDAO;
+import model.Course;
 import model.account.Account;
 import model.account.EduOrg;
-import utils.Constants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -147,7 +147,7 @@ public class EduOrgEditInfoView extends JFrame {
                 mEduOrgAccount.setOrgAddress(mAddressTextField.getText());
                 mEduOrgAccount.setOrgContact(mContactTextField.getText());
                 mEduOrgAccount.setOrgIntroduction(mIntroTextField.getText());
-                mEduOrgAccount.setOrgEduField(Constants.CourseField.DEFAULT);
+                mEduOrgAccount.setOrgEduField(Course.CourseField.DEFAULT);
                 mEduOrgAccount.setOrgEduAge(Integer.parseInt(mEduAgeTextField.getText()));
                 MySQLDAO.getInstance().updateEduOrg(mEduOrgAccount);
             }

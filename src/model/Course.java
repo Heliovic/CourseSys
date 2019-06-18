@@ -1,8 +1,15 @@
 package model;
 
-import utils.Constants;
-
 public class Course {
+
+    public enum CourseField {
+        MATH,
+        CHEMISTRY,
+        PHYSICS,
+        BIOLOGY,
+        DEFAULT
+    }
+
     private String mCourseId;
     private String mCourseName;
     private String mTime;
@@ -11,7 +18,7 @@ public class Course {
     private String mTeachId;
     private int mAgeRecommend;
     private int mPrice;
-    private Constants.CourseField mCourseField;
+    private CourseField mCourseField;
     private String mHomeWork;
 
     public String getCourseId() {
@@ -78,11 +85,11 @@ public class Course {
         mPrice = price;
     }
 
-    public Constants.CourseField getCourseField() {
+    public CourseField getCourseField() {
         return mCourseField;
     }
 
-    public void setCourseField(Constants.CourseField courseField) {
+    public void setCourseField(CourseField courseField) {
         mCourseField = courseField;
     }
 

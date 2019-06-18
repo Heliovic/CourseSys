@@ -1,6 +1,6 @@
 package model.account;
 
-import utils.Constants;
+import model.Course;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,7 +13,7 @@ public class Parent extends Account {
     private Gender mChildGender;
     private String mParentName;
     private String mParentContact;
-    private Constants.CourseField mCourseField = Constants.CourseField.DEFAULT;
+    private Course.CourseField mCourseField = Course.CourseField.DEFAULT;
     private int mCourseCost = 1000;
     private String mCoursePlace;
 
@@ -91,11 +91,11 @@ public class Parent extends Account {
         mParentContact = parentContact;
     }
 
-    public Constants.CourseField getCourseField() {
+    public Course.CourseField getCourseField() {
         return mCourseField;
     }
 
-    public void setCourseField(Constants.CourseField courseField) {
+    public void setCourseField(Course.CourseField courseField) {
         mCourseField = courseField;
     }
 

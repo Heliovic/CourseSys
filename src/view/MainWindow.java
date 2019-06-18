@@ -6,7 +6,6 @@ import model.account.Account;
 import model.account.EduOrg;
 import model.account.Parent;
 import model.account.Teacher;
-import utils.Constants;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -269,7 +268,7 @@ public class MainWindow {
                     case EDUORG:
                         ((EduOrg) User).setOrgCode(OrgCodeField.getText());
                         ((EduOrg) User).setOrgAddress(OrgAddressField.getText());
-                        ((EduOrg) User).setOrgEduField(Constants.CourseField.valueOf(OrgCourseComboBox.getSelectedItem().toString()));
+                        ((EduOrg) User).setOrgEduField(Course.CourseField.valueOf(OrgCourseComboBox.getSelectedItem().toString()));
                         ((EduOrg) User).setOrgEduAge(Integer.parseInt(OrgEduAgeField.getText()));
                         ((EduOrg) User).setOrgContact(OrgContactField.getText());
                         ((EduOrg) User).setOrgIntroduction(OrgIntroductionField.getText());
@@ -283,7 +282,7 @@ public class MainWindow {
                         ((Teacher) User).setmTeacherIntroduction(TeacherIntroductionField.getText());
                         ((Teacher) User).setTeaAge(TeacherAgeField.getText());
                         ((Teacher) User).setmTeacherIdNumber(TeacherIDField.getText());
-                        ((Teacher) User).setmCourseField(Constants.CourseField.valueOf(TeacherCourseComboBox.getSelectedItem().toString()));
+                        ((Teacher) User).setmCourseField(Course.CourseField.valueOf(TeacherCourseComboBox.getSelectedItem().toString()));
                         ((Teacher) User).setmTeacherGender(Account.Gender.valueOf(TeacherGenderComboBox.getSelectedItem().toString()));
                         MySQLDAO.getInstance().updateTeacher((Teacher) User);
                         break;
@@ -352,7 +351,7 @@ public class MainWindow {
         mCourseQueryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Constants.CourseField field = Constants.CourseField.valueOf(mCourseFieldComboBox.getSelectedItem().toString());
+                Course.CourseField field = Course.CourseField.valueOf(mCourseFieldComboBox.getSelectedItem().toString());
                 String place = mPlaceField.getText();
                 int age = Integer.parseInt(mAgeSpin.getValue().toString());
                 int minprice[] = {1, 201, 501, 751, 1001, 2000};
@@ -398,7 +397,7 @@ public class MainWindow {
                 course.setTeachId(User.getUsername());
                 course.setAgeRecommend((Integer) mCourseAgeSpinner.getValue());
                 course.setPrice((Integer) mCoursePriceSpinner.getValue());
-                course.setCourseField(Constants.CourseField.valueOf((String) mInsertCourseFieldComboBox.getSelectedItem()));
+                course.setCourseField(Course.CourseField.valueOf((String) mInsertCourseFieldComboBox.getSelectedItem()));
                 course.setHomeWork(mCourseHomeworkTextField.getText());
                 MySQLDAO.getInstance().insertCourse(course);
             }
@@ -488,7 +487,7 @@ public class MainWindow {
         }
 
         // 复选框初始化
-        for (Constants.CourseField field : Constants.CourseField.values()) {
+        for (Course.CourseField field : Course.CourseField.values()) {
             mCourseFieldComboBox.addItem(field.toString());
             TeacherCourseComboBox.addItem(field.toString());
             OrgCourseComboBox.addItem(field.toString());

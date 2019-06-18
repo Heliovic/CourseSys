@@ -1,13 +1,13 @@
 package model.account;
 
-import utils.Constants;
+import model.Course;
 
 public class EduOrg extends Account {
     private String mOrgCode;
     private String mOrgAddress;
     private String mOrgContact;
     private String mOrgIntroduction;
-    private Constants.CourseField mOrgEduField = Constants.CourseField.DEFAULT;
+    private Course.CourseField mOrgEduField = Course.CourseField.DEFAULT;
     private int mOrgEduAge;
     private boolean qualified;
 
@@ -43,11 +43,11 @@ public class EduOrg extends Account {
         mOrgIntroduction = orgIntroduction;
     }
 
-    public Constants.CourseField getOrgEduField() {
+    public Course.CourseField getOrgEduField() {
         return mOrgEduField;
     }
 
-    public void setOrgEduField(Constants.CourseField orgEduField) {
+    public void setOrgEduField(Course.CourseField orgEduField) {
         mOrgEduField = orgEduField;
     }
 

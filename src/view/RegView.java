@@ -1,11 +1,11 @@
 package view;
 
 import DAO.MySQLDAO;
+import model.Course;
 import model.account.Account;
 import model.account.EduOrg;
 import model.account.Parent;
 import model.account.Teacher;
-import utils.Constants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -145,7 +145,7 @@ class EduOrgPanel extends RegPanel {
         org.setOrgAddress(mAddressTextField.getText());
         org.setOrgContact(mContactTextField.getText());
         org.setOrgIntroduction(mIntroTextField.getText());
-        org.setOrgEduField(Constants.CourseField.DEFAULT);
+        org.setOrgEduField(Course.CourseField.DEFAULT);
         org.setOrgEduAge(Integer.parseInt(mEduAgeTextField.getText()));
         MySQLDAO.getInstance().insertEduOrg(org);
     }

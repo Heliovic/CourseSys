@@ -2,7 +2,6 @@ package DAO;
 
 import model.Course;
 import model.account.*;
-import utils.Constants;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -77,7 +76,7 @@ public class MySQLDAO {
             org.setOrgAddress(rs.getString("org_address"));
             org.setOrgContact(rs.getString("org_contact"));
             org.setOrgIntroduction(rs.getString("org_introduction"));
-            org.setOrgEduField(Constants.CourseField.valueOf(rs.getString("edu_field")));
+            org.setOrgEduField(Course.CourseField.valueOf(rs.getString("edu_field")));
             org.setOrgEduAge(rs.getInt("edu_age"));
             org.setQualified(rs.getString("qualified").equals("YES"));
             return org;
@@ -107,7 +106,7 @@ public class MySQLDAO {
             par.setChildGender(Account.Gender.valueOf(rs.getString("child_gender")));
             par.setParentName(rs.getString("parent_name"));
             par.setParentContact(rs.getString("parent_contact"));
-            par.setCourseField(Constants.CourseField.valueOf(rs.getString("course_field")));
+            par.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
             par.setCourseCost(rs.getInt("course_cost"));
             par.setCoursePlace(rs.getString("course_place"));
             return par;
@@ -138,7 +137,7 @@ public class MySQLDAO {
             teacher.setmTeacherIdNumber(rs.getString("tea_id_number"));
             teacher.setmTeacherContact(rs.getString("tea_contact"));
             teacher.setmTeacherIntroduction(rs.getString("tea_introduction"));
-            teacher.setmCourseField(Constants.CourseField.valueOf((rs.getString("edu_field"))));
+            teacher.setmCourseField(Course.CourseField.valueOf((rs.getString("edu_field"))));
             teacher.setmEduYear(rs.getInt("edu_year"));
             teacher.setmEduAge(rs.getInt("edu_age"));
             teacher.setmQualified(rs.getString("qualified").equals("YES"));
@@ -172,7 +171,7 @@ public class MySQLDAO {
         return null;
     }
 
-    public List getCourseInfo(Constants.CourseField field, String place, int age, int minPrice, int maxPrice) {
+    public List getCourseInfo(Course.CourseField field, String place, int age, int minPrice, int maxPrice) {
         String sql = "SELECT * FROM course WHERE course_field = ? AND place = ? AND age_recommend = ? " +
                 "AND price >= ? AND price <= ?";
 
@@ -198,7 +197,7 @@ public class MySQLDAO {
                 course.setTeachId(rs.getString("teach_id"));
                 course.setAgeRecommend(rs.getInt("age_recommend"));
                 course.setPrice(rs.getInt("price"));
-                course.setCourseField(Constants.CourseField.valueOf(rs.getString("course_field")));
+                course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
                 course.setHomeWork(rs.getString("homework"));
 
                 courses.add(course);
