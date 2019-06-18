@@ -148,7 +148,7 @@ public class MainWindow {
                         TeacherAgeField.setText(String.valueOf(((Teacher) User).getTeaAge()));
                         TeacherIDField.setText(((Teacher) User).getmTeacherIdNumber());
                         TeacherCourseComboBox.setSelectedIndex(((Teacher) User).getmCourseField().ordinal());
-                        TeacherGenderComboBox.setSelectedIndex(((Teacher) User).getmTeacherGender().toString().equals("MALE") ? 0 : 1);
+                        TeacherGenderComboBox.setSelectedIndex(((Teacher) User).getmTeacherGender().ordinal());
                         break;
                     case PARENT:
                         ChildBirField.setText(((Parent) User).getChildBirthday());
@@ -156,7 +156,7 @@ public class MainWindow {
                         ChildNameField.setText(((Parent) User).getChildName());
                         ParentNameField.setText(((Parent) User).getParentName());
                         ParentContactField.setText(((Parent) User).getCoursePlace());
-                        ChildGenderComboBox.setSelectedIndex(((Parent) User).getChildGender().toString().equals("MALE") ? 0 : 1);
+                        ChildGenderComboBox.setSelectedIndex(((Parent) User).getChildGender().ordinal());
                         break;
                 }
 
@@ -265,7 +265,7 @@ public class MainWindow {
                         ((Teacher) User).setTeaAge(TeacherAgeField.getText());
                         ((Teacher) User).setmTeacherIdNumber(TeacherIDField.getText());
                         ((Teacher) User).setmCourseField(Constants.CourseField.valueOf(TeacherCourseComboBox.getSelectedItem().toString()));
-                        ((Teacher) User).setmTeacherGender(TeacherGenderComboBox.getSelectedItem().equals("男") ? Account.Gender.MALE: Account.Gender.FEMALE);
+                        ((Teacher) User).setmTeacherGender(Account.Gender.valueOf(TeacherGenderComboBox.getSelectedItem().toString()));
                         MySQLDAO.getInstance().updateTeacher((Teacher) User);
                         break;
                     case PARENT:
@@ -273,7 +273,7 @@ public class MainWindow {
                         ((Parent) User).setChildName(ChildNameField.getText());
                         ((Parent) User).setParentName(ParentNameField.getText());
                         ((Parent) User).setParentContact(ParentContactField.getText());
-                        ((Parent)User).setChildGender(ChildGenderComboBox.getSelectedItem().equals("男") ? Account.Gender.MALE: Account.Gender.FEMALE);
+                        ((Parent) User).setChildGender(Account.Gender.valueOf(ChildGenderComboBox.getSelectedItem().toString()));
                         MySQLDAO.getInstance().updateParent((Parent) User);
                         break;
                 }
