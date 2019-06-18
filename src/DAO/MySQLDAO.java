@@ -37,6 +37,8 @@ public class MySQLDAO {
 
     }
 
+
+    //数据库的查找操作
     public Account getAccountByUsername(String username) {
         String sql = "SELECT * FROM account where user_name = '" + username + "';";
         try {
@@ -170,6 +172,46 @@ public class MySQLDAO {
         return null;
     }
 
+    public List getCourseInfo(Constants.CourseField field, String place, int age, int minPrice, int maxPrice) {
+        String sql = "SELECT * FROM course WHERE course_field = ? AND place = ? AND age_recommend = ? " +
+                "AND price >= ? AND price <= ?";
+
+        List<Course> courses = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setString(1, field.toString());
+            statement.setString(2, place);
+            statement.setInt(3, age);
+            statement.setInt(4, minPrice);
+            statement.setInt(5, maxPrice);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Course course = new Course();
+                course.setCourseId(rs.getString("course_id"));
+                course.setCourseName(rs.getString("course_name"));
+                course.setTime(rs.getString("time"));
+                course.setPlace(rs.getString("place"));
+                course.setContent(rs.getString("content"));
+                course.setTeachId(rs.getString("teach_id"));
+                course.setAgeRecommend(rs.getInt("age_recommend"));
+                course.setPrice(rs.getInt("price"));
+                course.setCourseField(Constants.CourseField.valueOf(rs.getString("course_field")));
+                course.setHomeWork(rs.getString("homework"));
+
+                courses.add(course);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return courses;
+    }
+
+
+    //数据库的插入操作
     public void insertAccount(Account account) {
         String sql = "INSERT INTO account (user_name, password, tel, email, user_type) " +
                 "VALUES (?, ?, ?, ?, ?)";
@@ -287,6 +329,8 @@ public class MySQLDAO {
 
     }
 
+
+    //数据库的更新操作
     public void updateAccount(Account account) {
         try {
             String sql = "UPDATE account SET password = ?, tel = ?, email = ? WHERE user_name = ?";
@@ -376,41 +420,86 @@ public class MySQLDAO {
     }
 
 
-    public List getCourseInfo(Constants.CourseField field, String place, int age, int minPrice, int maxPrice) {
-        String sql = "SELECT * FROM course WHERE course_field = ? AND place = ? AND age_recommend = ? " +
-                "AND price >= ? AND price <= ?";
-
-        List<Course> courses = new ArrayList<>();
+    //数据库的删除操作
+    /*public void insertAccount(Account account) {
+        String sql = "INSERT INTO account (user_name, password, tel, email, user_type) " +
+                "VALUES (?, ?, ?, ?, ?)";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, account.getUsername());
+            statement.setString(2, account.getPassword());
+            statement.setString(3, account.getTel());
+            statement.setString(4, account.getEmail());
+            statement.setString(5, account.getUserType().toString());
+            statement.executeUpdate();
 
-            statement.setString(1, field.toString());
-            statement.setString(2, place);
-            statement.setInt(3, age);
-            statement.setInt(4, minPrice);
-            statement.setInt(5, maxPrice);
-
-            ResultSet rs = statement.executeQuery();
-
-            while (rs.next()) {
-                Course course = new Course();
-                course.setCourseId(rs.getString("course_id"));
-                course.setCourseName(rs.getString("course_name"));
-                course.setTime(rs.getString("time"));
-                course.setPlace(rs.getString("place"));
-                course.setContent(rs.getString("content"));
-                course.setTeachId(rs.getString("teach_id"));
-                course.setAgeRecommend(rs.getInt("age_recommend"));
-                course.setPrice(rs.getInt("price"));
-                course.setCourseField(Constants.CourseField.valueOf(rs.getString("course_field")));
-                course.setHomeWork(rs.getString("homework"));
-
-                courses.add(course);
-            }
+            System.out.println("插入成功！");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }*/
+    public void deleteAccount (Account account) {
+        String sql = "DELETE FROM account WHERE user_name = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,account.getUsername());
+            statement.executeUpdate();
 
-        return courses;
+            System.out.println("删除成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteParent (Parent parent) {
+        String sql = "DELETE FROM parent WHERE user_name = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,parent.getUsername());
+            statement.executeUpdate();
+
+            System.out.println("删除成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteTeacher (Teacher teacher) {
+        String sql = "DELETE FROM teacher WHERE user_name = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,teacher.getUsername());
+            statement.executeUpdate();
+
+            System.out.println("删除成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteEduOrg (EduOrg eduOrg) {
+        String sql = "DELETE FROM eduorg WHERE user_name = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,eduOrg.getUsername());
+            statement.executeUpdate();
+
+            System.out.println("删除成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteCourse (Course course) {
+        String sql = "DELETE FROM course WHERE user_name = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,course.getCourseId());
+            statement.executeUpdate();
+
+            System.out.println("删除成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

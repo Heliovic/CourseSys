@@ -396,6 +396,7 @@ public class MainWindow {
             case SYSADMIN:
                 break;
             case EDUORG:
+                CourseInsertButton.setVisible(true);
                 // 信息
                 OrgCodeLabel.setVisible(true);
                 OrgCodeField.setVisible(true);
@@ -411,6 +412,7 @@ public class MainWindow {
                 OrgIntroductionField.setVisible(true);
                 break;
             case TEACHER:
+                CourseInsertButton.setVisible(true);
                 // 信息
                 TeacherNameField.setVisible(true);
                 TeacherGenderComboBox.setVisible(true);
@@ -433,7 +435,6 @@ public class MainWindow {
                 break;
             case PARENT:
                 CourseQueryButton.setVisible(true);
-                CourseInsertButton.setVisible(true);
                 // 信息
                 ChildNameLabel.setVisible(true);
                 ChildAgeLabel.setVisible(true);
