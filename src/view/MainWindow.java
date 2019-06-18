@@ -471,7 +471,6 @@ public class MainWindow {
                 break;
             case PARENT:
                 CourseQueryButton.setVisible(true);
-
                 // 信息
                 ChildNameLabel.setVisible(true);
                 ChildAgeLabel.setVisible(true);
