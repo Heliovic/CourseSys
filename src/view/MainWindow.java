@@ -132,7 +132,7 @@ public class MainWindow {
                     case EDUORG:
                         OrgCodeField.setText(((EduOrg) User).getOrgCode());
                         OrgAddressField.setText(((EduOrg) User).getOrgAddress());
-                        OrgEduFieldField.setText(((EduOrg) User).getOrgEduField().toString());
+                        OrgCourseComboBox.setSelectedIndex(((EduOrg) User).getOrgEduField().hashCode());
                         OrgEduAgeField.setText(String.valueOf(((EduOrg) User).getOrgEduAge()));
                         OrgContactField.setText(((EduOrg) User).getOrgContact());
                         OrgIntroductionField.setText(((EduOrg) User).getOrgIntroduction());
@@ -145,8 +145,8 @@ public class MainWindow {
                         TeacherIntroductionField.setText(((Teacher) User).getmTeacherIntroduction());
                         TeacherAgeField.setText(String.valueOf(((Teacher) User).getTeaAge()));
                         TeacherIDField.setText(((Teacher) User).getmTeacherIdNumber());
-                        TeacherEduFieldField.setText(((Teacher) User).getmCourseField().toString());
-                        TeacherGenderField.setText(((Teacher) User).getmTeacherGender().toString());
+                        TeacherCourseComboBox.setSelectedIndex(((Teacher) User).getmCourseField().hashCode());
+                        TeacherGenderComboBox.setSelectedIndex(((Teacher) User).getmTeacherGender().hashCode());
                         break;
                     case PARENT:
                         ChildBirField.setText(((Parent) User).getChildBirthday());
@@ -154,7 +154,7 @@ public class MainWindow {
                         ChildNameField.setText(((Parent) User).getChildName());
                         ParentNameField.setText(((Parent) User).getParentName());
                         ParentContactField.setText(((Parent) User).getCoursePlace());
-                        ChildGenderField.setText(((Parent) User).getChildGender().toString());
+                        ChildGenderComboBox.setSelectedIndex(((Parent) User).getChildGender().hashCode());
                         break;
                 }
 
@@ -166,7 +166,7 @@ public class MainWindow {
                         break;
                     case EDUORG:
                         OrgAddressField.setEditable(false);
-                        OrgEduFieldField.setEditable(false);
+                        OrgCourseComboBox.setEnabled(false);
                         OrgEduAgeField.setEditable(false);
                         OrgContactField.setEditable(false);
                         OrgIntroductionField.setEditable(false);
@@ -178,8 +178,8 @@ public class MainWindow {
                         TeacherContactField.setEditable(false);
                         TeacherIntroductionField.setEditable(false);
                         TeacherAgeField.setEditable(false);
-                        TeacherEduFieldField.setEditable(false);
-                        TeacherGenderField.setEditable(false);
+                        TeacherCourseComboBox.setEnabled(false);
+                        TeacherGenderComboBox.setEnabled(false);
                         break;
                     case PARENT:
                         ChildBirField.setEditable(false);
@@ -187,7 +187,7 @@ public class MainWindow {
                         ChildNameField.setEditable(false);
                         ParentNameField.setEditable(false);
                         ParentContactField.setEditable(false);
-                        ChildGenderField.setEditable(false);
+                        ChildGenderComboBox.setEnabled(false);
                         break;
                 }
             }
@@ -206,7 +206,7 @@ public class MainWindow {
                         break;
                     case EDUORG:
                         OrgAddressField.setEditable(true);
-                        OrgEduFieldField.setEditable(true);
+                        OrgCourseComboBox.setEnabled(true);
                         OrgEduAgeField.setEditable(true);
                         OrgContactField.setEditable(true);
                         OrgIntroductionField.setEditable(true);
@@ -218,8 +218,8 @@ public class MainWindow {
                         TeacherContactField.setEditable(true);
                         TeacherIntroductionField.setEditable(true);
                         TeacherAgeField.setEditable(true);
-                        TeacherEduFieldField.setEditable(true);
-                        TeacherGenderField.setEditable(true);
+                        TeacherCourseComboBox.setEnabled(true);
+                        TeacherGenderComboBox.setEnabled(true);
                         break;
                     case PARENT:
                         ChildBirField.setEditable(true);
@@ -227,7 +227,7 @@ public class MainWindow {
                         ChildNameField.setEditable(true);
                         ParentNameField.setEditable(true);
                         ParentContactField.setEditable(true);
-                        ChildGenderField.setEditable(true);
+                        ChildGenderComboBox.setEnabled(true);
                         break;
                 }
             }
@@ -249,7 +249,7 @@ public class MainWindow {
                     case EDUORG:
                         ((EduOrg) User).setOrgCode(OrgCodeField.getText());
                         ((EduOrg) User).setOrgAddress(OrgAddressField.getText());
-                        //((EduOrg)User).setOrgEduField(OrgEduFieldField.getText());
+                        //((EduOrg) User).setOrgEduField(Constants.CourseField.valueOf(OrgCourseComboBox.getSelectedIndex()));
                         ((EduOrg) User).setOrgEduAge(Integer.parseInt(OrgEduAgeField.getText()));
                         ((EduOrg) User).setOrgContact(OrgContactField.getText());
                         ((EduOrg) User).setOrgIntroduction(OrgIntroductionField.getText());
@@ -286,7 +286,7 @@ public class MainWindow {
                         break;
                     case EDUORG:
                         OrgAddressField.setEditable(false);
-                        OrgEduFieldField.setEditable(false);
+                        OrgCourseComboBox.setEnabled(false);
                         OrgEduAgeField.setEditable(false);
                         OrgContactField.setEditable(false);
                         OrgIntroductionField.setEditable(false);
@@ -298,8 +298,8 @@ public class MainWindow {
                         TeacherContactField.setEditable(false);
                         TeacherIntroductionField.setEditable(false);
                         TeacherAgeField.setEditable(false);
-                        TeacherEduFieldField.setEditable(false);
-                        TeacherGenderField.setEditable(false);
+                        TeacherCourseComboBox.setEnabled(false);
+                        TeacherGenderComboBox.setEnabled(false);
                         break;
                     case PARENT:
                         ChildBirField.setEditable(false);
@@ -307,7 +307,7 @@ public class MainWindow {
                         ChildNameField.setEditable(false);
                         ParentNameField.setEditable(false);
                         ParentContactField.setEditable(false);
-                        ChildGenderField.setEditable(false);
+                        ChildGenderComboBox.setEnabled(false);
                         break;
                 }
             }
