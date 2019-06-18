@@ -66,7 +66,7 @@ public class MainWindow {
     private JTextField OrgCodeField;
     private JLabel OrgAddressLabel;
     private JTextField OrgAddressField;
-    private JLabel OrgEduFieldLabel;
+    private JLabel OrgCourseLabel;
     private JTextField OrgEduFieldField;
     private JLabel OrgEduAgeLabel;
     private JFormattedTextField OrgEduAgeField;
@@ -81,7 +81,7 @@ public class MainWindow {
     private JTextField TeacherIntroductionField;
     private JLabel TeacherIntroductionLabel;
     private JLabel TeacherEduAgeLabel;
-    private JLabel TeacherEduFieldLabel;
+    private JLabel TeacherCourseLabel;
     private JLabel TeacherAgeLabel;
     private JLabel TeacherNameLabel;
     private JLabel TeacherGenderLabel;
@@ -97,6 +97,10 @@ public class MainWindow {
     private JFormattedTextField ChildAgeField;
     private JFormattedTextField TeacherGenderField;
     private JFormattedTextField ChildGenderField;
+    private JComboBox TeacherGenderComboBox;
+    private JComboBox ChildGenderComboBox;
+    private JComboBox TeacherCourseComboBox;
+    private JComboBox OrgCourseComboBox;
     private CardLayout cl;
 
     public MainWindow(Account user) {
@@ -133,7 +137,7 @@ public class MainWindow {
                 OrgCodeField.setVisible(true);
                 OrgAddressLabel.setVisible(true);
                 OrgAddressField.setVisible(true);
-                OrgEduFieldLabel.setVisible(true);
+                OrgCourseLabel.setVisible(true);
                 OrgEduFieldField.setVisible(true);
                 OrgEduAgeLabel.setVisible(true);
                 OrgEduAgeField.setVisible(true);
@@ -152,7 +156,7 @@ public class MainWindow {
                 TeacherIntroductionField.setVisible(true);
                 TeacherIntroductionLabel.setVisible(true);
                 TeacherEduAgeLabel.setVisible(true);
-                TeacherEduFieldLabel.setVisible(true);
+                TeacherCourseLabel.setVisible(true);
                 TeacherAgeLabel.setVisible(true);
                 TeacherNameLabel.setVisible(true);
                 TeacherGenderLabel.setVisible(true);
