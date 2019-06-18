@@ -6,10 +6,9 @@ import model.account.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
 
 public class LogWindow {
-    private JPanel MainPanel;
+    private JPanel LogWindowPanel;
     private JTextField UserField;
     private JPasswordField passwordField;
     private JButton LogButton;
@@ -92,7 +91,7 @@ public class LogWindow {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("课程中介系统");
-        frame.setContentPane(new LogWindow().MainPanel);
+        frame.setContentPane(new LogWindow().LogWindowPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

@@ -22,8 +22,8 @@
           <component id="1cbd0" class="javax.swing.JButton" binding="NotificationButton">
             <constraints/>
             <properties>
-              <label value="通知公告"/>
-              <text value="通知公告"/>
+              <label value="新闻公告"/>
+              <text value="新闻公告"/>
             </properties>
           </component>
           <component id="45500" class="javax.swing.JButton" binding="AccountInfoButton">
