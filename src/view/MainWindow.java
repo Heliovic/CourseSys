@@ -238,6 +238,159 @@ public class MainWindow {
                         ChildGenderField.setText(((Parent) User).getChildGender().toString());
                         break;
                 }
+
+                // 各个输入框设为不可编辑
+                TelephoneField.setEditable(false);
+                EmailField.setEditable(false);
+                switch (User.getUserType()) {
+                    case SYSADMIN:
+                        break;
+                    case EDUORG:
+                        OrgAddressField.setEditable(false);
+                        OrgEduFieldField.setEditable(false);
+                        OrgEduAgeField.setEditable(false);
+                        OrgContactField.setEditable(false);
+                        OrgIntroductionField.setEditable(false);
+                        break;
+                    case TEACHER:
+                        TeacherNameField.setEditable(false);
+                        TeacherYearLabelField.setEditable(false);
+                        TeacherEduAgeField.setEditable(false);
+                        TeacherContactField.setEditable(false);
+                        TeacherIntroductionField.setEditable(false);
+                        TeacherAgeField.setEditable(false);
+                        TeacherEduFieldField.setEditable(false);
+                        TeacherGenderField.setEditable(false);
+                        break;
+                    case PARENT:
+                        ChildBirField.setEditable(false);
+                        ChildAgeField.setEditable(false);
+                        ChildNameField.setEditable(false);
+                        ParentNameField.setEditable(false);
+                        ParentContactField.setEditable(false);
+                        ChildGenderField.setEditable(false);
+                        break;
+                }
+            }
+        });
+        ChangeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ChangeButton.setEnabled(false);
+                SaveButton.setEnabled(true);
+
+                // 各个输入框设为可编辑
+                TelephoneField.setEditable(true);
+                EmailField.setEditable(true);
+                switch (User.getUserType()) {
+                    case SYSADMIN:
+                        break;
+                    case EDUORG:
+                        OrgAddressField.setEditable(true);
+                        OrgEduFieldField.setEditable(true);
+                        OrgEduAgeField.setEditable(true);
+                        OrgContactField.setEditable(true);
+                        OrgIntroductionField.setEditable(true);
+                        break;
+                    case TEACHER:
+                        TeacherNameField.setEditable(true);
+                        TeacherYearLabelField.setEditable(true);
+                        TeacherEduAgeField.setEditable(true);
+                        TeacherContactField.setEditable(true);
+                        TeacherIntroductionField.setEditable(true);
+                        TeacherAgeField.setEditable(true);
+                        TeacherEduFieldField.setEditable(true);
+                        TeacherGenderField.setEditable(true);
+                        break;
+                    case PARENT:
+                        ChildBirField.setEditable(true);
+                        ChildAgeField.setEditable(true);
+                        ChildNameField.setEditable(true);
+                        ParentNameField.setEditable(true);
+                        ParentContactField.setEditable(true);
+                        ChildGenderField.setEditable(true);
+                        break;
+                }
+            }
+        });
+        SaveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ChangeButton.setEnabled(true);
+                SaveButton.setEnabled(false);
+
+                // 送出数据
+                User.setUsername(UserField.getText());
+                User.setPassword(new String(PasswdField.getPassword()));
+                User.setTel(TelephoneField.getText());
+                User.setEmail(EmailField.getText());
+                switch (User.getUserType()) {
+                    case SYSADMIN:
+                        break;
+                    case EDUORG:
+                        ((EduOrg) User).setOrgCode(OrgCodeField.getText());
+                        ((EduOrg) User).setOrgAddress(OrgAddressField.getText());
+                        //((EduOrg)User).setOrgEduField(OrgEduFieldField.getText());
+                        ((EduOrg) User).setOrgEduAge(Integer.parseInt(OrgEduAgeField.getText()));
+                        ((EduOrg) User).setOrgContact(OrgContactField.getText());
+                        ((EduOrg) User).setOrgIntroduction(OrgIntroductionField.getText());
+                        MySQLDAO.getInstance().updateEduOrg((EduOrg) User);
+                        break;
+                    case TEACHER:
+                        ((Teacher) User).setmTeacherName(TeacherNameField.getText());
+                        ((Teacher) User).setmEduYear(Integer.parseInt(TeacherYearLabelField.getText()));
+                        ((Teacher) User).setmEduAge(Integer.parseInt(TeacherEduAgeField.getText()));
+                        ((Teacher) User).setmTeacherContact(TeacherContactField.getText());
+                        ((Teacher) User).setmTeacherIntroduction(TeacherIntroductionField.getText());
+                        ((Teacher) User).setTeaAge(TeacherAgeField.getText());
+                        ((Teacher) User).setmTeacherIdNumber(TeacherIDField.getText());
+                        //((Teacher)User).setmCourseField(TeacherEduFieldField.getText());
+                        //((Teacher)User).setmTeacherGender(TeacherGenderField.getText());
+                        MySQLDAO.getInstance().updateTeacher((Teacher) User);
+                        break;
+                    case PARENT:
+                        ((Parent) User).setChildBirthday(ChildBirField.getText());
+                        ((Parent) User).setChildAge(ChildAgeField.getText());
+                        ((Parent) User).setChildName(ChildNameField.getText());
+                        ((Parent) User).setParentName(ParentNameField.getText());
+                        ((Parent) User).setParentContact(ParentContactField.getText());
+                        //((Parent)User).setChildGender(ChildGenderField.getText());
+                        MySQLDAO.getInstance().updateParent((Parent) User);
+                        break;
+                }
+
+                // 各个输入框设为不可编辑
+                TelephoneField.setEditable(false);
+                EmailField.setEditable(false);
+                switch (User.getUserType()) {
+                    case SYSADMIN:
+                        break;
+                    case EDUORG:
+                        OrgAddressField.setEditable(false);
+                        OrgEduFieldField.setEditable(false);
+                        OrgEduAgeField.setEditable(false);
+                        OrgContactField.setEditable(false);
+                        OrgIntroductionField.setEditable(false);
+                        break;
+                    case TEACHER:
+                        TeacherNameField.setEditable(false);
+                        TeacherYearLabelField.setEditable(false);
+                        TeacherEduAgeField.setEditable(false);
+                        TeacherContactField.setEditable(false);
+                        TeacherIntroductionField.setEditable(false);
+                        TeacherAgeField.setEditable(false);
+                        TeacherEduFieldField.setEditable(false);
+                        TeacherGenderField.setEditable(false);
+                        break;
+                    case PARENT:
+                        ChildBirField.setEditable(false);
+                        ChildAgeField.setEditable(false);
+                        ChildNameField.setEditable(false);
+                        ParentNameField.setEditable(false);
+                        ParentContactField.setEditable(false);
+                        ChildGenderField.setEditable(false);
+                        break;
+                }
             }
         });
         CourseListButton.addActionListener(new ActionListener() {
@@ -285,18 +438,6 @@ public class MainWindow {
                 }
                 DefaultTableModel model = new DefaultTableModel(rowDataSet, names);
                 mCourseQueryTable.setModel(model);
-            }
-        });
-        ChangeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SaveButton.setEnabled(true);
-            }
-        });
-        SaveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
             }
         });
     }
