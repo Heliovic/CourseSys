@@ -134,7 +134,7 @@ public class MainWindow {
                     case EDUORG:
                         OrgCodeField.setText(((EduOrg) User).getOrgCode());
                         OrgAddressField.setText(((EduOrg) User).getOrgAddress());
-                        OrgCourseComboBox.setSelectedIndex(((EduOrg) User).getOrgEduField().hashCode());
+                        OrgCourseComboBox.setSelectedIndex(((EduOrg) User).getOrgEduField().ordinal());
                         OrgEduAgeField.setText(String.valueOf(((EduOrg) User).getOrgEduAge()));
                         OrgContactField.setText(((EduOrg) User).getOrgContact());
                         OrgIntroductionField.setText(((EduOrg) User).getOrgIntroduction());
@@ -147,8 +147,8 @@ public class MainWindow {
                         TeacherIntroductionField.setText(((Teacher) User).getmTeacherIntroduction());
                         TeacherAgeField.setText(String.valueOf(((Teacher) User).getTeaAge()));
                         TeacherIDField.setText(((Teacher) User).getmTeacherIdNumber());
-                        TeacherCourseComboBox.setSelectedIndex(((Teacher) User).getmCourseField().hashCode());
-                        TeacherGenderComboBox.setSelectedIndex(((Teacher) User).getmTeacherGender().hashCode());
+                        TeacherCourseComboBox.setSelectedIndex(((Teacher) User).getmCourseField().ordinal());
+                        TeacherGenderComboBox.setSelectedIndex(((Teacher) User).getmTeacherGender().toString().equals("MALE") ? 0 : 1);
                         break;
                     case PARENT:
                         ChildBirField.setText(((Parent) User).getChildBirthday());
@@ -156,7 +156,7 @@ public class MainWindow {
                         ChildNameField.setText(((Parent) User).getChildName());
                         ParentNameField.setText(((Parent) User).getParentName());
                         ParentContactField.setText(((Parent) User).getCoursePlace());
-                        ChildGenderComboBox.setSelectedIndex(((Parent) User).getChildGender().hashCode());
+                        ChildGenderComboBox.setSelectedIndex(((Parent) User).getChildGender().toString().equals("MALE") ? 0 : 1);
                         break;
                 }
 
@@ -225,7 +225,6 @@ public class MainWindow {
                         break;
                     case PARENT:
                         ChildBirField.setEditable(true);
-                        ChildAgeField.setEditable(true);
                         ChildNameField.setEditable(true);
                         ParentNameField.setEditable(true);
                         ParentContactField.setEditable(true);
@@ -251,7 +250,7 @@ public class MainWindow {
                     case EDUORG:
                         ((EduOrg) User).setOrgCode(OrgCodeField.getText());
                         ((EduOrg) User).setOrgAddress(OrgAddressField.getText());
-                        //((EduOrg) User).setOrgEduField(Constants.CourseField.valueOf(OrgCourseComboBox.getSelectedIndex()));
+                        ((EduOrg) User).setOrgEduField(Constants.CourseField.valueOf(OrgCourseComboBox.getSelectedItem().toString()));
                         ((EduOrg) User).setOrgEduAge(Integer.parseInt(OrgEduAgeField.getText()));
                         ((EduOrg) User).setOrgContact(OrgContactField.getText());
                         ((EduOrg) User).setOrgIntroduction(OrgIntroductionField.getText());
@@ -265,17 +264,16 @@ public class MainWindow {
                         ((Teacher) User).setmTeacherIntroduction(TeacherIntroductionField.getText());
                         ((Teacher) User).setTeaAge(TeacherAgeField.getText());
                         ((Teacher) User).setmTeacherIdNumber(TeacherIDField.getText());
-                        //((Teacher)User).setmCourseField(TeacherEduFieldField.getText());
-                        //((Teacher)User).setmTeacherGender(TeacherGenderField.getText());
+                        ((Teacher) User).setmCourseField(Constants.CourseField.valueOf(TeacherCourseComboBox.getSelectedItem().toString()));
+                        ((Teacher) User).setmTeacherGender(TeacherGenderComboBox.getSelectedItem().equals("男") ? Account.Gender.MALE: Account.Gender.FEMALE);
                         MySQLDAO.getInstance().updateTeacher((Teacher) User);
                         break;
                     case PARENT:
                         ((Parent) User).setChildBirthday(ChildBirField.getText());
-                        ((Parent) User).setChildAge(ChildAgeField.getText());
                         ((Parent) User).setChildName(ChildNameField.getText());
                         ((Parent) User).setParentName(ParentNameField.getText());
                         ((Parent) User).setParentContact(ParentContactField.getText());
-                        //((Parent)User).setChildGender(ChildGenderField.getText());
+                        ((Parent)User).setChildGender(ChildGenderComboBox.getSelectedItem().equals("男") ? Account.Gender.MALE: Account.Gender.FEMALE);
                         MySQLDAO.getInstance().updateParent((Parent) User);
                         break;
                 }
@@ -435,7 +433,7 @@ public class MainWindow {
                 break;
             case PARENT:
                 CourseQueryButton.setVisible(true);
-
+                CourseInsertButton.setVisible(true);
                 // 信息
                 ChildNameLabel.setVisible(true);
                 ChildAgeLabel.setVisible(true);
