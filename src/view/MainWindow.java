@@ -29,7 +29,7 @@ public class MainWindow {
     private JButton AccountInfoButton;
     private JButton CourseListButton;
     private JButton CourseQueryButton;
-    private JButton button5Button;
+    private JButton CourseSearch;
     private JButton button6Button;
     private JPanel NotificationPanel;
     private JPanel AccountInfoPanel;
@@ -97,6 +97,8 @@ public class MainWindow {
     private JFormattedTextField ChildAgeField;
     private JFormattedTextField TeacherGenderField;
     private JFormattedTextField ChildGenderField;
+    private JPanel CourseInsertPanel;
+    private JButton CourseInsertButton;
     private JComboBox TeacherGenderComboBox;
     private JComboBox ChildGenderComboBox;
     private JComboBox TeacherCourseComboBox;
@@ -324,6 +326,12 @@ public class MainWindow {
                 cl.show(CardPanel, "CourseQuery");
             }
         });
+        CourseInsertButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cl.show(CardPanel, "CourseInsert");
+            }
+        });
         mCourseQueryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -354,11 +362,13 @@ public class MainWindow {
                     rowData.add(course.getTeachId());
                     rowData.add(course.getContent());
                     rowDataSet.add(rowData);
+                    MySQLDAO.getInstance().insertCourse(course);
                 }
                 DefaultTableModel model = new DefaultTableModel(rowDataSet, names);
                 mCourseQueryTable.setModel(model);
             }
         });
+
     }
 
     private void initUI() {

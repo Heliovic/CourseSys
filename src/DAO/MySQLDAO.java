@@ -263,6 +263,30 @@ public class MySQLDAO {
 
     }
 
+    public void insertCourse (Course course) {
+        String sql = "INSERT INTO course (course_id, course_name, time, place, content, teach_id, age_recommend, price, course_field,"+
+                " homework) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,course.getCourseId());
+            statement.setString(2,course.getCourseName());
+            statement.setString(3,course.getTime());
+            statement.setString(4, course.getPlace());
+            statement.setString(5,course.getContent());
+            statement.setString(6,course.getTeachId());
+            statement.setInt(7,course.getAgeRecommend());
+            statement.setInt(8,course.getPrice());
+            statement.setString(9,course.getCourseField().toString());
+            statement.setString(10,course.getHomeWork());
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void updateAccount(Account account) {
         try {
             String sql = "UPDATE account SET password = ?, tel = ?, email = ? WHERE user_name = ?";
