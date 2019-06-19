@@ -3,6 +3,7 @@ package view;
 import DAO.MySQLDAO;
 import model.Course;
 import model.News;
+import model.Purchase;
 import model.account.Account;
 import model.account.EduOrg;
 import model.account.Parent;
@@ -22,12 +23,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 public class MainWindow {
     private Account User;
     private List<News> newsList;
+    private int currentRow;
 
     private JPanel MainWindowPanel;
     private JPanel ButtonPanel;
@@ -137,13 +140,13 @@ public class MainWindow {
     private JButton mRefreshCourseButton;
     private JButton mEditSaveButton;
     private JButton mDeleteCourseButton;
+    private JPanel ShoppingCartPanel;
+    private JButton mAddToCartButton;
     private CardLayout cl;
 
     public MainWindow(Account user) {
         User = user;
         newsList = MySQLDAO.getInstance().getNewsInfo(user);
-
-        initUI();
 
         NotificationButton.addActionListener(new ActionListener() {
             @Override
@@ -185,9 +188,26 @@ public class MainWindow {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                currentRow = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
                 if (e.getClickCount() == 2) {
-                    int row = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
-                    new NewsBulletinWindow(User, newsList.get(row));
+                    new NewsBulletinWindow(User, newsList.get(currentRow));
+                }
+            }
+        });
+        AddButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        DeleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (User.getUserType() == Account.UserType.SYSADMIN || User.getUsername() == newsList.get(currentRow).getmPublisher()) {
+                    MySQLDAO.getInstance().deleteNews(newsList.get(currentRow));
+                    NotificationButton.doClick();
+                } else {
+                    JOptionPane.showMessageDialog(null, "无权限！");
                 }
             }
         });
@@ -475,9 +495,11 @@ public class MainWindow {
                 cl.show(CardPanel, "CourseList");
 
                 if (User.getUserType() == Account.UserType.PARENT) {
-                    mEditSaveButton.setEnabled(false);
+                    mEditSaveButton.setVisible(false);
+                    mDeleteCourseButton.setVisible(false);
                 } else {
-                    mEditSaveButton.setEnabled(true);
+                    mEditSaveButton.setVisible(true);
+                    mDeleteCourseButton.setVisible(true);
                 }
             }
         });
@@ -532,7 +554,11 @@ public class MainWindow {
                     rowData.add(course.getHomeWork());
                     rowDataSet.add(rowData);
                 }
-                DefaultTableModel model = new DefaultTableModel(rowDataSet, names);
+                DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
                 mCourseQueryTable.setModel(model);
             }
         });
@@ -558,46 +584,95 @@ public class MainWindow {
         mRefreshCourseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                List<Course> courses = MySQLDAO.getInstance().getTeacherCourseList(User.getUsername());
-                Vector rowDataSet = new Vector();
-                Vector names = new Vector();
-                names.add("课程ID");
-                names.add("课程名称");
-                names.add("上课时间");
-                names.add("上课地点");
-                names.add("课程内容");
-                names.add("教师ID");
-                names.add("推荐年龄");
-                names.add("价格");
-                names.add("课程类别");
-                names.add("作业");
-                for (Course course : courses){
-                    Vector rowData = new Vector();
-                    rowData.add(course.getCourseId());
-                    rowData.add(course.getCourseName());
-                    rowData.add(course.getTime());
-                    rowData.add(course.getPlace());
-                    rowData.add(course.getContent());
-                    rowData.add(course.getTeachId());
-                    rowData.add(course.getAgeRecommend());
-                    rowData.add(course.getPrice());
-                    rowData.add(course.getCourseField().toString());
-                    rowData.add(course.getHomeWork());
-                    rowDataSet.add(rowData);
-                }
-                DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
-                    public boolean isCellEditable(int row, int column) {
-                        if (column == 0 || column == 5)
-                            return false;
-                        else return true;
-                    }
-                };
-                mCourseTable.setModel(model);
 
-                JComboBox box = Constants.getCourseFieldCombo();
-                TableColumn column = mCourseTable.getColumn("课程类别");
-                TableCellEditor editor = new DefaultCellEditor(box);
-                column.setCellEditor(editor);
+                if (User.getUserType() == Account.UserType.PARENT) {
+                    List<Purchase> p = MySQLDAO.getInstance().getPurchasedCourse(User.getUsername());
+                    List<Course> courses = new ArrayList<>();
+                    for (int i = 0; i < p.size(); i++) {
+                        courses.add(MySQLDAO.getInstance().getCourseById(p.get(i).getmCourseId()));
+                    }
+                    Vector rowDataSet = new Vector();
+                    Vector names = new Vector();
+                    names.add("课程ID");
+                    names.add("课程名称");
+                    names.add("上课时间");
+                    names.add("上课地点");
+                    names.add("课程内容");
+                    names.add("教师ID");
+                    names.add("推荐年龄");
+                    names.add("价格");
+                    names.add("课程类别");
+                    names.add("作业");
+                    for (Course course : courses){
+                        Vector rowData = new Vector();
+                        rowData.add(course.getCourseId());
+                        rowData.add(course.getCourseName());
+                        rowData.add(course.getTime());
+                        rowData.add(course.getPlace());
+                        rowData.add(course.getContent());
+                        rowData.add(course.getTeachId());
+                        rowData.add(course.getAgeRecommend());
+                        rowData.add(course.getPrice());
+                        rowData.add(course.getCourseField().toString());
+                        rowData.add(course.getHomeWork());
+                        rowDataSet.add(rowData);
+                    }
+                    DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    mCourseTable.setModel(model);
+
+                    JComboBox box = Constants.getCourseFieldCombo();
+                    TableColumn column = mCourseTable.getColumn("课程类别");
+                    TableCellEditor editor = new DefaultCellEditor(box);
+                    column.setCellEditor(editor);
+                } else {
+                    List<Course> courses = MySQLDAO.getInstance().getTeacherCourseList(User.getUsername());
+                    Vector rowDataSet = new Vector();
+                    Vector names = new Vector();
+                    names.add("课程ID");
+                    names.add("课程名称");
+                    names.add("上课时间");
+                    names.add("上课地点");
+                    names.add("课程内容");
+                    names.add("教师ID");
+                    names.add("推荐年龄");
+                    names.add("价格");
+                    names.add("课程类别");
+                    names.add("作业");
+                    for (Course course : courses){
+                        Vector rowData = new Vector();
+                        rowData.add(course.getCourseId());
+                        rowData.add(course.getCourseName());
+                        rowData.add(course.getTime());
+                        rowData.add(course.getPlace());
+                        rowData.add(course.getContent());
+                        rowData.add(course.getTeachId());
+                        rowData.add(course.getAgeRecommend());
+                        rowData.add(course.getPrice());
+                        rowData.add(course.getCourseField().toString());
+                        rowData.add(course.getHomeWork());
+                        rowDataSet.add(rowData);
+                    }
+                    DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
+                        public boolean isCellEditable(int row, int column) {
+                            if (column == 0 || column == 5)
+                                return false;
+                            else return true;
+                        }
+                    };
+                    mCourseTable.setModel(model);
+
+                    JComboBox box = Constants.getCourseFieldCombo();
+                    TableColumn column = mCourseTable.getColumn("课程类别");
+                    TableCellEditor editor = new DefaultCellEditor(box);
+                    column.setCellEditor(editor);
+                }
+
+
+
             }
         });
         mEditSaveButton.addActionListener(new ActionListener() {
@@ -631,6 +706,21 @@ public class MainWindow {
                 ((DefaultTableModel) mCourseTable.getModel()).removeRow(row);
             }
         });
+
+        mAddToCartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = mCourseQueryTable.getSelectedRow();
+                String course_id = mCourseQueryTable.getValueAt(row, 0).toString();
+                Purchase purchase = new Purchase();
+                purchase.setmCourseId(course_id);
+                purchase.setmParentId(User.getUsername());
+                purchase.setmPurchased(false);
+                MySQLDAO.getInstance().insertPurchase(purchase);
+            }
+        });
+
+        initUI();
     }
 
     private void initUI() {
@@ -745,6 +835,9 @@ public class MainWindow {
 
 
         mCoursePriceSpinner.setModel(spinnerPrice);
+
+        // 初始事件
+        NotificationButton.doClick();
 
         // JFrame界面
         JFrame frame = new JFrame("课程中介系统");

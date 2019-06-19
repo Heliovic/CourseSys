@@ -284,6 +284,7 @@ public class MySQLDAO {
                     newsList.add(news);
                 }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -332,6 +333,57 @@ public class MySQLDAO {
             e.printStackTrace();
         }
         return purchases;
+    }
+
+    public Course getCourseById(String course_id) {
+        String sql = "SELECT * FROM course WHERE course_id = ?";
+        Course course = new Course();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                course.setCourseId(rs.getString("course_id"));
+                course.setCourseName(rs.getString("course_name"));
+                course.setTime(rs.getString("time"));
+                course.setPlace(rs.getString("place"));
+                course.setContent(rs.getString("content"));
+                course.setTeachId(rs.getString("teach_id"));
+                course.setAgeRecommend(rs.getInt("age_recommend"));
+                course.setPrice(rs.getInt("price"));
+                course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
+                course.setHomeWork(rs.getString("homework"));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return course;
+    }
+
+    public List getPostInfo (String username) {
+        String sql = "SELECT * FROM news WHERE course_id IN (SELECT course_id FROM purchase WHERE parent_id = ? AND purchased = 'YES')";
+        List<News> newsList = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,username);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                News news = new News();
+                news.setmNewsId(rs.getString("news_id"));
+                news.setmPublisher(rs.getString("publisher"));
+                news.setmTime(rs.getString("time"));
+                news.setmTitle(rs.getString("title"));
+                news.setmContent(rs.getString("content"));
+
+                newsList.add(news);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return newsList;
     }
 
     public List getReviewTeacher () {
