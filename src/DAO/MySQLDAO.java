@@ -233,11 +233,12 @@ public class MySQLDAO {
         return newsList;
     }
 
-    public List getPurchasedCourse (Parent parent) {
+    public List getPurchasedCourse (String username) {
         String sql = "SELECT * FROM purchase WHERE parent_id = ? AND purchased = 'YSE'";
         List<Purchase> purchases = new ArrayList<>();
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,username);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
@@ -254,12 +255,12 @@ public class MySQLDAO {
         return purchases;
     }
 
-    public List getPostInfo (Parent parent) {
+    public List getPostInfo (String username) {
         String sql = "SELECT * FROM news WHERE course_id IN (SELECT course_id FROM purchase WHERE parent_id = ? AND purchased = 'YES')";
         List<News> newsList = new ArrayList<>();
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1,parent.getUsername());
+            statement.setString(1,username);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {

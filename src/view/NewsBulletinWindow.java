@@ -1,5 +1,6 @@
 package view;
 
+import DAO.MySQLDAO;
 import model.News;
 import model.account.Account;
 
@@ -33,6 +34,9 @@ public class NewsBulletinWindow {
                 SaveButton.setEnabled(false);
                 TitleField.setEditable(false);
                 MainTextArea.setEditable(false);
+                newsBulletin.setmTitle(TitleField.getText());
+                newsBulletin.setmContent(MainTextArea.getText());
+                MySQLDAO.getInstance().updateNews(newsBulletin);
             }
         });
 
