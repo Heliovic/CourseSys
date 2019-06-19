@@ -2,6 +2,7 @@ package view;
 
 import DAO.MySQLDAO;
 import model.Course;
+import model.News;
 import model.account.Account;
 import model.account.EduOrg;
 import model.account.Parent;
@@ -137,7 +138,7 @@ public class MainWindow {
             public void actionPerformed(ActionEvent e) {
                 cl.show(CardPanel, "Notification");
 
-                // List<News> courses = MySQLDAO.getInstance().getCourseInfo(field, place, age, minPrice, maxPrice);
+                List<News> newsList = MySQLDAO.getInstance().getNewsInfo();
 
                 Vector rowData = new Vector();
                 Vector rowDataSet = new Vector();
@@ -145,19 +146,17 @@ public class MainWindow {
                 names.add("标题");
                 names.add("作者");
                 names.add("日期");
-//                for (Course course : courses){
-//                    System.out.println(course.getCourseId() + course.getCourseName());
-//                    rowData.clear();
-//                    rowData.add(course.getCourseId());
-//                    rowData.add(course.getCourseName());
-//                    rowData.add(course.getTime());
-//                    rowData.add(course.getTeachId());
-//                    rowData.add(course.getContent());
-//                    rowDataSet.add(rowData);
-//                    MySQLDAO.getInstance().insertCourse(course);
-//                }
-//                DefaultTableModel model = new DefaultTableModel(rowDataSet, names);
-//                mCourseQueryTable.setModel(model);
+                for (News news : newsList) {
+                    rowData.clear();
+                    rowData.add(news.getmTitle());
+                    rowData.add(news.getmPublisher());
+                    rowData.add(news.getmTime());
+                    rowDataSet.add(rowData);
+                }
+                DefaultTableModel model = new DefaultTableModel(rowDataSet, names);
+                NotificationTable.setModel(model);
+                NotificationTable.getColumnModel().getColumn(0).setPreferredWidth(500);
+                NotificationTable.setRowHeight(28);
             }
         });
         AccountInfoButton.addActionListener(new ActionListener() {
@@ -201,8 +200,6 @@ public class MainWindow {
                     case SYSADMIN:
                         break;
                     case EDUORG:
-                        CourseInsertButton.setVisible(true);
-                        // 信息
                         OrgCodeLabel.setVisible(true);
                         OrgCodeField.setVisible(true);
                         OrgAddressLabel.setVisible(true);
@@ -217,8 +214,6 @@ public class MainWindow {
                         OrgIntroductionField.setVisible(true);
                         break;
                     case TEACHER:
-                        CourseInsertButton.setVisible(true);
-                        // 信息
                         TeacherNameField.setVisible(true);
                         TeacherGenderComboBox.setVisible(true);
                         TeacherYearLabelField.setVisible(true);
@@ -239,8 +234,6 @@ public class MainWindow {
                         TeacherContactLabel.setVisible(true);
                         break;
                     case PARENT:
-                        CourseQueryButton.setVisible(true);
-                        // 信息
                         ChildNameLabel.setVisible(true);
                         ChildAgeLabel.setVisible(true);
                         ChildAgeField.setVisible(true);
@@ -523,6 +516,21 @@ public class MainWindow {
         // 卡片布局
         cl = (CardLayout) CardPanel.getLayout();
 
+        // 各个用户界面
+        switch (User.getUserType()) {
+            case SYSADMIN:
+                break;
+            case EDUORG:
+                CourseInsertButton.setVisible(true);
+                break;
+            case TEACHER:
+                CourseInsertButton.setVisible(true);
+                break;
+            case PARENT:
+                CourseQueryButton.setVisible(true);
+                break;
+        }
+
         // 复选框初始化
         for (Course.CourseField field : Course.CourseField.values()) {
             mCourseFieldComboBox.addItem(field.toString());
@@ -542,9 +550,6 @@ public class MainWindow {
         mCourseAgeSpinner.setModel(spinnerAge);
         mAgeSpin.setModel(spinnerAge);
         mCoursePriceSpinner.setModel(spinnerPrice);
-
-        // 运行新闻公告按钮事件
-        NotificationButton.doClick();
 
         // JFrame界面
         JFrame frame = new JFrame("课程中介系统");
