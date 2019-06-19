@@ -1,6 +1,6 @@
 package DAO;
 
-import model.Course;
+import model.*;
 import model.account.*;
 
 import java.sql.*;
@@ -328,6 +328,69 @@ public class MySQLDAO {
 
     }
 
+    public void insertNews (News news) {
+        String sql = "INSERT INTO news (news_id, publisher, time, title, content) VALUES (?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,news.getmNewsId());
+            statement.setString(2,news.getmPublisher());
+            statement.setString(3,news.getmTime());
+            statement.setString(4,news.getmTitle());
+            statement.setString(5,news.getmContent());
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertNewsComment (NewsComment newsComment) {
+        String sql = "INSERT INTO newscomment (comment_id, news_id, publisher, time, content) VALUES (?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,newsComment.getmCommentId());
+            statement.setString(2,newsComment.getmNewsId());
+            statement.setString(3,newsComment.getmPublisher());
+            statement.setString(4,newsComment.getmTime());
+            statement.setString(5,newsComment.getmContent());
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void insertPreviewApp (PreviewApp previewApp) {
+        String sql = "INSERT INTO previewapp (parent_id, course_id, agreement) VALUES (?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,previewApp.getmParentId());
+            statement.setString(2,previewApp.getmCourseId());
+            statement.setString(3,previewApp.ismAgreement() ? "YES" : "NO");
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public  void insertPurchase (Purchase purchase) {
+        String sql = "INSERT INTO purchase (parent_id, course_id, purchased) VALUES (?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,purchase.getmParentId());
+            statement.setString(2,purchase.getmCourseId());
+            statement.setString(3,purchase.ismPurchased() ? "YES" : "NO");
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     //数据库的更新操作
     public void updateAccount(Account account) {
@@ -420,23 +483,6 @@ public class MySQLDAO {
 
 
     //数据库的删除操作
-    /*public void insertAccount(Account account) {
-        String sql = "INSERT INTO account (user_name, password, tel, email, user_type) " +
-                "VALUES (?, ?, ?, ?, ?)";
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, account.getUsername());
-            statement.setString(2, account.getPassword());
-            statement.setString(3, account.getTel());
-            statement.setString(4, account.getEmail());
-            statement.setString(5, account.getUserType().toString());
-            statement.executeUpdate();
-
-            System.out.println("插入成功！");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/
     public void deleteAccount (Account account) {
         String sql = "DELETE FROM account WHERE user_name = ?";
         try {
