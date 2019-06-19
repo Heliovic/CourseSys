@@ -28,6 +28,7 @@ import java.util.Vector;
 public class MainWindow {
     private Account User;
     private List<News> newsList;
+    private int currentRow;
 
     private JPanel MainWindowPanel;
     private JPanel ButtonPanel;
@@ -183,9 +184,26 @@ public class MainWindow {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                currentRow = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
                 if (e.getClickCount() == 2) {
-                    int row = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
-                    new NewsBulletinWindow(User, newsList.get(row));
+                    new NewsBulletinWindow(User, newsList.get(currentRow));
+                }
+            }
+        });
+        AddButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        DeleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (User.getUserType() == Account.UserType.SYSADMIN || User.getUsername() == newsList.get(currentRow).getmPublisher()) {
+                    MySQLDAO.getInstance().deleteNews(newsList.get(currentRow));
+                    NotificationButton.doClick();
+                } else {
+                    JOptionPane.showMessageDialog(null, "无权限！");
                 }
             }
         });
