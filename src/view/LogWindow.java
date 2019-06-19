@@ -1,6 +1,7 @@
 package view;
 
 import DAO.MySQLDAO;
+import model.PreviewApp;
 import model.account.*;
 
 import javax.swing.*;
@@ -18,7 +19,6 @@ public class LogWindow {
     private JButton RegButton;
 
     public LogWindow() {
-
         LogButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
