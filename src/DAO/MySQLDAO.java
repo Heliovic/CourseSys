@@ -209,6 +209,30 @@ public class MySQLDAO {
         return courses;
     }
 
+    public List getNewsInfo (){
+        String sql = "SELECT * FROM news WHERE user_name IN (SELECT user_name FROM account WHERE user_type = 'SYSADMIN')";
+        List<News> newsList = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                News news = new News();
+                news.setmNewsId(rs.getString("news_id"));
+                news.setmPublisher(rs.getString("publisher"));
+                news.setmTime(rs.getString("time"));
+                news.setmTitle(rs.getString("title"));
+                news.setmContent(rs.getString("content"));
+
+                newsList.add(news);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return newsList;
+    }
+
 
     //数据库的插入操作
     public void insertAccount(Account account) {
