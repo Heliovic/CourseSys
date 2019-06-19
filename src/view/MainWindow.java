@@ -139,6 +139,8 @@ public class MainWindow {
     private JButton mRefreshCourseButton;
     private JButton mEditSaveButton;
     private JButton mDeleteCourseButton;
+    private JPanel ShoppingCartPanel;
+    private JButton mAddToCartButton;
     private CardLayout cl;
 
     public MainWindow(Account user) {
@@ -534,7 +536,11 @@ public class MainWindow {
                     rowData.add(course.getHomeWork());
                     rowDataSet.add(rowData);
                 }
-                DefaultTableModel model = new DefaultTableModel(rowDataSet, names);
+                DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
                 mCourseQueryTable.setModel(model);
             }
         });
@@ -683,6 +689,18 @@ public class MainWindow {
             }
         });
 
+        mAddToCartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = mCourseQueryTable.getSelectedRow();
+                String course_id = mCourseQueryTable.getValueAt(row, 0).toString();
+                Purchase purchase = new Purchase();
+                purchase.setmCourseId(course_id);
+                purchase.setmParentId(User.getUsername());
+                purchase.setmPurchased(false);
+                MySQLDAO.getInstance().insertPurchase(purchase);
+            }
+        });
 
         initUI();
     }
