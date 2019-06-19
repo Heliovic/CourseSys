@@ -141,6 +141,7 @@ public class MainWindow {
 
     public MainWindow(Account user) {
         User = user;
+        newsList = MySQLDAO.getInstance().getNewsInfo();
 
         initUI();
 
@@ -154,16 +155,16 @@ public class MainWindow {
                     DeleteButton.setVisible(true);
                 }
 
+                newsList.clear();
                 newsList = MySQLDAO.getInstance().getNewsInfo();
 
-                Vector rowData = new Vector();
                 Vector rowDataSet = new Vector();
                 Vector names = new Vector();
                 names.add("标题");
                 names.add("作者");
                 names.add("日期");
                 for (News news : newsList) {
-                    rowData.clear();
+                    Vector rowData = new Vector();
                     rowData.add(news.getmTitle());
                     rowData.add(news.getmPublisher());
                     rowData.add(news.getmTime());
