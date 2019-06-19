@@ -314,7 +314,29 @@ public class MySQLDAO {
     }
 
     public List getPurchasedCourse (String username) {
-        String sql = "SELECT * FROM purchase WHERE parent_id = ? AND purchased = 'YSE'";
+        String sql = "SELECT * FROM purchase WHERE parent_id = ? AND purchased = 'YES'";
+        List<Purchase> purchases = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,username);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Purchase purchase = new Purchase();
+                purchase.setmParentId(rs.getString("parent_id"));
+                purchase.setmCourseId(rs.getString("course_id"));
+                purchase.setmPurchased(rs.getString("purchased").equals("YES") ? true : false);
+
+                purchases.add(purchase);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return purchases;
+    }
+
+    public List getNotPurchasedCourse (String username) {
+        String sql = "SELECT * FROM purchase WHERE parent_id = ? AND purchased = 'NO'";
         List<Purchase> purchases = new ArrayList<>();
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -437,6 +459,39 @@ public class MySQLDAO {
             e.printStackTrace();
         }
         return eduOrgs;
+    }
+
+    public List<Course> getTeacherCourseList(String username) {
+        String sql = "SELECT * FROM course WHERE teach_id = ?";
+
+        List<Course> courses = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setString(1, username);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Course course = new Course();
+                course.setCourseId(rs.getString("course_id"));
+                course.setCourseName(rs.getString("course_name"));
+                course.setTime(rs.getString("time"));
+                course.setPlace(rs.getString("place"));
+                course.setContent(rs.getString("content"));
+                course.setTeachId(rs.getString("teach_id"));
+                course.setAgeRecommend(rs.getInt("age_recommend"));
+                course.setPrice(rs.getInt("price"));
+                course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
+                course.setHomeWork(rs.getString("homework"));
+
+                courses.add(course);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return courses;
     }
 
     //数据库的插入操作
@@ -753,6 +808,21 @@ public class MySQLDAO {
         }
     }
 
+    public void updatePurchase(Purchase purchase) {
+        String sql = "UPDATE purchase SET purchased = ? WHERE parent_id = ? AND course_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,purchase.ismPurchased() ? "YES" : "NO");
+            statement.setString(2,purchase.getmParentId());
+            statement.setString(3,purchase.getmCourseId());
+            statement.executeUpdate();
+
+            System.out.println("更新成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void deleteAccount (String user_name) {
         String sql = "DELETE FROM account WHERE user_name = ?";
         try {
@@ -831,36 +901,17 @@ public class MySQLDAO {
         }
     }
 
-    public List<Course> getTeacherCourseList(String username) {
-        String sql = "SELECT * FROM course WHERE teach_id = ?";
-
-        List<Course> courses = new ArrayList<>();
+    public void deletePurchase(String parent_id, String course_id) {
+        String sql = "DELETE FROM purchase WHERE parent_id = ? AND course_id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, parent_id);
+            statement.setString(2, course_id);
+            statement.executeUpdate();
 
-            statement.setString(1, username);
-
-            ResultSet rs = statement.executeQuery();
-
-            while (rs.next()) {
-                Course course = new Course();
-                course.setCourseId(rs.getString("course_id"));
-                course.setCourseName(rs.getString("course_name"));
-                course.setTime(rs.getString("time"));
-                course.setPlace(rs.getString("place"));
-                course.setContent(rs.getString("content"));
-                course.setTeachId(rs.getString("teach_id"));
-                course.setAgeRecommend(rs.getInt("age_recommend"));
-                course.setPrice(rs.getInt("price"));
-                course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
-                course.setHomeWork(rs.getString("homework"));
-
-                courses.add(course);
-            }
+            System.out.println("删除成功！");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return courses;
     }
 }

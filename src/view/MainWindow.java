@@ -40,7 +40,7 @@ public class MainWindow {
     private JButton CourseListButton;
     private JButton CourseQueryButton;
     private JButton CourseSearch;
-    private JButton button6Button;
+    private JButton ShoppingCartButton;
     private JPanel NotificationPanel;
     private JPanel AccountInfoPanel;
     private JPanel CourseListPanel;
@@ -142,6 +142,9 @@ public class MainWindow {
     private JButton mDeleteCourseButton;
     private JPanel ShoppingCartPanel;
     private JButton mAddToCartButton;
+    private JButton mPurchaseButton;
+    private JTable mShoppingCartTable;
+    private JButton mRemoveCartButton;
     private CardLayout cl;
 
     public MainWindow(Account user) {
@@ -515,13 +518,65 @@ public class MainWindow {
                 cl.show(CardPanel, "CourseInsert");
             }
         });
+
+        ShoppingCartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cl.show(CardPanel, "ShoppingCart");
+
+                List<Purchase> p = MySQLDAO.getInstance().getNotPurchasedCourse(User.getUsername());
+                List<Course> courses = new ArrayList<>();
+                for (int i = 0; i < p.size(); i++) {
+                    courses.add(MySQLDAO.getInstance().getCourseById(p.get(i).getmCourseId()));
+                }
+                Vector rowDataSet = new Vector();
+                Vector names = new Vector();
+                names.add("课程ID");
+                names.add("课程名称");
+                names.add("上课时间");
+                names.add("上课地点");
+                names.add("课程内容");
+                names.add("教师ID");
+                names.add("推荐年龄");
+                names.add("价格");
+                names.add("课程类别");
+                names.add("作业");
+                for (Course course : courses){
+                    Vector rowData = new Vector();
+                    rowData.add(course.getCourseId());
+                    rowData.add(course.getCourseName());
+                    rowData.add(course.getTime());
+                    rowData.add(course.getPlace());
+                    rowData.add(course.getContent());
+                    rowData.add(course.getTeachId());
+                    rowData.add(course.getAgeRecommend());
+                    rowData.add(course.getPrice());
+                    rowData.add(course.getCourseField().toString());
+                    rowData.add(course.getHomeWork());
+                    rowDataSet.add(rowData);
+                }
+                DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                mShoppingCartTable.setModel(model);
+
+                JComboBox box = Constants.getCourseFieldCombo();
+                TableColumn column = mShoppingCartTable.getColumn("课程类别");
+                TableCellEditor editor = new DefaultCellEditor(box);
+                column.setCellEditor(editor);
+
+
+            }
+        });
         mCourseQueryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Course.CourseField field = Course.CourseField.valueOf(mCourseFieldComboBox.getSelectedItem().toString());
                 String place = mPlaceField.getText();
                 int age = Integer.parseInt(mAgeSpin.getValue().toString());
-                int minprice[] = {1, 201, 501, 751, 1001, 2000};
+                int minprice[] = {0, 201, 501, 751, 1001, 2000};
                 int maxprice[] = {200, 500, 750, 1000, 2000, Integer.MAX_VALUE};
                 int index = mPriceRangeComboBox.getSelectedIndex();
                 int minPrice = minprice[index];
@@ -720,6 +775,28 @@ public class MainWindow {
             }
         });
 
+        mPurchaseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = mShoppingCartTable.getSelectedRow();
+                String course_id = mShoppingCartTable.getValueAt(row, 0).toString();
+                Purchase purchase = new Purchase();
+                purchase.setmCourseId(course_id);
+                purchase.setmParentId(User.getUsername());
+                purchase.setmPurchased(true);
+                MySQLDAO.getInstance().updatePurchase(purchase);
+                ((DefaultTableModel) mShoppingCartTable.getModel()).removeRow(row);
+            }
+        });
+        mRemoveCartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = mShoppingCartTable.getSelectedRow();
+                String course_id = mShoppingCartTable.getValueAt(row, 0).toString();
+                MySQLDAO.getInstance().deletePurchase(User.getUsername(), course_id);
+                ((DefaultTableModel) mShoppingCartTable.getModel()).removeRow(row);
+            }
+        });
         initUI();
     }
 
@@ -789,6 +866,7 @@ public class MainWindow {
                 break;
             case PARENT:
                 CourseQueryButton.setVisible(true);
+                ShoppingCartButton.setVisible(true);
                 // 信息
                 ChildNameLabel.setVisible(true);
                 ChildAgeLabel.setVisible(true);
@@ -818,7 +896,7 @@ public class MainWindow {
         ChildGenderComboBox.addItem("MALE");
         ChildGenderComboBox.addItem("FEMALE");
 
-        mPriceRangeComboBox.addItem("1-200");
+        mPriceRangeComboBox.addItem("0-200");
         mPriceRangeComboBox.addItem("201-500");
         mPriceRangeComboBox.addItem("501-750");
         mPriceRangeComboBox.addItem("751-1000");
