@@ -210,7 +210,7 @@ public class MySQLDAO {
     }
 
     public List getNewsInfo (){
-        String sql = "SELECT * FROM news WHERE user_name IN (SELECT user_name FROM account WHERE user_type = 'SYSADMIN')";
+        String sql = "SELECT * FROM news WHERE publisher IN (SELECT user_name FROM account WHERE user_type = 'SYSADMIN')";
         List<News> newsList = new ArrayList<>();
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -233,6 +233,28 @@ public class MySQLDAO {
         return newsList;
     }
 
+    public List getPurchasedCourse (Parent parent) {
+        String sql = "SELECT * FROM purchase WHERE parent_id = ? AND purchased = 'YSE'";
+        List<Purchase> purchases = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Purchase purchase = new Purchase();
+                purchase.setmParentId(rs.getString("parent_id"));
+                purchase.setmCourseId(rs.getString("course_id"));
+                purchase.setmPurchased(rs.getString("purchased").equals("YES") ? true : false);
+
+                purchases.add(purchase);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return purchases;
+    }
+
+   // public List getPost
 
     //数据库的插入操作
     public void insertAccount(Account account) {

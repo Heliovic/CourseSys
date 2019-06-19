@@ -468,7 +468,7 @@ public class MainWindow {
                 int minPrice = minprice[index];
                 int maxPrice = maxprice[index];
                 List<Course> courses = MySQLDAO.getInstance().getCourseInfo(field, place, age, minPrice, maxPrice);
-                //System.out.println(field.toString() + place + String.valueOf(age) + minPrice + maxPrice);
+                System.out.println(field.toString() + place + String.valueOf(age) + minPrice + maxPrice);
                 Vector rowData = new Vector();
                 Vector rowDataSet = new Vector();
                 Vector names = new Vector();
