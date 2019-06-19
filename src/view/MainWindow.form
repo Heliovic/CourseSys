@@ -77,23 +77,18 @@
             <properties/>
             <border type="none"/>
             <children>
-              <scrollpane id="26da1" binding="ListScrollPane">
+              <scrollpane id="26da1" binding="TableScrollPane">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="ba5ae" class="javax.swing.JList" binding="list1" default-binding="true">
+                  <component id="84886" class="javax.swing.JTable" binding="NotificationTable">
                     <constraints/>
                     <properties>
-                      <font size="28"/>
-                      <model>
-                        <item value="新闻一"/>
-                        <item value="公告一"/>
-                        <item value="新闻二"/>
-                        <item value="公告二"/>
-                      </model>
+                      <name value=""/>
+                      <rowHeight value="28"/>
                     </properties>
                   </component>
                 </children>

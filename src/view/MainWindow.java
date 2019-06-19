@@ -123,8 +123,8 @@ public class MainWindow {
     private JButton mInsertCourseButton;
     private JButton AddButton;
     private JButton DeleteButton;
-    private JList list1;
-    private JScrollPane ListScrollPane;
+    private JScrollPane TableScrollPane;
+    private JTable NotificationTable;
     private CardLayout cl;
 
     public MainWindow(Account user) {
@@ -136,16 +136,127 @@ public class MainWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cl.show(CardPanel, "Notification");
+
+                // List<News> courses = MySQLDAO.getInstance().getCourseInfo(field, place, age, minPrice, maxPrice);
+
+                Vector rowData = new Vector();
+                Vector rowDataSet = new Vector();
+                Vector names = new Vector();
+                names.add("标题");
+                names.add("作者");
+                names.add("日期");
+//                for (Course course : courses){
+//                    System.out.println(course.getCourseId() + course.getCourseName());
+//                    rowData.clear();
+//                    rowData.add(course.getCourseId());
+//                    rowData.add(course.getCourseName());
+//                    rowData.add(course.getTime());
+//                    rowData.add(course.getTeachId());
+//                    rowData.add(course.getContent());
+//                    rowDataSet.add(rowData);
+//                    MySQLDAO.getInstance().insertCourse(course);
+//                }
+//                DefaultTableModel model = new DefaultTableModel(rowDataSet, names);
+//                mCourseQueryTable.setModel(model);
             }
         });
         AccountInfoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cl.show(CardPanel, "AccountInfo");
+
                 ChangeButton.setEnabled(true);
                 SaveButton.setEnabled(false);
 
+                // JFormattedTextField 限制
+                DateFormatter dateform = new DateFormatter(new SimpleDateFormat("yyyy-MM-dd")); // 日期
+                try {
+                    MaskFormatter phoneform = new MaskFormatter("###########");     // 电话
+                    MaskFormatter yearform = new MaskFormatter("####");             // 年
+                    MaskFormatter IDform = new MaskFormatter("#################*"); // 身份证号
+                    ChildBirField.setValue(dateform);
+                    ChildAgeField.setValue(NumberFormat.getIntegerInstance());      // 数字
+                    TelephoneField.setValue(phoneform);
+                    OrgEduAgeField.setValue(NumberFormat.getIntegerInstance());
+                    TeacherYearLabelField.setValue(yearform);
+                    TeacherEduAgeField.setValue(NumberFormat.getIntegerInstance());
+                    TeacherAgeField.setValue(NumberFormat.getIntegerInstance());
+                    TeacherIDField.setValue(IDform);
+                } catch (Exception exce) {
+                    exce.printStackTrace();
+                }
+
+                // 复选框初始化
+                for (Course.CourseField field : Course.CourseField.values()) {
+                    TeacherCourseComboBox.addItem(field.toString());
+                    OrgCourseComboBox.addItem(field.toString());
+                }
+                TeacherGenderComboBox.addItem("MALE");
+                TeacherGenderComboBox.addItem("FEMALE");
+                ChildGenderComboBox.addItem("MALE");
+                ChildGenderComboBox.addItem("FEMALE");
+
                 // 各个用户界面
+                switch (User.getUserType()) {
+                    case SYSADMIN:
+                        break;
+                    case EDUORG:
+                        CourseInsertButton.setVisible(true);
+                        // 信息
+                        OrgCodeLabel.setVisible(true);
+                        OrgCodeField.setVisible(true);
+                        OrgAddressLabel.setVisible(true);
+                        OrgAddressField.setVisible(true);
+                        OrgCourseLabel.setVisible(true);
+                        OrgCourseComboBox.setVisible(true);
+                        OrgEduAgeLabel.setVisible(true);
+                        OrgEduAgeField.setVisible(true);
+                        OrgContactLabel.setVisible(true);
+                        OrgContactField.setVisible(true);
+                        OrgIntroductionLabel.setVisible(true);
+                        OrgIntroductionField.setVisible(true);
+                        break;
+                    case TEACHER:
+                        CourseInsertButton.setVisible(true);
+                        // 信息
+                        TeacherNameField.setVisible(true);
+                        TeacherGenderComboBox.setVisible(true);
+                        TeacherYearLabelField.setVisible(true);
+                        TeacherEduAgeField.setVisible(true);
+                        TeacherContactField.setVisible(true);
+                        TeacherIntroductionField.setVisible(true);
+                        TeacherIntroductionLabel.setVisible(true);
+                        TeacherEduAgeLabel.setVisible(true);
+                        TeacherCourseLabel.setVisible(true);
+                        TeacherAgeLabel.setVisible(true);
+                        TeacherNameLabel.setVisible(true);
+                        TeacherGenderLabel.setVisible(true);
+                        TeacherIDLabel.setVisible(true);
+                        TeacherAgeField.setVisible(true);
+                        TeacherIDField.setVisible(true);
+                        TeacherCourseComboBox.setVisible(true);
+                        TeacherYearLabel.setVisible(true);
+                        TeacherContactLabel.setVisible(true);
+                        break;
+                    case PARENT:
+                        CourseQueryButton.setVisible(true);
+                        // 信息
+                        ChildNameLabel.setVisible(true);
+                        ChildAgeLabel.setVisible(true);
+                        ChildAgeField.setVisible(true);
+                        ChildBirLabel.setVisible(true);
+                        ChildNameField.setVisible(true);
+                        ChildBirField.setVisible(true);
+                        ChildGenderLabel.setVisible(true);
+                        ChildGenderComboBox.setVisible(true);
+                        ParentNameLabel.setVisible(true);
+                        ParentNameField.setVisible(true);
+                        ParentContactLabel.setVisible(true);
+                        ParentContactField.setVisible(true);
+                        break;
+                }
+
+                // 得到数据
                 UserField.setText(User.getUsername());
                 PasswdField.setText(User.getPassword());
                 TelephoneField.setText(User.getTel());
@@ -412,97 +523,11 @@ public class MainWindow {
         // 卡片布局
         cl = (CardLayout) CardPanel.getLayout();
 
-        // JFormattedTextField 限制
-        DateFormatter dateform = new DateFormatter(new SimpleDateFormat("yyyy-MM-dd")); // 日期
-        try {
-            MaskFormatter phoneform = new MaskFormatter("###########");     // 电话
-            MaskFormatter yearform = new MaskFormatter("####");             // 年
-            MaskFormatter IDform = new MaskFormatter("#################*"); // 身份证号
-            ChildBirField.setValue(dateform);
-            ChildAgeField.setValue(NumberFormat.getIntegerInstance());      // 数字
-            TelephoneField.setValue(phoneform);
-            OrgEduAgeField.setValue(NumberFormat.getIntegerInstance());
-            TeacherYearLabelField.setValue(yearform);
-            TeacherEduAgeField.setValue(NumberFormat.getIntegerInstance());
-            TeacherAgeField.setValue(NumberFormat.getIntegerInstance());
-            TeacherIDField.setValue(IDform);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // 各个用户界面
-        switch (User.getUserType()) {
-            case SYSADMIN:
-                break;
-            case EDUORG:
-                CourseInsertButton.setVisible(true);
-                // 信息
-                OrgCodeLabel.setVisible(true);
-                OrgCodeField.setVisible(true);
-                OrgAddressLabel.setVisible(true);
-                OrgAddressField.setVisible(true);
-                OrgCourseLabel.setVisible(true);
-                OrgCourseComboBox.setVisible(true);
-                OrgEduAgeLabel.setVisible(true);
-                OrgEduAgeField.setVisible(true);
-                OrgContactLabel.setVisible(true);
-                OrgContactField.setVisible(true);
-                OrgIntroductionLabel.setVisible(true);
-                OrgIntroductionField.setVisible(true);
-                break;
-            case TEACHER:
-                CourseInsertButton.setVisible(true);
-                // 信息
-                TeacherNameField.setVisible(true);
-                TeacherGenderComboBox.setVisible(true);
-                TeacherYearLabelField.setVisible(true);
-                TeacherEduAgeField.setVisible(true);
-                TeacherContactField.setVisible(true);
-                TeacherIntroductionField.setVisible(true);
-                TeacherIntroductionLabel.setVisible(true);
-                TeacherEduAgeLabel.setVisible(true);
-                TeacherCourseLabel.setVisible(true);
-                TeacherAgeLabel.setVisible(true);
-                TeacherNameLabel.setVisible(true);
-                TeacherGenderLabel.setVisible(true);
-                TeacherIDLabel.setVisible(true);
-                TeacherAgeField.setVisible(true);
-                TeacherIDField.setVisible(true);
-                TeacherCourseComboBox.setVisible(true);
-                TeacherYearLabel.setVisible(true);
-                TeacherContactLabel.setVisible(true);
-                break;
-            case PARENT:
-                CourseQueryButton.setVisible(true);
-                // 信息
-                ChildNameLabel.setVisible(true);
-                ChildAgeLabel.setVisible(true);
-                ChildAgeField.setVisible(true);
-                ChildBirLabel.setVisible(true);
-                ChildNameField.setVisible(true);
-                ChildBirField.setVisible(true);
-                ChildGenderLabel.setVisible(true);
-                ChildGenderComboBox.setVisible(true);
-                ParentNameLabel.setVisible(true);
-                ParentNameField.setVisible(true);
-                ParentContactLabel.setVisible(true);
-                ParentContactField.setVisible(true);
-                break;
-        }
-
         // 复选框初始化
         for (Course.CourseField field : Course.CourseField.values()) {
             mCourseFieldComboBox.addItem(field.toString());
-            TeacherCourseComboBox.addItem(field.toString());
-            OrgCourseComboBox.addItem(field.toString());
             mInsertCourseFieldComboBox.addItem(field.toString());
         }
-
-        TeacherGenderComboBox.addItem("MALE");
-        TeacherGenderComboBox.addItem("FEMALE");
-        ChildGenderComboBox.addItem("MALE");
-        ChildGenderComboBox.addItem("FEMALE");
-
         mPriceRangeComboBox.addItem("1-200");
         mPriceRangeComboBox.addItem("201-500");
         mPriceRangeComboBox.addItem("501-750");
@@ -510,16 +535,16 @@ public class MainWindow {
         mPriceRangeComboBox.addItem("1001-2000");
         mPriceRangeComboBox.addItem("2000以上");
 
-
         // Spinner 数值范围
         SpinnerNumberModel spinnerAge = new SpinnerNumberModel(0, 0, 100, 1);
         SpinnerNumberModel spinnerPrice = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
 
         mCourseAgeSpinner.setModel(spinnerAge);
         mAgeSpin.setModel(spinnerAge);
-
-
         mCoursePriceSpinner.setModel(spinnerPrice);
+
+        // 运行新闻公告按钮事件
+        NotificationButton.doClick();
 
         // JFrame界面
         JFrame frame = new JFrame("课程中介系统");
