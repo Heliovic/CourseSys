@@ -2,6 +2,7 @@ package view;
 
 import DAO.MySQLDAO;
 import model.Course;
+import model.News;
 import model.account.Account;
 import model.account.EduOrg;
 import model.account.Parent;
@@ -17,6 +18,8 @@ import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -24,6 +27,8 @@ import java.util.Vector;
 
 public class MainWindow {
     private Account User;
+    private List<News> newsList;
+
     private JPanel MainWindowPanel;
     private JPanel ButtonPanel;
     private JPanel CardPanel;
@@ -126,8 +131,8 @@ public class MainWindow {
     private JButton mInsertCourseButton;
     private JButton AddButton;
     private JButton DeleteButton;
-    private JList list1;
-    private JScrollPane ListScrollPane;
+    private JScrollPane TableScrollPane;
+    private JTable NotificationTable;
     private JTable mCourseTable;
     private JButton mRefreshCourseButton;
     private JButton mEditSaveButton;
@@ -143,6 +148,46 @@ public class MainWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cl.show(CardPanel, "Notification");
+
+                if (User.getUserType() != Account.UserType.PARENT) {
+                    AddButton.setVisible(true);
+                    DeleteButton.setVisible(true);
+                }
+
+                newsList = MySQLDAO.getInstance().getNewsInfo();
+
+                Vector rowData = new Vector();
+                Vector rowDataSet = new Vector();
+                Vector names = new Vector();
+                names.add("标题");
+                names.add("作者");
+                names.add("日期");
+                for (News news : newsList) {
+                    rowData.clear();
+                    rowData.add(news.getmTitle());
+                    rowData.add(news.getmPublisher());
+                    rowData.add(news.getmTime());
+                    rowDataSet.add(rowData);
+                }
+                DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                NotificationTable.setModel(model);
+                NotificationTable.getColumnModel().getColumn(0).setPreferredWidth(500);
+                NotificationTable.setRowHeight(28);
+                NotificationTable.getTableHeader().setPreferredSize(new Dimension(NotificationTable.getTableHeader().getWidth(), 28));
+            }
+        });
+        NotificationTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (e.getClickCount() == 2) {
+                    int row = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
+                    new NewsBulletinWindow(User, newsList.get(row));
+                }
             }
         });
         AccountInfoButton.addActionListener(new ActionListener() {
@@ -152,7 +197,89 @@ public class MainWindow {
                 ChangeButton.setEnabled(true);
                 SaveButton.setEnabled(false);
 
+                // JFormattedTextField 限制
+                DateFormatter dateform = new DateFormatter(new SimpleDateFormat("yyyy-MM-dd")); // 日期
+                try {
+                    MaskFormatter phoneform = new MaskFormatter("###########");     // 电话
+                    MaskFormatter yearform = new MaskFormatter("####");             // 年
+                    MaskFormatter IDform = new MaskFormatter("#################*"); // 身份证号
+                    ChildBirField.setValue(dateform);
+                    ChildAgeField.setValue(NumberFormat.getIntegerInstance());      // 数字
+                    TelephoneField.setValue(phoneform);
+                    OrgEduAgeField.setValue(NumberFormat.getIntegerInstance());
+                    TeacherYearLabelField.setValue(yearform);
+                    TeacherEduAgeField.setValue(NumberFormat.getIntegerInstance());
+                    TeacherAgeField.setValue(NumberFormat.getIntegerInstance());
+                    TeacherIDField.setValue(IDform);
+                } catch (Exception exce) {
+                    exce.printStackTrace();
+                }
+
+                // 复选框初始化
+                for (Course.CourseField field : Course.CourseField.values()) {
+                    TeacherCourseComboBox.addItem(field.toString());
+                    OrgCourseComboBox.addItem(field.toString());
+                }
+                TeacherGenderComboBox.addItem("MALE");
+                TeacherGenderComboBox.addItem("FEMALE");
+                ChildGenderComboBox.addItem("MALE");
+                ChildGenderComboBox.addItem("FEMALE");
+
                 // 各个用户界面
+                switch (User.getUserType()) {
+                    case SYSADMIN:
+                        break;
+                    case EDUORG:
+                        OrgCodeLabel.setVisible(true);
+                        OrgCodeField.setVisible(true);
+                        OrgAddressLabel.setVisible(true);
+                        OrgAddressField.setVisible(true);
+                        OrgCourseLabel.setVisible(true);
+                        OrgCourseComboBox.setVisible(true);
+                        OrgEduAgeLabel.setVisible(true);
+                        OrgEduAgeField.setVisible(true);
+                        OrgContactLabel.setVisible(true);
+                        OrgContactField.setVisible(true);
+                        OrgIntroductionLabel.setVisible(true);
+                        OrgIntroductionField.setVisible(true);
+                        break;
+                    case TEACHER:
+                        TeacherNameField.setVisible(true);
+                        TeacherGenderComboBox.setVisible(true);
+                        TeacherYearLabelField.setVisible(true);
+                        TeacherEduAgeField.setVisible(true);
+                        TeacherContactField.setVisible(true);
+                        TeacherIntroductionField.setVisible(true);
+                        TeacherIntroductionLabel.setVisible(true);
+                        TeacherEduAgeLabel.setVisible(true);
+                        TeacherCourseLabel.setVisible(true);
+                        TeacherAgeLabel.setVisible(true);
+                        TeacherNameLabel.setVisible(true);
+                        TeacherGenderLabel.setVisible(true);
+                        TeacherIDLabel.setVisible(true);
+                        TeacherAgeField.setVisible(true);
+                        TeacherIDField.setVisible(true);
+                        TeacherCourseComboBox.setVisible(true);
+                        TeacherYearLabel.setVisible(true);
+                        TeacherContactLabel.setVisible(true);
+                        break;
+                    case PARENT:
+                        ChildNameLabel.setVisible(true);
+                        ChildAgeLabel.setVisible(true);
+                        ChildAgeField.setVisible(true);
+                        ChildBirLabel.setVisible(true);
+                        ChildNameField.setVisible(true);
+                        ChildBirField.setVisible(true);
+                        ChildGenderLabel.setVisible(true);
+                        ChildGenderComboBox.setVisible(true);
+                        ParentNameLabel.setVisible(true);
+                        ParentNameField.setVisible(true);
+                        ParentContactLabel.setVisible(true);
+                        ParentContactField.setVisible(true);
+                        break;
+                }
+
+                // 得到数据
                 UserField.setText(User.getUsername());
                 PasswdField.setText(User.getPassword());
                 TelephoneField.setText(User.getTel());

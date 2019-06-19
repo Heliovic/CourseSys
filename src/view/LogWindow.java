@@ -1,11 +1,15 @@
 package view;
 
 import DAO.MySQLDAO;
+import model.News;
+import model.PreviewApp;
 import model.account.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class LogWindow {
     private JPanel LogWindowPanel;
@@ -18,7 +22,13 @@ public class LogWindow {
     private JButton RegButton;
 
     public LogWindow() {
-
+        Parent parent = new Parent();
+        parent.setUsername("001");
+        System.out.println(parent.getUsername());
+        List<News> newsList = MySQLDAO.getInstance().getPostInfo(parent);
+        for (News n : newsList){
+            System.out.println(n.getmNewsId() + n.getmPublisher());
+        }
         LogButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

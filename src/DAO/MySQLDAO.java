@@ -1,6 +1,6 @@
 package DAO;
 
-import model.Course;
+import model.*;
 import model.account.*;
 
 import java.sql.*;
@@ -209,6 +209,127 @@ public class MySQLDAO {
         return courses;
     }
 
+    public List getNewsInfo (){
+        String sql = "SELECT * FROM news WHERE publisher IN (SELECT user_name FROM account WHERE user_type = 'SYSADMIN')";
+        List<News> newsList = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                News news = new News();
+                news.setmNewsId(rs.getString("news_id"));
+                news.setmPublisher(rs.getString("publisher"));
+                news.setmTime(rs.getString("time"));
+                news.setmTitle(rs.getString("title"));
+                news.setmContent(rs.getString("content"));
+
+                newsList.add(news);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return newsList;
+    }
+
+    public List getPurchasedCourse (Parent parent) {
+        String sql = "SELECT * FROM purchase WHERE parent_id = ? AND purchased = 'YSE'";
+        List<Purchase> purchases = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Purchase purchase = new Purchase();
+                purchase.setmParentId(rs.getString("parent_id"));
+                purchase.setmCourseId(rs.getString("course_id"));
+                purchase.setmPurchased(rs.getString("purchased").equals("YES") ? true : false);
+
+                purchases.add(purchase);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return purchases;
+    }
+
+    public List getPostInfo (Parent parent) {
+        String sql = "SELECT * FROM news WHERE course_id IN (SELECT course_id FROM purchase WHERE parent_id = ? AND purchased = 'YES')";
+        List<News> newsList = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,parent.getUsername());
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                News news = new News();
+                news.setmNewsId(rs.getString("news_id"));
+                news.setmPublisher(rs.getString("publisher"));
+                news.setmTime(rs.getString("time"));
+                news.setmTitle(rs.getString("title"));
+                news.setmContent(rs.getString("content"));
+
+                newsList.add(news);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return newsList;
+    }
+
+    public List getReviewTeacher () {
+        String sql = "SELECT * FROM teacher WHERE qualified = 'No'";
+        List<Teacher> teachers = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Teacher teacher = new Teacher();
+                teacher.setmTeacherName(rs.getString("tea_name"));
+                teacher.setmTeacherGender(Account.Gender.valueOf(rs.getString("tea_gender")));
+                teacher.setmTeacherBirthday(rs.getString("tea_birthday"));
+                teacher.setmTeacherIdNumber(rs.getString("tea_id_number"));
+                teacher.setmTeacherContact(rs.getString("tea_contact"));
+                teacher.setmTeacherIntroduction(rs.getString("tea_introduction"));
+                teacher.setmCourseField(Course.CourseField.valueOf((rs.getString("edu_field"))));
+                teacher.setmEduYear(rs.getInt("edu_year"));
+                teacher.setmEduAge(rs.getInt("edu_age"));
+                teacher.setmQualified(rs.getString("qualified").equals("YES"));
+
+                teachers.add(teacher);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return teachers;
+    }
+
+    public List getReviewEduOrg () {
+        String sql = "SELECT * FROM eduorg WHERE qualified = 'No'";
+        List<EduOrg> eduOrgs = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                EduOrg org = new EduOrg();
+                org.setOrgCode(rs.getString("org_code"));
+                org.setOrgAddress(rs.getString("org_address"));
+                org.setOrgContact(rs.getString("org_contact"));
+                org.setOrgIntroduction(rs.getString("org_introduction"));
+                org.setOrgEduField(Course.CourseField.valueOf(rs.getString("edu_field")));
+                org.setOrgEduAge(rs.getInt("edu_age"));
+                org.setQualified(rs.getString("qualified").equals("YES"));
+
+                eduOrgs.add(org);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return eduOrgs;
+    }
 
     //数据库的插入操作
     public void insertAccount(Account account) {
@@ -328,6 +449,70 @@ public class MySQLDAO {
 
     }
 
+    public void insertNews (News news) {
+        String sql = "INSERT INTO news (news_id, publisher, time, title, content, course_id) VALUES (?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,news.getmNewsId());
+            statement.setString(2,news.getmPublisher());
+            statement.setString(3,news.getmTime());
+            statement.setString(4,news.getmTitle());
+            statement.setString(5,news.getmContent());
+            statement.setString(6,news.getmCourseId());
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertNewsComment (NewsComment newsComment) {
+        String sql = "INSERT INTO newscomment (comment_id, news_id, publisher, time, content) VALUES (?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,newsComment.getmCommentId());
+            statement.setString(2,newsComment.getmNewsId());
+            statement.setString(3,newsComment.getmPublisher());
+            statement.setString(4,newsComment.getmTime());
+            statement.setString(5,newsComment.getmContent());
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void insertPreviewApp (PreviewApp previewApp) {
+        String sql = "INSERT INTO previewapp (parent_id, course_id, agreement) VALUES (?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,previewApp.getmParentId());
+            statement.setString(2,previewApp.getmCourseId());
+            statement.setString(3,previewApp.ismAgreement() ? "YES" : "NO");
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public  void insertPurchase (Purchase purchase) {
+        String sql = "INSERT INTO purchase (parent_id, course_id, purchased) VALUES (?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,purchase.getmParentId());
+            statement.setString(2,purchase.getmCourseId());
+            statement.setString(3,purchase.ismPurchased() ? "YES" : "NO");
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     //数据库的更新操作
     public void updateAccount(Account account) {
@@ -442,24 +627,24 @@ public class MySQLDAO {
     }
 
 
-    //数据库的删除操作
-    /*public void insertAccount(Account account) {
-        String sql = "INSERT INTO account (user_name, password, tel, email, user_type) " +
-                "VALUES (?, ?, ?, ?, ?)";
+    public void updateNews (News news) {
         try {
+            String sql = "UPDATE news SET publisher = ?, time = ?, title = ?,content = ?,course_id = ? WHERE news_id = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, account.getUsername());
-            statement.setString(2, account.getPassword());
-            statement.setString(3, account.getTel());
-            statement.setString(4, account.getEmail());
-            statement.setString(5, account.getUserType().toString());
+            statement.setString(1,news.getmPublisher());
+            statement.setString(2,news.getmTime());
+            statement.setString(3,news.getmTitle());
+            statement.setString(4,news.getmContent());
+            statement.setString(5,news.getmCourseId());
+            statement.setString(6,news.getmNewsId());
             statement.executeUpdate();
 
-            System.out.println("插入成功！");
+            System.out.println("更新成功！");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }*/
+    }
+
     public void deleteAccount (String user_name) {
         String sql = "DELETE FROM account WHERE user_name = ?";
         try {
@@ -517,6 +702,19 @@ public class MySQLDAO {
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, course_id);
+            statement.executeUpdate();
+
+            System.out.println("删除成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteNews (News news) {
+        String sql = "DELETE FROM news WHERE news_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,news.getmNewsId());
             statement.executeUpdate();
 
             System.out.println("删除成功！");
