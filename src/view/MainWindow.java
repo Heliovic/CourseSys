@@ -143,8 +143,6 @@ public class MainWindow {
         User = user;
         newsList = MySQLDAO.getInstance().getNewsInfo();
 
-        initUI();
-
         NotificationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -631,6 +629,9 @@ public class MainWindow {
                 ((DefaultTableModel) mCourseTable.getModel()).removeRow(row);
             }
         });
+
+
+        initUI();
     }
 
     private void initUI() {
@@ -745,6 +746,9 @@ public class MainWindow {
 
 
         mCoursePriceSpinner.setModel(spinnerPrice);
+
+        // 初始事件
+        NotificationButton.doClick();
 
         // JFrame界面
         JFrame frame = new JFrame("课程中介系统");
