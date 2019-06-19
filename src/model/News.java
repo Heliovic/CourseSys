@@ -6,6 +6,7 @@ public class News {
     private String mTime;
     private String mTitle;
     private String mContent;
+    private String mCourseId;
 
     public String getmNewsId() {
         return mNewsId;
@@ -45,5 +46,13 @@ public class News {
 
     public void setmContent(String mContent) {
         this.mContent = mContent;
+    }
+
+    public String getmCourseId() {
+        return mCourseId;
+    }
+
+    public void setmCourseId(String mCourseId) {
+        this.mCourseId = mCourseId;
     }
 }

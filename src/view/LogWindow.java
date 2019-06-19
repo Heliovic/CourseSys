@@ -22,9 +22,12 @@ public class LogWindow {
     private JButton RegButton;
 
     public LogWindow() {
-        List<News> list = MySQLDAO.getInstance().getNewsInfo();
-        for (News n : list){
-            System.out.println(n.getmNewsId());
+        Parent parent = new Parent();
+        parent.setUsername("001");
+        System.out.println(parent.getUsername());
+        List<News> newsList = MySQLDAO.getInstance().getPostInfo(parent);
+        for (News n : newsList){
+            System.out.println(n.getmNewsId() + n.getmPublisher());
         }
         LogButton.addActionListener(new ActionListener() {
             @Override
