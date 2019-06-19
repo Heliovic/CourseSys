@@ -204,7 +204,7 @@ public class MainWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (User.getUserType() == Account.UserType.SYSADMIN || User.getUsername() == newsList.get(currentRow).getmPublisher()) {
-                    MySQLDAO.getInstance().deleteNews(newsList.get(currentRow));
+                    MySQLDAO.getInstance().deleteNews(newsList.get(currentRow).getmNewsId());
                     NotificationButton.doClick();
                 } else {
                     JOptionPane.showMessageDialog(null, "无权限！");
