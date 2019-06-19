@@ -209,28 +209,107 @@ public class MySQLDAO {
         return courses;
     }
 
-    public List getNewsInfo (){
-        String sql = "SELECT * FROM news WHERE publisher IN (SELECT user_name FROM account WHERE user_type = 'SYSADMIN')";
+    public List getNewsInfo (Account account){
+        String sql_sys = "SELECT * FROM news ORDER BY time DESC ";
+        String sql_eduorg = "SELECT * FROM news WHERE publisher IN (SELECT user_name FROM account WHERE user_type = 'EDUORG') " +
+                "OR publisher IN (SELECT  user_name FROM account WHERE user_type = 'SYSADMIN') ORDER BY time DESC ";
+        String sql_teacher = "SELECT * FROM news WHERE publisher IN (SELECT user_name FROM account WHERE user_type = 'TEACHER') " +
+                "OR publisher IN (SELECT  user_name FROM account WHERE user_type = 'SYSADMIN') ORDER BY time DESC ";
+        String sql_parent = "SELECT * FROM news WHERE publisher IN (SELECT  user_name FROM account WHERE user_type = 'SYSADMIN')" +
+                "OR course_id IN (SELECT course_id FROM purchase WHERE parent_id = ? AND purchased = 'YES') ORDER BY time DESC ";
         List<News> newsList = new ArrayList<>();
         try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            ResultSet rs = statement.executeQuery();
+            if (account.getUserType().toString().equals("SYSADMIN")){
+                PreparedStatement statement = connection.prepareStatement(sql_sys);
+                ResultSet rs = statement.executeQuery();
 
-            while (rs.next()) {
-                News news = new News();
-                news.setmNewsId(rs.getString("news_id"));
-                news.setmPublisher(rs.getString("publisher"));
-                news.setmTime(rs.getString("time"));
-                news.setmTitle(rs.getString("title"));
-                news.setmContent(rs.getString("content"));
+                while (rs.next()) {
+                    News news = new News();
+                    news.setmNewsId(rs.getString("news_id"));
+                    news.setmPublisher(rs.getString("publisher"));
+                    news.setmTime(rs.getString("time"));
+                    news.setmTitle(rs.getString("title"));
+                    news.setmContent(rs.getString("content"));
+                    news.setmCourseId(rs.getString("course_id"));
 
-                newsList.add(news);
+                    newsList.add(news);
+                }
             }
+            if (account.getUserType().toString().equals("PARENT")) {
+                PreparedStatement statement = connection.prepareStatement(sql_parent);
+                statement.setString(1,account.getUsername());
+                ResultSet rs = statement.executeQuery();
 
+                while (rs.next()) {
+                    News news = new News();
+                    news.setmNewsId(rs.getString("news_id"));
+                    news.setmPublisher(rs.getString("publisher"));
+                    news.setmTime(rs.getString("time"));
+                    news.setmTitle(rs.getString("title"));
+                    news.setmContent(rs.getString("content"));
+                    news.setmCourseId(rs.getString("course_id"));
+
+                    newsList.add(news);
+                }
+            }
+            if (account.getUserType().toString().equals("TEACHER")) {
+                PreparedStatement statement = connection.prepareStatement(sql_teacher);
+                ResultSet rs = statement.executeQuery();
+
+                while (rs.next()) {
+                    News news = new News();
+                    news.setmNewsId(rs.getString("news_id"));
+                    news.setmPublisher(rs.getString("publisher"));
+                    news.setmTime(rs.getString("time"));
+                    news.setmTitle(rs.getString("title"));
+                    news.setmContent(rs.getString("content"));
+                    news.setmCourseId(rs.getString("course_id"));
+
+                    newsList.add(news);
+                }
+            }
+            if (account.getUserType().toString().equals("EDUORG")) {
+                PreparedStatement statement = connection.prepareStatement(sql_eduorg);
+                ResultSet rs = statement.executeQuery();
+
+                while (rs.next()) {
+                    News news = new News();
+                    news.setmNewsId(rs.getString("news_id"));
+                    news.setmPublisher(rs.getString("publisher"));
+                    news.setmTime(rs.getString("time"));
+                    news.setmTitle(rs.getString("title"));
+                    news.setmContent(rs.getString("content"));
+                    news.setmCourseId(rs.getString("course_id"));
+
+                    newsList.add(news);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return newsList;
+    }
+
+    public List getPreViewCourse (String username) {
+        String sql = "SELECT  * FROM previewapp WHERE parent_id = ?";
+        List<PreviewApp> previewApps = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,username);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                PreviewApp previewApp = new PreviewApp();
+                previewApp.setmParentId(username);
+                previewApp.setmCourseId(rs.getString("course_id"));
+                previewApp.setmAgreement(rs.getString("agreement").equals("YES") ? true : false);
+
+                previewApps.add(previewApp);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return previewApps;
     }
 
     public List getPurchasedCourse (String username) {
@@ -253,30 +332,6 @@ public class MySQLDAO {
             e.printStackTrace();
         }
         return purchases;
-    }
-
-    public List getPostInfo (String username) {
-        String sql = "SELECT * FROM news WHERE course_id IN (SELECT course_id FROM purchase WHERE parent_id = ? AND purchased = 'YES')";
-        List<News> newsList = new ArrayList<>();
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1,username);
-            ResultSet rs = statement.executeQuery();
-
-            while (rs.next()) {
-                News news = new News();
-                news.setmNewsId(rs.getString("news_id"));
-                news.setmPublisher(rs.getString("publisher"));
-                news.setmTime(rs.getString("time"));
-                news.setmTitle(rs.getString("title"));
-                news.setmContent(rs.getString("content"));
-
-                newsList.add(news);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return newsList;
     }
 
     public List getReviewTeacher () {
@@ -500,7 +555,7 @@ public class MySQLDAO {
         }
     }
 
-    public  void insertPurchase (Purchase purchase) {
+    public void insertPurchase (Purchase purchase) {
         String sql = "INSERT INTO purchase (parent_id, course_id, purchased) VALUES (?, ?, ?)";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -711,11 +766,11 @@ public class MySQLDAO {
         }
     }
 
-    public void deleteNews (News news) {
+    public void deleteNews (String news_id) {
         String sql = "DELETE FROM news WHERE news_id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1,news.getmNewsId());
+            statement.setString(1,news_id);
             statement.executeUpdate();
 
             System.out.println("删除成功！");

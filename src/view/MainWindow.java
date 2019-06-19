@@ -141,7 +141,7 @@ public class MainWindow {
 
     public MainWindow(Account user) {
         User = user;
-        newsList = MySQLDAO.getInstance().getNewsInfo();
+        newsList = MySQLDAO.getInstance().getNewsInfo(user);
 
         initUI();
 
@@ -156,7 +156,7 @@ public class MainWindow {
                 }
 
                 newsList.clear();
-                newsList = MySQLDAO.getInstance().getNewsInfo();
+                newsList = MySQLDAO.getInstance().getNewsInfo(user);
 
                 Vector rowDataSet = new Vector();
                 Vector names = new Vector();
