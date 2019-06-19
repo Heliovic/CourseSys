@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 18/06/2019 23:32:28
+ Date: 19/06/2019 23:43:08
 */
 
 SET NAMES utf8mb4;
@@ -35,7 +35,8 @@ CREATE TABLE `account`  (
 -- ----------------------------
 INSERT INTO `account` VALUES ('', '', '13905287474', 'heheheh@qqq.com', 'PARENT');
 INSERT INTO `account` VALUES ('00', '123', '123456', '123456789', 'EDUORG');
-INSERT INTO `account` VALUES ('001', NULL, NULL, NULL, 'PARENT');
+INSERT INTO `account` VALUES ('001', '001', NULL, NULL, 'PARENT');
+INSERT INTO `account` VALUES ('002', '002', NULL, NULL, 'PARENT');
 INSERT INTO `account` VALUES ('24', '113', '123', '123456789', 'TEACHER');
 INSERT INTO `account` VALUES ('2452', '11', '0', '123456789', 'SYSADMIN');
 INSERT INTO `account` VALUES ('254236', '', '', '', 'TEACHER');
@@ -67,10 +68,15 @@ CREATE TABLE `course`  (
 -- ----------------------------
 -- Records of course
 -- ----------------------------
-INSERT INTO `course` VALUES ('001', NULL, '000', '00', '0', '2452', NULL, 0, '0', '0');
 INSERT INTO `course` VALUES ('002', '000', '000', '00', '000', '2452', 0, 100, 'MATH', '000');
+INSERT INTO `course` VALUES ('123', '编译原理', '', '', '', '254236', 0, 0, 'DEFAULT', '');
 INSERT INTO `course` VALUES ('245210', '000', '000', '00', '000', '2452', 0, 100, 'MATH', '000');
 INSERT INTO `course` VALUES ('2462', '000', '000', '00', '000', '2452', 0, 100, 'MATH', '000');
+INSERT INTO `course` VALUES ('777', '数据库', '', '', '', '254236', 0, 0, 'CHEMISTRY', '');
+INSERT INTO `course` VALUES ('777456', '高等数学', '', '', '', '254236', 0, 0, 'BIOLOGY', '');
+INSERT INTO `course` VALUES ('CID1', '呵呵', '随便', '慕课', '呵呵', '00', 20, 10, 'MATH', '来上课就行');
+INSERT INTO `course` VALUES ('SE201901', '软件工程课程设计', '每周三', '计算机楼', '软件工程', '254236', 20, 2000, 'DEFAULT', '提交实验报告');
+INSERT INTO `course` VALUES ('sss', '', '', '', '呵呵', '00', 20, 10, 'MATH', '来上课就行');
 
 -- ----------------------------
 -- Table structure for eduorg
@@ -104,10 +110,20 @@ CREATE TABLE `news`  (
   `time` datetime(0) NULL DEFAULT NULL,
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `course_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`news_id`) USING BTREE,
   INDEX `news_publisher`(`publisher`) USING BTREE,
+  INDEX `news_course_id`(`course_id`) USING BTREE,
+  CONSTRAINT `news_course_id` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `news_publisher` FOREIGN KEY (`publisher`) REFERENCES `account` (`user_name`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of news
+-- ----------------------------
+INSERT INTO `news` VALUES ('1', '2452', '2019-06-14 13:37:14', '这这是一条新闻', '呵呵呵\n呵呵呵\n阿三开的吉林快就发神经df\n呵呵呵呵呵', NULL);
+INSERT INTO `news` VALUES ('3', '2452', '2019-06-04 14:29:02', '这不是新闻', '123456789\n凡是科技部发不发八点九分', NULL);
+INSERT INTO `news` VALUES ('4', '24', '2019-06-03 16:12:34', '774', '我确认', '123');
 
 -- ----------------------------
 -- Table structure for newscomment
@@ -122,8 +138,8 @@ CREATE TABLE `newscomment`  (
   PRIMARY KEY (`comment_id`) USING BTREE,
   INDEX `comment_publisher`(`publisher`) USING BTREE,
   INDEX `comment_news`(`news_id`) USING BTREE,
-  CONSTRAINT `comment_publisher` FOREIGN KEY (`publisher`) REFERENCES `account` (`user_name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `comment_news` FOREIGN KEY (`news_id`) REFERENCES `news` (`news_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `comment_news` FOREIGN KEY (`news_id`) REFERENCES `news` (`news_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `comment_publisher` FOREIGN KEY (`publisher`) REFERENCES `account` (`user_name`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -147,7 +163,8 @@ CREATE TABLE `parent`  (
 -- ----------------------------
 -- Records of parent
 -- ----------------------------
-INSERT INTO `parent` VALUES ('', '1', '2017-02-18', 'FEMALE', '1', '', 'DEFAULT', 1000, NULL);
+INSERT INTO `parent` VALUES ('', '李语尧', '1998-01-02', 'MALE', '陆子旭', '', 'DEFAULT', 1000, NULL);
+INSERT INTO `parent` VALUES ('001', 'hehe', '2019-06-10', 'MALE', '发发', '发发', 'DEFAULT', 20, '呵呵');
 INSERT INTO `parent` VALUES ('4444', '', '2019-06-17', 'MALE', '', '', 'DEFAULT', 1000, NULL);
 INSERT INTO `parent` VALUES ('4546', '45', '2019-06-17', 'MALE', '4', '5', 'DEFAULT', 1000, NULL);
 INSERT INTO `parent` VALUES ('456', '', '2019-06-17', 'MALE', '', '', 'DEFAULT', 1000, NULL);
@@ -182,6 +199,17 @@ CREATE TABLE `purchase`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of purchase
+-- ----------------------------
+INSERT INTO `purchase` VALUES ('', '245210', 'YES');
+INSERT INTO `purchase` VALUES ('', '777', 'YES');
+INSERT INTO `purchase` VALUES ('', 'SE201901', 'YES');
+INSERT INTO `purchase` VALUES ('', 'sss', 'YES');
+INSERT INTO `purchase` VALUES ('001', '123', 'YES');
+INSERT INTO `purchase` VALUES ('001', '2462', 'YES');
+INSERT INTO `purchase` VALUES ('002', '002', 'NO');
+
+-- ----------------------------
 -- Table structure for sysadmin
 -- ----------------------------
 DROP TABLE IF EXISTS `sysadmin`;
@@ -191,6 +219,11 @@ CREATE TABLE `sysadmin`  (
   PRIMARY KEY (`user_name`) USING BTREE,
   CONSTRAINT `user_name_sysadmin` FOREIGN KEY (`user_name`) REFERENCES `account` (`user_name`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sysadmin
+-- ----------------------------
+INSERT INTO `sysadmin` VALUES ('2452', NULL);
 
 -- ----------------------------
 -- Table structure for teacher
