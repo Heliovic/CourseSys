@@ -9,9 +9,9 @@ public class NewsBulletinWindow {
     private JTextArea MainTextArea;
     private JButton ChangeButton;
     private JButton SaveButton;
-    private JLabel TitleLabel;
     private JLabel DateLabel;
     private JLabel AuthorLabel;
+    private JTextField TitleField;
 
     public NewsBulletinWindow() {
         // JFrame界面

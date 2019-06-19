@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="view.MainWindow">
   <grid id="27dc6" binding="MainWindowPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-    <margin top="0" left="20" bottom="0" right="20"/>
+    <margin top="20" left="20" bottom="20" right="20"/>
     <constraints>
       <xy x="20" y="20" width="1200" height="900"/>
     </constraints>
@@ -77,19 +77,43 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="f4b33" class="javax.swing.JLabel">
+              <scrollpane id="26da1" binding="ListScrollPane">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="ba5ae" class="javax.swing.JList" binding="list1" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <font size="28"/>
+                      <model>
+                        <item value="新闻一"/>
+                        <item value="公告一"/>
+                        <item value="新闻二"/>
+                        <item value="公告二"/>
+                      </model>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
+              <component id="7fe27" class="javax.swing.JButton" binding="AddButton">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Label1"/>
+                  <text value="添加"/>
                 </properties>
               </component>
-              <vspacer id="80b8c">
+              <component id="40d75" class="javax.swing.JButton" binding="DeleteButton">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
-              </vspacer>
+                <properties>
+                  <text value="删除"/>
+                </properties>
+              </component>
             </children>
           </grid>
           <grid id="f3aba" binding="AccountInfoPanel" layout-manager="GridLayoutManager" row-count="14" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">

@@ -121,6 +121,10 @@ public class MainWindow {
     private JLabel CourseHomework;
     private JTextField mCourseHomeworkTextField;
     private JButton mInsertCourseButton;
+    private JButton AddButton;
+    private JButton DeleteButton;
+    private JList list1;
+    private JScrollPane ListScrollPane;
     private CardLayout cl;
 
     public MainWindow(Account user) {
