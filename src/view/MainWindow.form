@@ -99,6 +99,7 @@
                 </constraints>
                 <properties>
                   <text value="添加"/>
+                  <visible value="false"/>
                 </properties>
               </component>
               <component id="40d75" class="javax.swing.JButton" binding="DeleteButton">
@@ -107,6 +108,7 @@
                 </constraints>
                 <properties>
                   <text value="删除"/>
+                  <visible value="false"/>
                 </properties>
               </component>
             </children>

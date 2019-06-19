@@ -15,6 +15,8 @@ import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -22,6 +24,8 @@ import java.util.Vector;
 
 public class MainWindow {
     private Account User;
+    private List<News> newsList;
+
     private JPanel MainWindowPanel;
     private JPanel ButtonPanel;
     private JPanel CardPanel;
@@ -131,14 +135,17 @@ public class MainWindow {
     public MainWindow(Account user) {
         User = user;
 
-        initUI();
-
         NotificationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cl.show(CardPanel, "Notification");
 
-                List<News> newsList = MySQLDAO.getInstance().getNewsInfo();
+                if (User.getUserType() != Account.UserType.PARENT) {
+                    AddButton.setVisible(true);
+                    DeleteButton.setVisible(true);
+                }
+
+                newsList = MySQLDAO.getInstance().getNewsInfo();
 
                 Vector rowData = new Vector();
                 Vector rowDataSet = new Vector();
@@ -153,10 +160,25 @@ public class MainWindow {
                     rowData.add(news.getmTime());
                     rowDataSet.add(rowData);
                 }
-                DefaultTableModel model = new DefaultTableModel(rowDataSet, names);
+                DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
                 NotificationTable.setModel(model);
                 NotificationTable.getColumnModel().getColumn(0).setPreferredWidth(500);
                 NotificationTable.setRowHeight(28);
+                NotificationTable.getTableHeader().setPreferredSize(new Dimension(NotificationTable.getTableHeader().getWidth(), 28));
+            }
+        });
+        NotificationTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (e.getClickCount() == 2) {
+                    int row = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
+                    new NewsBulletinWindow(User, newsList.get(row));
+                }
             }
         });
         AccountInfoButton.addActionListener(new ActionListener() {
@@ -492,7 +514,6 @@ public class MainWindow {
                 mCourseQueryTable.setModel(model);
             }
         });
-
         mInsertCourseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -510,6 +531,8 @@ public class MainWindow {
                 MySQLDAO.getInstance().insertCourse(course);
             }
         });
+
+        initUI();
     }
 
     private void initUI() {
@@ -550,6 +573,9 @@ public class MainWindow {
         mCourseAgeSpinner.setModel(spinnerAge);
         mAgeSpin.setModel(spinnerAge);
         mCoursePriceSpinner.setModel(spinnerPrice);
+
+        // 通知公告点击事件
+        NotificationButton.doClick();
 
         // JFrame界面
         JFrame frame = new JFrame("课程中介系统");
