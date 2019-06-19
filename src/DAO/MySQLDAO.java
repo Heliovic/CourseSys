@@ -234,7 +234,7 @@ public class MySQLDAO {
     }
 
     public List getPurchasedCourse (String username) {
-        String sql = "SELECT * FROM purchase WHERE parent_id = ? AND purchased = 'YSE'";
+        String sql = "SELECT * FROM purchase WHERE parent_id = ? AND purchased = 'YES'";
         List<Purchase> purchases = new ArrayList<>();
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -253,6 +253,33 @@ public class MySQLDAO {
             e.printStackTrace();
         }
         return purchases;
+    }
+
+    public Course getCourseById(String course_id) {
+        String sql = "SELECT * FROM course WHERE course_id = ?";
+        Course course = new Course();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                course.setCourseId(rs.getString("course_id"));
+                course.setCourseName(rs.getString("course_name"));
+                course.setTime(rs.getString("time"));
+                course.setPlace(rs.getString("place"));
+                course.setContent(rs.getString("content"));
+                course.setTeachId(rs.getString("teach_id"));
+                course.setAgeRecommend(rs.getInt("age_recommend"));
+                course.setPrice(rs.getInt("price"));
+                course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
+                course.setHomeWork(rs.getString("homework"));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return course;
     }
 
     public List getPostInfo (String username) {

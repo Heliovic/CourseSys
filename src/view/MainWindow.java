@@ -3,6 +3,7 @@ package view;
 import DAO.MySQLDAO;
 import model.Course;
 import model.News;
+import model.Purchase;
 import model.account.Account;
 import model.account.EduOrg;
 import model.account.Parent;
@@ -22,6 +23,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -473,9 +475,11 @@ public class MainWindow {
                 cl.show(CardPanel, "CourseList");
 
                 if (User.getUserType() == Account.UserType.PARENT) {
-                    mEditSaveButton.setEnabled(false);
+                    mEditSaveButton.setVisible(false);
+                    mDeleteCourseButton.setVisible(false);
                 } else {
-                    mEditSaveButton.setEnabled(true);
+                    mEditSaveButton.setVisible(true);
+                    mDeleteCourseButton.setVisible(true);
                 }
             }
         });
@@ -558,7 +562,11 @@ public class MainWindow {
             public void actionPerformed(ActionEvent e) {
 
                 if (User.getUserType() == Account.UserType.PARENT) {
-                    List<Course> courses = MySQLDAO.getInstance().getPurchasedCourse(null);
+                    List<Purchase> p = MySQLDAO.getInstance().getPurchasedCourse(User.getUsername());
+                    List<Course> courses = new ArrayList<>();
+                    for (int i = 0; i < p.size(); i++) {
+                        courses.add(MySQLDAO.getInstance().getCourseById(p.get(i).getmCourseId()));
+                    }
                     Vector rowDataSet = new Vector();
                     Vector names = new Vector();
                     names.add("课程ID");
