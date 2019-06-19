@@ -171,7 +171,7 @@ public class MySQLDAO {
         return null;
     }
 
-    public List getCourseInfo(Course.CourseField field, String place, int age, int minPrice, int maxPrice) {
+    public List<Course> getCourseInfo(Course.CourseField field, String place, int age, int minPrice, int maxPrice) {
         String sql = "SELECT * FROM course WHERE course_field = ? AND place = ? AND age_recommend = ? " +
                 "AND price >= ? AND price <= ?";
 
@@ -418,6 +418,29 @@ public class MySQLDAO {
         }
     }
 
+    public void updateCourse(Course course) {
+        try {
+            String sql = "UPDATE course SET course_name = ?, time = ?, place = ?, content = ?, teach_id = ?, " +
+                    "age_recommend = ?, price = ?, course_field = ?, homework = ? WHERE course_id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course.getCourseName());
+            statement.setString(2, course.getTime());
+            statement.setString(3, course.getPlace());
+            statement.setString(4, course.getContent());
+            statement.setString(5, course.getTeachId());
+            statement.setInt(6, course.getAgeRecommend());
+            statement.setInt(7, course.getPrice());
+            statement.setString(8, course.getCourseField().toString());
+            statement.setString(9, course.getHomeWork());
+            statement.setString(10, course.getCourseId());
+            statement.executeUpdate();
+
+            System.out.println("更新成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     //数据库的删除操作
     /*public void insertAccount(Account account) {
@@ -437,11 +460,11 @@ public class MySQLDAO {
             e.printStackTrace();
         }
     }*/
-    public void deleteAccount (Account account) {
+    public void deleteAccount (String user_name) {
         String sql = "DELETE FROM account WHERE user_name = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1,account.getUsername());
+            statement.setString(1, user_name);
             statement.executeUpdate();
 
             System.out.println("删除成功！");
@@ -450,11 +473,11 @@ public class MySQLDAO {
         }
     }
 
-    public void deleteParent (Parent parent) {
+    public void deleteParent (String user_name) {
         String sql = "DELETE FROM parent WHERE user_name = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1,parent.getUsername());
+            statement.setString(1, user_name);
             statement.executeUpdate();
 
             System.out.println("删除成功！");
@@ -463,11 +486,11 @@ public class MySQLDAO {
         }
     }
 
-    public void deleteTeacher (Teacher teacher) {
+    public void deleteTeacher (String user_name) {
         String sql = "DELETE FROM teacher WHERE user_name = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1,teacher.getUsername());
+            statement.setString(1, user_name);
             statement.executeUpdate();
 
             System.out.println("删除成功！");
@@ -476,11 +499,11 @@ public class MySQLDAO {
         }
     }
 
-    public void deleteEduOrg (EduOrg eduOrg) {
+    public void deleteEduOrg (String user_name) {
         String sql = "DELETE FROM eduorg WHERE user_name = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1,eduOrg.getUsername());
+            statement.setString(1, user_name);
             statement.executeUpdate();
 
             System.out.println("删除成功！");
@@ -489,16 +512,49 @@ public class MySQLDAO {
         }
     }
 
-    public void deleteCourse (Course course) {
-        String sql = "DELETE FROM course WHERE user_name = ?";
+    public void deleteCourse (String course_id) {
+        String sql = "DELETE FROM course WHERE course_id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1,course.getCourseId());
+            statement.setString(1, course_id);
             statement.executeUpdate();
 
             System.out.println("删除成功！");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Course> getTeacherCourseList(String username) {
+        String sql = "SELECT * FROM course WHERE teach_id = ?";
+
+        List<Course> courses = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setString(1, username);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Course course = new Course();
+                course.setCourseId(rs.getString("course_id"));
+                course.setCourseName(rs.getString("course_name"));
+                course.setTime(rs.getString("time"));
+                course.setPlace(rs.getString("place"));
+                course.setContent(rs.getString("content"));
+                course.setTeachId(rs.getString("teach_id"));
+                course.setAgeRecommend(rs.getInt("age_recommend"));
+                course.setPrice(rs.getInt("price"));
+                course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
+                course.setHomeWork(rs.getString("homework"));
+
+                courses.add(course);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return courses;
     }
 }
