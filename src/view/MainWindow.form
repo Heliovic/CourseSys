@@ -137,6 +137,7 @@
                 </constraints>
                 <properties>
                   <editable value="false"/>
+                  <enabled value="true"/>
                 </properties>
               </component>
               <component id="ada9c" class="javax.swing.JLabel" binding="PasswdLabel">
