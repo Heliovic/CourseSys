@@ -339,7 +339,7 @@ public class MainWindow {
                         ChildAgeField.setText(String.valueOf(((Parent) User).getChildAge()));
                         ChildNameField.setText(((Parent) User).getChildName());
                         ParentNameField.setText(((Parent) User).getParentName());
-                        ParentContactField.setText(((Parent) User).getCoursePlace());
+                        ParentContactField.setText(((Parent) User).getParentContact());
                         ChildGenderComboBox.setSelectedIndex(((Parent) User).getChildGender().ordinal());
                         break;
                 }
