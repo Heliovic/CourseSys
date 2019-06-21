@@ -3,6 +3,7 @@ package view;
 import DAO.MySQLDAO;
 import model.Course;
 import model.News;
+import model.PreviewApp;
 import model.Purchase;
 import model.account.Account;
 import model.account.EduOrg;
@@ -145,6 +146,11 @@ public class MainWindow {
     private JButton mPurchaseButton;
     private JTable mShoppingCartTable;
     private JButton mRemoveCartButton;
+    private JButton mPreviewButton;
+    private JButton MyPreviewButton;
+    private JPanel ParentPreviewPanel;
+    private JButton mCancelPreviewButton;
+    private JTable mMyPreviewTable;
     private CardLayout cl;
 
     public MainWindow(Account user) {
@@ -541,6 +547,7 @@ public class MainWindow {
                 names.add("价格");
                 names.add("课程类别");
                 names.add("作业");
+                names.add("评分");
                 for (Course course : courses){
                     Vector rowData = new Vector();
                     rowData.add(course.getCourseId());
@@ -553,6 +560,7 @@ public class MainWindow {
                     rowData.add(course.getPrice());
                     rowData.add(course.getCourseField().toString());
                     rowData.add(course.getHomeWork());
+                    rowData.add(course.getAvgMark());
                     rowDataSet.add(rowData);
                 }
                 DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
@@ -595,6 +603,7 @@ public class MainWindow {
                 names.add("价格");
                 names.add("课程类别");
                 names.add("作业");
+                names.add("评分");
                 for (Course course : courses){
                     Vector rowData = new Vector();
                     rowData.add(course.getCourseId());
@@ -607,6 +616,7 @@ public class MainWindow {
                     rowData.add(course.getPrice());
                     rowData.add(course.getCourseField().toString());
                     rowData.add(course.getHomeWork());
+                    rowData.add(course.getAvgMark());
                     rowDataSet.add(rowData);
                 }
                 DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
@@ -797,6 +807,56 @@ public class MainWindow {
                 ((DefaultTableModel) mShoppingCartTable.getModel()).removeRow(row);
             }
         });
+        MyPreviewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cl.show(CardPanel, "ParentPreviewPanel");
+                List<PreviewApp> apps = MySQLDAO.getInstance().getParentPreviewCourse(User.getUsername());
+                //System.out.println(field.toString() + place + String.valueOf(age) + minPrice + maxPrice);
+                Vector rowDataSet = new Vector();
+                Vector names = new Vector();
+                names.add("课程ID");
+                names.add("课程名称");
+                names.add("教授机构/教师ID");
+                names.add("状态");
+                for (PreviewApp app : apps){
+                    Vector rowData = new Vector();
+                    Course course = MySQLDAO.getInstance().getCourseById(app.getmCourseId());
+                    rowData.add(app.getmCourseId());
+                    rowData.add(course.getCourseName());
+                    rowData.add(course.getTeachId());
+                    rowData.add(app.ismAgreement() ? "允许" : "尚未允许");
+                    rowDataSet.add(rowData);
+                }
+                DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                mMyPreviewTable.setModel(model);
+            }
+        });
+        mPreviewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = mCourseQueryTable.getSelectedRow();
+                String course_id = mCourseQueryTable.getValueAt(row, 0).toString();
+                PreviewApp app = new PreviewApp();
+                app.setmCourseId(course_id);
+                app.setmParentId(User.getUsername());
+                app.setmAgreement(false);
+                MySQLDAO.getInstance().insertPreviewApp(app);
+            }
+        });
+        mCancelPreviewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = mMyPreviewTable.getSelectedRow();
+                String course_id = mMyPreviewTable.getValueAt(row, 0).toString();
+                MySQLDAO.getInstance().deleteParentPreview(User.getUsername(), course_id);
+                ((DefaultTableModel) mMyPreviewTable.getModel()).removeRow(row);
+            }
+        });
         initUI();
     }
 
@@ -880,6 +940,7 @@ public class MainWindow {
                 ParentNameField.setVisible(true);
                 ParentContactLabel.setVisible(true);
                 ParentContactField.setVisible(true);
+                MyPreviewButton.setVisible(true);
                 break;
         }
 

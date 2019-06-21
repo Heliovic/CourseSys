@@ -173,7 +173,7 @@ public class MySQLDAO {
 
     public List<Course> getCourseInfo(Course.CourseField field, String place, int age, int minPrice, int maxPrice) {
         String sql = "SELECT * FROM course WHERE course_field = ? AND place = ? AND age_recommend = ? " +
-                "AND price >= ? AND price <= ?";
+                "AND price >= ? AND price <= ? ORDER BY avg_mark DESC";
 
         List<Course> courses = new ArrayList<>();
         try {
@@ -199,6 +199,8 @@ public class MySQLDAO {
                 course.setPrice(rs.getInt("price"));
                 course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
                 course.setHomeWork(rs.getString("homework"));
+                course.setAvgMark(rs.getInt("avg_mark"));
+                course.setMarkCount(rs.getInt("mark_count"));
 
                 courses.add(course);
             }
@@ -291,7 +293,7 @@ public class MySQLDAO {
         return newsList;
     }
 
-    public List getPreViewCourse (String username) {
+    public List<PreviewApp> getParentPreviewCourse (String username) {
         String sql = "SELECT  * FROM previewapp WHERE parent_id = ?";
         List<PreviewApp> previewApps = new ArrayList<>();
         try {
@@ -376,6 +378,8 @@ public class MySQLDAO {
                 course.setPrice(rs.getInt("price"));
                 course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
                 course.setHomeWork(rs.getString("homework"));
+                course.setAvgMark(rs.getInt("avg_mark"));
+                course.setMarkCount(rs.getInt("mark_count"));
 
             }
         } catch (SQLException e) {
@@ -484,6 +488,8 @@ public class MySQLDAO {
                 course.setPrice(rs.getInt("price"));
                 course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
                 course.setHomeWork(rs.getString("homework"));
+                course.setAvgMark(rs.getInt("avg_mark"));
+                course.setMarkCount(rs.getInt("mark_count"));
 
                 courses.add(course);
             }
@@ -590,7 +596,7 @@ public class MySQLDAO {
 
     public void insertCourse (Course course) {
         String sql = "INSERT INTO course (course_id, course_name, time, place, content, teach_id, age_recommend, price, course_field,"+
-                " homework) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                " homework, avg_mark, mark_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,course.getCourseId());
@@ -603,6 +609,8 @@ public class MySQLDAO {
             statement.setInt(8,course.getPrice());
             statement.setString(9,course.getCourseField().toString());
             statement.setString(10,course.getHomeWork());
+            statement.setInt(11, course.getAvgMark());
+            statement.setInt(12, course.getMarkCount());
             statement.executeUpdate();
 
             System.out.println("插入成功！");
@@ -769,7 +777,8 @@ public class MySQLDAO {
     public void updateCourse(Course course) {
         try {
             String sql = "UPDATE course SET course_name = ?, time = ?, place = ?, content = ?, teach_id = ?, " +
-                    "age_recommend = ?, price = ?, course_field = ?, homework = ? WHERE course_id = ?";
+                    "age_recommend = ?, price = ?, course_field = ?, homework = ?, avg_mark = ?, mark_count = ?," +
+                    " WHERE course_id = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, course.getCourseName());
             statement.setString(2, course.getTime());
@@ -781,6 +790,8 @@ public class MySQLDAO {
             statement.setString(8, course.getCourseField().toString());
             statement.setString(9, course.getHomeWork());
             statement.setString(10, course.getCourseId());
+            statement.setInt(11, course.getAvgMark());
+            statement.setInt(12, course.getMarkCount());
             statement.executeUpdate();
 
             System.out.println("更新成功！");
@@ -906,6 +917,20 @@ public class MySQLDAO {
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, parent_id);
+            statement.setString(2, course_id);
+            statement.executeUpdate();
+
+            System.out.println("删除成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteParentPreview(String parent_username, String course_id) {
+        String sql = "DELETE FROM previewapp WHERE parent_id = ? AND course_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, parent_username);
             statement.setString(2, course_id);
             statement.executeUpdate();
 

@@ -20,6 +20,13 @@ public class Course {
     private int mPrice;
     private CourseField mCourseField;
     private String mHomeWork;
+    private int mAvgMark;
+    private int mMarkCount;
+
+    public Course() {
+        mAvgMark = 3;
+        mMarkCount = 1;
+    }
 
     public String getCourseId() {
         return mCourseId;
@@ -99,5 +106,21 @@ public class Course {
 
     public void setHomeWork(String homeWork) {
         mHomeWork = homeWork;
+    }
+
+    public int getAvgMark() {
+        return mAvgMark;
+    }
+
+    public void setAvgMark(int avgMark) {
+        mAvgMark = avgMark;
+    }
+
+    public int getMarkCount() {
+        return mMarkCount;
+    }
+
+    public void setMarkCount(int markCount) {
+        mMarkCount = markCount;
     }
 }
