@@ -16,7 +16,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 import javax.swing.text.DateFormatter;
+import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -228,21 +230,23 @@ public class MainWindow {
                 SaveButton.setEnabled(false);
 
                 // JFormattedTextField 限制
-                DateFormatter dateform = new DateFormatter(new SimpleDateFormat("yyyy-MM-dd")); // 日期
                 try {
-                    MaskFormatter phoneform = new MaskFormatter("###########");     // 电话
-                    MaskFormatter yearform = new MaskFormatter("####");             // 年
-                    MaskFormatter IDform = new MaskFormatter("#################*"); // 身份证号
-                    ChildBirField.setValue(dateform);
-                    ChildAgeField.setValue(NumberFormat.getIntegerInstance());      // 数字
-                    TelephoneField.setValue(phoneform);
-                    OrgEduAgeField.setValue(NumberFormat.getIntegerInstance());
-                    TeacherYearLabelField.setValue(yearform);
-                    TeacherEduAgeField.setValue(NumberFormat.getIntegerInstance());
-                    TeacherAgeField.setValue(NumberFormat.getIntegerInstance());
-                    TeacherIDField.setValue(IDform);
-                } catch (Exception exce) {
-                    exce.printStackTrace();
+                    DefaultFormatterFactory dateform = new DefaultFormatterFactory(new DateFormatter(new SimpleDateFormat("yyyy-MM-dd"))); // 日期
+                    DefaultFormatterFactory phoneform = new DefaultFormatterFactory(new MaskFormatter("###########"));     // 电话
+                    DefaultFormatterFactory yearform = new DefaultFormatterFactory(new MaskFormatter("####"));             // 年
+                    DefaultFormatterFactory IDform = new DefaultFormatterFactory(new MaskFormatter("#################*")); // 身份证号
+                    DefaultFormatterFactory Numform = new DefaultFormatterFactory(new NumberFormatter(NumberFormat.getIntegerInstance())); // 数字
+                    ChildBirField.setFormatterFactory(dateform);
+                    ChildAgeField.setFormatterFactory(Numform);
+                    TelephoneField.setFormatterFactory(phoneform);
+                    OrgEduAgeField.setFormatterFactory(Numform);
+                    TeacherYearLabelField.setFormatterFactory(yearform);
+                    TeacherEduAgeField.setFormatterFactory(Numform);
+                    TeacherAgeField.setFormatterFactory(Numform);
+                    TeacherIDField.setFormatterFactory(IDform);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, ("信息有格式错误：" + ex.getMessage()));
                 }
 
                 // 复选框初始化
@@ -341,7 +345,7 @@ public class MainWindow {
                         ChildAgeField.setText(String.valueOf(((Parent) User).getChildAge()));
                         ChildNameField.setText(((Parent) User).getChildName());
                         ParentNameField.setText(((Parent) User).getParentName());
-                        ParentContactField.setText(((Parent) User).getCoursePlace());
+                        ParentContactField.setText(((Parent) User).getParentContact());
                         ChildGenderComboBox.setSelectedIndex(((Parent) User).getChildGender().ordinal());
                         break;
                 }
@@ -864,82 +868,19 @@ public class MainWindow {
         // 卡片布局
         cl = (CardLayout) CardPanel.getLayout();
 
-        // JFormattedTextField 限制
-        DateFormatter dateform = new DateFormatter(new SimpleDateFormat("yyyy-MM-dd")); // 日期
-        try {
-            MaskFormatter phoneform = new MaskFormatter("###########");     // 电话
-            MaskFormatter yearform = new MaskFormatter("####");             // 年
-            MaskFormatter IDform = new MaskFormatter("#################*"); // 身份证号
-            ChildBirField.setValue(dateform);
-            ChildAgeField.setValue(NumberFormat.getIntegerInstance());      // 数字
-            TelephoneField.setValue(phoneform);
-            OrgEduAgeField.setValue(NumberFormat.getIntegerInstance());
-            TeacherYearLabelField.setValue(yearform);
-            TeacherEduAgeField.setValue(NumberFormat.getIntegerInstance());
-            TeacherAgeField.setValue(NumberFormat.getIntegerInstance());
-            TeacherIDField.setValue(IDform);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         // 各个用户界面
         switch (User.getUserType()) {
             case SYSADMIN:
                 break;
             case EDUORG:
                 CourseInsertButton.setVisible(true);
-                // 信息
-                OrgCodeLabel.setVisible(true);
-                OrgCodeField.setVisible(true);
-                OrgAddressLabel.setVisible(true);
-                OrgAddressField.setVisible(true);
-                OrgCourseLabel.setVisible(true);
-                OrgCourseComboBox.setVisible(true);
-                OrgEduAgeLabel.setVisible(true);
-                OrgEduAgeField.setVisible(true);
-                OrgContactLabel.setVisible(true);
-                OrgContactField.setVisible(true);
-                OrgIntroductionLabel.setVisible(true);
-                OrgIntroductionField.setVisible(true);
                 break;
             case TEACHER:
                 CourseInsertButton.setVisible(true);
-                // 信息
-                TeacherNameField.setVisible(true);
-                TeacherGenderComboBox.setVisible(true);
-                TeacherYearLabelField.setVisible(true);
-                TeacherEduAgeField.setVisible(true);
-                TeacherContactField.setVisible(true);
-                TeacherIntroductionField.setVisible(true);
-                TeacherIntroductionLabel.setVisible(true);
-                TeacherEduAgeLabel.setVisible(true);
-                TeacherCourseLabel.setVisible(true);
-                TeacherAgeLabel.setVisible(true);
-                TeacherNameLabel.setVisible(true);
-                TeacherGenderLabel.setVisible(true);
-                TeacherIDLabel.setVisible(true);
-                TeacherAgeField.setVisible(true);
-                TeacherIDField.setVisible(true);
-                TeacherCourseComboBox.setVisible(true);
-                TeacherYearLabel.setVisible(true);
-                TeacherContactLabel.setVisible(true);
                 break;
             case PARENT:
                 CourseQueryButton.setVisible(true);
                 ShoppingCartButton.setVisible(true);
-                // 信息
-                ChildNameLabel.setVisible(true);
-                ChildAgeLabel.setVisible(true);
-                ChildAgeField.setVisible(true);
-                ChildBirLabel.setVisible(true);
-                ChildNameField.setVisible(true);
-                ChildBirField.setVisible(true);
-                ChildGenderLabel.setVisible(true);
-                ChildGenderComboBox.setVisible(true);
-                ParentNameLabel.setVisible(true);
-                ParentNameField.setVisible(true);
-                ParentContactLabel.setVisible(true);
-                ParentContactField.setVisible(true);
                 MyPreviewButton.setVisible(true);
                 break;
         }
@@ -947,15 +888,8 @@ public class MainWindow {
         // 复选框初始化
         for (Course.CourseField field : Course.CourseField.values()) {
             mCourseFieldComboBox.addItem(field.toString());
-            TeacherCourseComboBox.addItem(field.toString());
-            OrgCourseComboBox.addItem(field.toString());
             mInsertCourseFieldComboBox.addItem(field.toString());
         }
-
-        TeacherGenderComboBox.addItem("MALE");
-        TeacherGenderComboBox.addItem("FEMALE");
-        ChildGenderComboBox.addItem("MALE");
-        ChildGenderComboBox.addItem("FEMALE");
 
         mPriceRangeComboBox.addItem("0-200");
         mPriceRangeComboBox.addItem("201-500");

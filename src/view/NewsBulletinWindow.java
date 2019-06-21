@@ -41,8 +41,8 @@ public class NewsBulletinWindow {
         });
 
         TitleField.setText(newsBulletin.getmTitle());
-        DateLabel.setText(newsBulletin.getmTime());
-        AuthorLabel.setText(newsBulletin.getmPublisher());
+        DateLabel.setText("日期：" + newsBulletin.getmTime());
+        AuthorLabel.setText("作者：" + newsBulletin.getmPublisher());
         MainTextArea.setText(newsBulletin.getmContent());
 
         if (user.getUserType() == Account.UserType.SYSADMIN || user.getUsername() == newsBulletin.getmPublisher()) {
