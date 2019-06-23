@@ -177,7 +177,7 @@ public class MySQLDAO {
 
         if (place.equals(""))
             sql = "SELECT * FROM course WHERE course_field = ? AND (place LIKE '%' OR place = ?) AND age_recommend = ? " +
-                "AND price >= ? AND price <= ? ORDER BY avg_mark DESC";
+                    "AND price >= ? AND price <= ? ORDER BY avg_mark DESC";
         else
             sql = "SELECT * FROM course WHERE course_field = ? AND place = ? AND age_recommend = ? " +
                     "AND price >= ? AND price <= ? ORDER BY avg_mark DESC";
@@ -871,6 +871,20 @@ public class MySQLDAO {
             statement.setString(1, previewApp.ismAgreement() ? "YES" : "NO");
             statement.setString(2, previewApp.getmParentId());
             statement.setString(3, previewApp.getmCourseId());
+            statement.executeUpdate();
+
+            System.out.println("更新成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateComment (NewsComment newsComment) {
+        String sql = "newscomment SET content = ? WHERE comment_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,newsComment.getmContent());
+            statement.setString(2,newsComment.getmCommentId());
             statement.executeUpdate();
 
             System.out.println("更新成功！");
