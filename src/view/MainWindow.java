@@ -153,6 +153,10 @@ public class MainWindow {
     private JPanel ParentPreviewPanel;
     private JButton mCancelPreviewButton;
     private JTable mMyPreviewTable;
+    private JPanel PreviewAppPanel;
+    private JButton PreviewAppButton;
+    private JTable mPreviewAppTable;
+    private JButton mPermitButton;
     private CardLayout cl;
 
     public MainWindow(Account user) {
@@ -861,6 +865,55 @@ public class MainWindow {
                 ((DefaultTableModel) mMyPreviewTable.getModel()).removeRow(row);
             }
         });
+        PreviewAppButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cl.show(CardPanel, "PreviewAppPanel");
+
+                List<PreviewApp> apps = MySQLDAO.getInstance().getTeachPreviewApp(User.getUsername());
+                //System.out.println(field.toString() + place + String.valueOf(age) + minPrice + maxPrice);
+                Vector rowDataSet = new Vector();
+                Vector names = new Vector();
+                names.add("课程ID");
+                names.add("课程名称");
+                names.add("用户ID");
+                names.add("用户联系方式");
+                names.add("状态");
+                for (PreviewApp app : apps){
+                    Vector rowData = new Vector();
+                    Course course = MySQLDAO.getInstance().getCourseById(app.getmCourseId());
+                    Parent parent = MySQLDAO.getInstance().getParentByUsername(app.getmParentId());
+                    rowData.add(app.getmCourseId());
+                    rowData.add(course.getCourseName());
+                    rowData.add(parent.getUsername());
+                    rowData.add(parent.getParentContact());
+                    if (app.ismAgreement())
+                        continue;
+                    rowData.add("尚未允许");
+                    rowDataSet.add(rowData);
+                }
+                DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                mPreviewAppTable.setModel(model);
+            }
+        });
+        mPermitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = mPreviewAppTable.getSelectedRow();
+                String course_id = mPreviewAppTable.getValueAt(row, 0).toString();
+                String parent_id = mPreviewAppTable.getValueAt(row, 2).toString();
+                PreviewApp previewApp = new PreviewApp();
+                previewApp.setmCourseId(course_id);
+                previewApp.setmParentId(parent_id);
+                previewApp.setmAgreement(true);
+                MySQLDAO.getInstance().updatePreviewApp(previewApp);
+                ((DefaultTableModel) mPreviewAppTable.getModel()).removeRow(row);
+            }
+        });
         initUI();
     }
 
@@ -874,9 +927,11 @@ public class MainWindow {
                 break;
             case EDUORG:
                 CourseInsertButton.setVisible(true);
+                PreviewAppButton.setVisible(true);
                 break;
             case TEACHER:
                 CourseInsertButton.setVisible(true);
+                PreviewAppButton.setVisible(true);
                 break;
             case PARENT:
                 CourseQueryButton.setVisible(true);

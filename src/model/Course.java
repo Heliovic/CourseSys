@@ -20,11 +20,11 @@ public class Course {
     private int mPrice;
     private CourseField mCourseField;
     private String mHomeWork;
-    private int mAvgMark;
+    private double mAvgMark;
     private int mMarkCount;
 
     public Course() {
-        mAvgMark = 3;
+        mAvgMark = 3.0;
         mMarkCount = 1;
     }
 
@@ -108,11 +108,11 @@ public class Course {
         mHomeWork = homeWork;
     }
 
-    public int getAvgMark() {
+    public double getAvgMark() {
         return mAvgMark;
     }
 
-    public void setAvgMark(int avgMark) {
+    public void setAvgMark(double avgMark) {
         mAvgMark = avgMark;
     }
 
