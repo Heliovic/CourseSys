@@ -834,7 +834,7 @@ public class MySQLDAO {
         }
     }
 
-    public void updateComment (NewsComment newsComment) {
+    public void updateNewsComment (NewsComment newsComment) {
         String sql = "newscomment SET content = ? WHERE comment_id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -946,6 +946,19 @@ public class MySQLDAO {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, parent_username);
             statement.setString(2, course_id);
+            statement.executeUpdate();
+
+            System.out.println("删除成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteNewsComment (String newcomment_id) {
+        String sql = "DELETE FROM newscomment WHERE comment_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,newcomment_id);
             statement.executeUpdate();
 
             System.out.println("删除成功！");
