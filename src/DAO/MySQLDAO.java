@@ -172,8 +172,15 @@ public class MySQLDAO {
     }
 
     public List<Course> getCourseInfo(Course.CourseField field, String place, int age, int minPrice, int maxPrice) {
-        String sql = "SELECT * FROM course WHERE course_field = ? AND place = ? AND age_recommend = ? " +
-                "AND price >= ? AND price <= ? ORDER BY avg_mark DESC";
+        String sql;
+
+
+        if (place.equals(""))
+            sql = "SELECT * FROM course WHERE course_field = ? AND (place LIKE '%' OR place = ?) AND age_recommend = ? " +
+                    "AND price >= ? AND price <= ? ORDER BY avg_mark DESC";
+        else
+            sql = "SELECT * FROM course WHERE course_field = ? AND place = ? AND age_recommend = ? " +
+                    "AND price >= ? AND price <= ? ORDER BY avg_mark DESC";
 
         List<Course> courses = new ArrayList<>();
         try {
@@ -199,7 +206,7 @@ public class MySQLDAO {
                 course.setPrice(rs.getInt("price"));
                 course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
                 course.setHomeWork(rs.getString("homework"));
-                course.setAvgMark(rs.getInt("avg_mark"));
+                course.setAvgMark(rs.getDouble("avg_mark"));
                 course.setMarkCount(rs.getInt("mark_count"));
 
                 courses.add(course);
@@ -378,7 +385,7 @@ public class MySQLDAO {
                 course.setPrice(rs.getInt("price"));
                 course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
                 course.setHomeWork(rs.getString("homework"));
-                course.setAvgMark(rs.getInt("avg_mark"));
+                course.setAvgMark(rs.getDouble("avg_mark"));
                 course.setMarkCount(rs.getInt("mark_count"));
 
             }
@@ -440,6 +447,29 @@ public class MySQLDAO {
         return teachers;
     }
 
+    public List<PreviewApp> getTeachPreviewApp(String teach_id) {
+        String sql = "SELECT  * FROM previewapp WHERE course_id IN (" +
+                "SELECT course_id FROM course WHERE teach_id = ?)";
+        List<PreviewApp> previewApps = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, teach_id);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                PreviewApp previewApp = new PreviewApp();
+                previewApp.setmParentId(rs.getString("parent_id"));
+                previewApp.setmCourseId(rs.getString("course_id"));
+                previewApp.setmAgreement(rs.getString("agreement").equals("YES") ? true : false);
+
+                previewApps.add(previewApp);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return previewApps;
+    }
+
     public List getReviewEduOrg () {
         String sql = "SELECT * FROM eduorg WHERE qualified = 'No'";
         List<EduOrg> eduOrgs = new ArrayList<>();
@@ -488,7 +518,7 @@ public class MySQLDAO {
                 course.setPrice(rs.getInt("price"));
                 course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
                 course.setHomeWork(rs.getString("homework"));
-                course.setAvgMark(rs.getInt("avg_mark"));
+                course.setAvgMark(rs.getDouble("avg_mark"));
                 course.setMarkCount(rs.getInt("mark_count"));
 
                 courses.add(course);
@@ -609,7 +639,7 @@ public class MySQLDAO {
             statement.setInt(8,course.getPrice());
             statement.setString(9,course.getCourseField().toString());
             statement.setString(10,course.getHomeWork());
-            statement.setInt(11, course.getAvgMark());
+            statement.setDouble(11, course.getAvgMark());
             statement.setInt(12, course.getMarkCount());
             statement.executeUpdate();
 
@@ -777,7 +807,7 @@ public class MySQLDAO {
     public void updateCourse(Course course) {
         try {
             String sql = "UPDATE course SET course_name = ?, time = ?, place = ?, content = ?, teach_id = ?, " +
-                    "age_recommend = ?, price = ?, course_field = ?, homework = ?, avg_mark = ?, mark_count = ?," +
+                    "age_recommend = ?, price = ?, course_field = ?, homework = ?, avg_mark = ?, mark_count = ?" +
                     " WHERE course_id = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, course.getCourseName());
@@ -789,9 +819,9 @@ public class MySQLDAO {
             statement.setInt(7, course.getPrice());
             statement.setString(8, course.getCourseField().toString());
             statement.setString(9, course.getHomeWork());
-            statement.setString(10, course.getCourseId());
-            statement.setInt(11, course.getAvgMark());
-            statement.setInt(12, course.getMarkCount());
+            statement.setDouble(10, course.getAvgMark());
+            statement.setInt(11, course.getMarkCount());
+            statement.setString(12, course.getCourseId());
             statement.executeUpdate();
 
             System.out.println("更新成功！");
@@ -826,6 +856,21 @@ public class MySQLDAO {
             statement.setString(1,purchase.ismPurchased() ? "YES" : "NO");
             statement.setString(2,purchase.getmParentId());
             statement.setString(3,purchase.getmCourseId());
+            statement.executeUpdate();
+
+            System.out.println("更新成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updatePreviewApp(PreviewApp previewApp) {
+        String sql = "UPDATE previewapp SET agreement = ? WHERE parent_id = ? AND course_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, previewApp.ismAgreement() ? "YES" : "NO");
+            statement.setString(2, previewApp.getmParentId());
+            statement.setString(3, previewApp.getmCourseId());
             statement.executeUpdate();
 
             System.out.println("更新成功！");
