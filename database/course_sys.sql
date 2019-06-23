@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 19/06/2019 23:43:08
+ Date: 22/06/2019 09:11:56
 */
 
 SET NAMES utf8mb4;
@@ -60,6 +60,8 @@ CREATE TABLE `course`  (
   `price` decimal(10, 0) NULL DEFAULT NULL,
   `course_field` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `homework` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `avg_mark` decimal(10, 0) NULL DEFAULT NULL,
+  `mark_count` decimal(10, 0) NULL DEFAULT NULL,
   PRIMARY KEY (`course_id`) USING BTREE,
   INDEX `course_teacher_id`(`teach_id`) USING BTREE,
   CONSTRAINT `course_teacher_id` FOREIGN KEY (`teach_id`) REFERENCES `account` (`user_name`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -68,15 +70,15 @@ CREATE TABLE `course`  (
 -- ----------------------------
 -- Records of course
 -- ----------------------------
-INSERT INTO `course` VALUES ('002', '000', '000', '00', '000', '2452', 0, 100, 'MATH', '000');
-INSERT INTO `course` VALUES ('123', '编译原理', '', '', '', '254236', 0, 0, 'DEFAULT', '');
-INSERT INTO `course` VALUES ('245210', '000', '000', '00', '000', '2452', 0, 100, 'MATH', '000');
-INSERT INTO `course` VALUES ('2462', '000', '000', '00', '000', '2452', 0, 100, 'MATH', '000');
-INSERT INTO `course` VALUES ('777', '数据库', '', '', '', '254236', 0, 0, 'CHEMISTRY', '');
-INSERT INTO `course` VALUES ('777456', '高等数学', '', '', '', '254236', 0, 0, 'BIOLOGY', '');
-INSERT INTO `course` VALUES ('CID1', '呵呵', '随便', '慕课', '呵呵', '00', 20, 10, 'MATH', '来上课就行');
-INSERT INTO `course` VALUES ('SE201901', '软件工程课程设计', '每周三', '计算机楼', '软件工程', '254236', 20, 2000, 'DEFAULT', '提交实验报告');
-INSERT INTO `course` VALUES ('sss', '', '', '', '呵呵', '00', 20, 10, 'MATH', '来上课就行');
+INSERT INTO `course` VALUES ('002', '000', '000', '00', '000', '2452', 0, 100, 'MATH', '000', 4, 2);
+INSERT INTO `course` VALUES ('123', '编译原理', '', '', '', '254236', 0, 0, 'DEFAULT', '', 3, 1);
+INSERT INTO `course` VALUES ('245210', '000', '000', '00', '000', '2452', 0, 100, 'MATH', '000', 3, 1);
+INSERT INTO `course` VALUES ('2462', '000', '000', '00', '000', '2452', 0, 100, 'MATH', '000', 3, 1);
+INSERT INTO `course` VALUES ('777', '数据库', '', '', '', '254236', 0, 0, 'CHEMISTRY', '', 3, 1);
+INSERT INTO `course` VALUES ('777456', '高等数学', '', '', '', '254236', 0, 0, 'BIOLOGY', '', 3, 1);
+INSERT INTO `course` VALUES ('CID1', '呵呵', '随便', '慕课', '呵呵', '00', 20, 10, 'MATH', '来上课就行', 3, 1);
+INSERT INTO `course` VALUES ('SE201901', '软件工程课程设计', '每周三', '计算机楼', '软件工程', '254236', 20, 2000, 'DEFAULT', '提交实验报告', 3, 1);
+INSERT INTO `course` VALUES ('sss', '', '', '', '呵呵', '00', 20, 10, 'MATH', '来上课就行', 3, 1);
 
 -- ----------------------------
 -- Table structure for eduorg
@@ -163,7 +165,7 @@ CREATE TABLE `parent`  (
 -- ----------------------------
 -- Records of parent
 -- ----------------------------
-INSERT INTO `parent` VALUES ('', '李语尧', '1998-01-02', 'MALE', '陆子旭', '', 'DEFAULT', 1000, NULL);
+INSERT INTO `parent` VALUES ('', '李语尧', '1997-10-31', 'MALE', '陆子旭', '13905287474', 'DEFAULT', 1000, NULL);
 INSERT INTO `parent` VALUES ('001', 'hehe', '2019-06-10', 'MALE', '发发', '发发', 'DEFAULT', 20, '呵呵');
 INSERT INTO `parent` VALUES ('4444', '', '2019-06-17', 'MALE', '', '', 'DEFAULT', 1000, NULL);
 INSERT INTO `parent` VALUES ('4546', '45', '2019-06-17', 'MALE', '4', '5', 'DEFAULT', 1000, NULL);
@@ -185,6 +187,11 @@ CREATE TABLE `previewapp`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of previewapp
+-- ----------------------------
+INSERT INTO `previewapp` VALUES ('', '002', 'NO');
+
+-- ----------------------------
 -- Table structure for purchase
 -- ----------------------------
 DROP TABLE IF EXISTS `purchase`;
@@ -201,6 +208,7 @@ CREATE TABLE `purchase`  (
 -- ----------------------------
 -- Records of purchase
 -- ----------------------------
+INSERT INTO `purchase` VALUES ('', '002', 'NO');
 INSERT INTO `purchase` VALUES ('', '245210', 'YES');
 INSERT INTO `purchase` VALUES ('', '777', 'YES');
 INSERT INTO `purchase` VALUES ('', 'SE201901', 'YES');
