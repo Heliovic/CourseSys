@@ -212,7 +212,7 @@ public class MainWindow {
         AddButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new NewsBulletinWindow(User);
             }
         });
         DeleteButton.addActionListener(new ActionListener() {
