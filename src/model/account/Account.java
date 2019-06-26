@@ -14,6 +14,12 @@ public class Account {
         FEMALE
     }
 
+    public static  enum Qualified {
+        YES,
+        CHECK,
+        NO
+    }
+
     private String mUsername;
     private String mPassword;
     private String mTel;

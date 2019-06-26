@@ -9,7 +9,7 @@ public class EduOrg extends Account {
     private String mOrgIntroduction;
     private Course.CourseField mOrgEduField = Course.CourseField.DEFAULT;
     private int mOrgEduAge;
-    private boolean qualified;
+    private Account.Qualified qualified = Qualified.CHECK;
 
     public String getOrgCode() {
         return mOrgCode;
@@ -59,11 +59,9 @@ public class EduOrg extends Account {
         mOrgEduAge = orgEduAge;
     }
 
-    public boolean isQualified() {
-        return qualified;
-    }
+    public Account.Qualified isQualified() { return qualified; }
 
-    public void setQualified(boolean qualified) {
+    public void setQualified(Account.Qualified qualified) {
         this.qualified = qualified;
     }
 }

@@ -82,7 +82,7 @@ public class MySQLDAO {
             org.setOrgIntroduction(rs.getString("org_introduction"));
             org.setOrgEduField(Course.CourseField.valueOf(rs.getString("edu_field")));
             org.setOrgEduAge(rs.getInt("edu_age"));
-            org.setQualified(rs.getString("qualified").equals("YES"));
+            org.setQualified(Account.Qualified.valueOf(rs.getString("qualified")));
             return org;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -144,7 +144,7 @@ public class MySQLDAO {
             teacher.setmCourseField(Course.CourseField.valueOf((rs.getString("edu_field"))));
             teacher.setmEduYear(rs.getInt("edu_year"));
             teacher.setmEduAge(rs.getInt("edu_age"));
-            teacher.setmQualified(rs.getString("qualified").equals("YES"));
+            teacher.setmQualified(Account.Qualified.valueOf(rs.getString("qualified")));
             return teacher;
         }catch (SQLException e) {
             e.printStackTrace();
@@ -326,7 +326,7 @@ public class MySQLDAO {
         return previewApps;
     }
 
-    public List getPurchasedCourse (String username) {
+    public List<Purchase> getPurchasedCourse (String username) {
         String sql = "SELECT * FROM purchase WHERE parent_id = ? AND purchased = 'YES'";
         List<Purchase> purchases = new ArrayList<>();
         try {
@@ -348,7 +348,7 @@ public class MySQLDAO {
         return purchases;
     }
 
-    public List getNotPurchasedCourse (String username) {
+    public List<Purchase> getNotPurchasedCourse (String username) {
         String sql = "SELECT * FROM purchase WHERE parent_id = ? AND purchased = 'NO'";
         List<Purchase> purchases = new ArrayList<>();
         try {
@@ -399,7 +399,7 @@ public class MySQLDAO {
         return course;
     }
 
-    public List getPostInfo (String username) {
+    public List<News> getPostInfo (String username) {
         String sql = "SELECT * FROM news WHERE course_id IN (SELECT course_id FROM purchase WHERE parent_id = ? AND purchased = 'YES')";
         List<News> newsList = new ArrayList<>();
         try {
@@ -423,8 +423,8 @@ public class MySQLDAO {
         return newsList;
     }
 
-    public List getReviewTeacher () {
-        String sql = "SELECT * FROM teacher WHERE qualified = 'No'";
+    public List<Teacher> getReviewTeacher () {
+        String sql = "SELECT * FROM teacher WHERE qualified = 'CHECK'";
         List<Teacher> teachers = new ArrayList<>();
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -432,6 +432,7 @@ public class MySQLDAO {
 
             while (rs.next()) {
                 Teacher teacher = new Teacher();
+                teacher.setUsername(rs.getString("user_name"));
                 teacher.setmTeacherName(rs.getString("tea_name"));
                 teacher.setmTeacherGender(Account.Gender.valueOf(rs.getString("tea_gender")));
                 teacher.setmTeacherBirthday(rs.getString("tea_birthday"));
@@ -441,7 +442,7 @@ public class MySQLDAO {
                 teacher.setmCourseField(Course.CourseField.valueOf((rs.getString("edu_field"))));
                 teacher.setmEduYear(rs.getInt("edu_year"));
                 teacher.setmEduAge(rs.getInt("edu_age"));
-                teacher.setmQualified(rs.getString("qualified").equals("YES"));
+                teacher.setmQualified(Account.Qualified.valueOf(rs.getString("qualified")));
 
                 teachers.add(teacher);
             }
@@ -496,8 +497,8 @@ public class MySQLDAO {
         return previewApp;
     }
 
-    public List getReviewEduOrg () {
-        String sql = "SELECT * FROM eduorg WHERE qualified = 'No'";
+    public List<EduOrg> getReviewEduOrg () {
+        String sql = "SELECT * FROM eduorg WHERE qualified = 'CHECK'";
         List<EduOrg> eduOrgs = new ArrayList<>();
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -505,13 +506,14 @@ public class MySQLDAO {
 
             while (rs.next()) {
                 EduOrg org = new EduOrg();
+                org.setUsername(rs.getString("user_name"));
                 org.setOrgCode(rs.getString("org_code"));
                 org.setOrgAddress(rs.getString("org_address"));
                 org.setOrgContact(rs.getString("org_contact"));
                 org.setOrgIntroduction(rs.getString("org_introduction"));
                 org.setOrgEduField(Course.CourseField.valueOf(rs.getString("edu_field")));
                 org.setOrgEduAge(rs.getInt("edu_age"));
-                org.setQualified(rs.getString("qualified").equals("YES"));
+                org.setQualified(Account.Qualified.valueOf(rs.getString("qualified")));
 
                 eduOrgs.add(org);
             }
@@ -552,8 +554,28 @@ public class MySQLDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return courses;
+    }
+
+    public List<Video> getVideoInfo() {
+        String sql = "SELECT * FROM video";
+        List<Video> videos = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Video video = new Video();
+                video.setmVideo_id(rs.getString("video_id"));
+                video.setmTime(rs.getString("time"));
+                video.setmUrl(rs.getString("video_url"));
+
+                videos.add(video);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return videos;
     }
 
     public CourseComment getCourseCommentByPrimaryKey(String course_id, String publisher) {
@@ -661,7 +683,7 @@ public class MySQLDAO {
             statement.setString(5, org.getOrgIntroduction());
             statement.setString(6, org.getOrgEduField().toString());
             statement.setString(7, Integer.toString(org.getOrgEduAge()));
-            statement.setString(8, org.isQualified() ? "YES" : "NO");
+            statement.setString(8, org.isQualified().toString());
             statement.executeUpdate();
 
             System.out.println("插入成功！");
@@ -674,7 +696,7 @@ public class MySQLDAO {
         insertAccount(teacher);
 
         String sql = "INSERT INTO teacher (user_name, tea_name, tea_gender, tea_birthday, tea_id_number, " +
-                "tea_contact, edu_field, edu_year, edu_age, tea_introduction) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "tea_contact, edu_field, edu_year, edu_age, tea_introduction, qualified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, teacher.getUsername());
@@ -687,6 +709,7 @@ public class MySQLDAO {
             statement.setInt(8, teacher.getmEduYear());
             statement.setInt(9, teacher.getmEduAge());
             statement.setString(10, teacher.getmTeacherIntroduction());
+            statement.setString(11,teacher.isQualified().toString());
             statement.executeUpdate();
 
             System.out.println("插入成功！");
@@ -787,6 +810,21 @@ public class MySQLDAO {
         }
     }
 
+    public void insertVideo (Video video) {
+        String sql = "INSERT INTO video (video_id, time, video_url) VALUES (?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,video.getmVideo_id());
+            statement.setString(2,video.getmTime());
+            statement.setString(3,video.getmUrl());
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void insertCourseComment(CourseComment comment) {
         String sql = "INSERT INTO coursecomment (course_id, publisher, content, score, picture_id) VALUES (?, ?, ?, ?, ?)";
         try {
@@ -865,14 +903,15 @@ public class MySQLDAO {
 
         try {
 
-            String sql = "UPDATE eduorg SET org_address = ?, org_contact = ?, org_introduction = ?, edu_field = ?, edu_age = ? WHERE user_name = ?";
+            String sql = "UPDATE eduorg SET org_address = ?, org_contact = ?, org_introduction = ?, edu_field = ?, edu_age = ?, qualified = ? WHERE user_name = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, org.getOrgAddress());
             statement.setString(2, org.getOrgContact());
             statement.setString(3, org.getOrgIntroduction());
             statement.setString(4, org.getOrgEduField().toString());
             statement.setInt(5, org.getOrgEduAge());
-            statement.setString(6, org.getUsername());
+            statement.setString(6,org.isQualified().toString());
+            statement.setString(7, org.getUsername());
             statement.executeUpdate();
 
             System.out.println("更新成功！");
@@ -886,7 +925,7 @@ public class MySQLDAO {
         updateAccount(teacher);
 
         try {
-            String sql = "UPDATE teacher SET tea_name = ?, tea_gender = ?, tea_birthday = ?, tea_id_number = ?, tea_contact = ?, edu_field = ?, edu_year = ?, edu_age = ?, tea_introduction = ? where user_name = ?";
+            String sql = "UPDATE teacher SET tea_name = ?, tea_gender = ?, tea_birthday = ?, tea_id_number = ?, tea_contact = ?, edu_field = ?, edu_year = ?, edu_age = ?, tea_introduction = ?, qualified = ? where user_name = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,teacher.getmTeacherName());
             statement.setString(2,teacher.getmTeacherGender().toString());
@@ -897,7 +936,8 @@ public class MySQLDAO {
             statement.setInt(7,teacher.getmEduYear());
             statement.setInt(8,teacher.getmEduAge());
             statement.setString(9, teacher.getmTeacherIntroduction());
-            statement.setString(10,teacher.getUsername());
+            statement.setString(10,teacher.isQualified().toString());
+            statement.setString(11,teacher.getUsername());
             statement.executeUpdate();
 
             System.out.println("更新成功！");
@@ -997,6 +1037,35 @@ public class MySQLDAO {
             statement.setString(1, previewApp.ismAgreement() ? "YES" : "NO");
             statement.setString(2, previewApp.getmParentId());
             statement.setString(3, previewApp.getmCourseId());
+            statement.executeUpdate();
+
+            System.out.println("更新成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateNewsComment (NewsComment newsComment) {
+        String sql = "UPDATE newscomment SET content = ? WHERE comment_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,newsComment.getmContent());
+            statement.setString(2,newsComment.getmCommentId());
+            statement.executeUpdate();
+
+            System.out.println("更新成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateVideo (Video video) {
+        String sql = "UPDATE video SET time = ?, video_url = ? WHERE video_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,video.getmTime());
+            statement.setString(2,video.getmUrl());
+            statement.setString(3,video.getmVideo_id());
             statement.executeUpdate();
 
             System.out.println("更新成功！");
@@ -1208,6 +1277,32 @@ public class MySQLDAO {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, parent_username);
             statement.setString(2, course_id);
+            statement.executeUpdate();
+
+            System.out.println("删除成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteNewsComment (String newcomment_id) {
+        String sql = "DELETE FROM newscomment WHERE comment_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,newcomment_id);
+            statement.executeUpdate();
+
+            System.out.println("删除成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteVideo (String video_id) {
+        String sql = "DELETE FROM video WHERE video_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,video_id);
             statement.executeUpdate();
 
             System.out.println("删除成功！");
