@@ -531,6 +531,27 @@ public class MySQLDAO {
         return courses;
     }
 
+    public List<Video> getVideoInfo() {
+        String sql = "SELECT * FROM video";
+        List<Video> videos = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Video video = new Video();
+                video.setmVideo_id(rs.getString("video_id"));
+                video.setmTime(rs.getString("time"));
+                video.setmUrl(rs.getString("video_url"));
+
+                videos.add(video);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return videos;
+    }
+
     //数据库的插入操作
     public void insertAccount(Account account) {
         String sql = "INSERT INTO account (user_name, password, tel, email, user_type) " +
@@ -717,6 +738,21 @@ public class MySQLDAO {
         }
     }
 
+    public void insertVideo (Video video) {
+        String sql = "INSERT INTO video (video_id, time, video_url) VALUES (?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,video.getmVideo_id());
+            statement.setString(2,video.getmTime());
+            statement.setString(3,video.getmUrl());
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     //数据库的更新操作
     public void updateAccount(Account account) {
         try {
@@ -884,7 +920,7 @@ public class MySQLDAO {
     }
 
     public void updateNewsComment (NewsComment newsComment) {
-        String sql = "newscomment SET content = ? WHERE comment_id = ?";
+        String sql = "UPDATE newscomment SET content = ? WHERE comment_id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,newsComment.getmContent());
@@ -897,6 +933,22 @@ public class MySQLDAO {
         }
     }
 
+    public void updateVideo (Video video) {
+        String sql = "UPDATE video SET time = ?, video_url = ? WHERE video_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,video.getmTime());
+            statement.setString(2,video.getmUrl());
+            statement.setString(3,video.getmVideo_id());
+            statement.executeUpdate();
+
+            System.out.println("更新成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //删除操作
     public void deleteAccount (String user_name) {
         String sql = "DELETE FROM account WHERE user_name = ?";
         try {
@@ -1008,6 +1060,19 @@ public class MySQLDAO {
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,newcomment_id);
+            statement.executeUpdate();
+
+            System.out.println("删除成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteVideo (String video_id) {
+        String sql = "DELETE FROM video WHERE video_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,video_id);
             statement.executeUpdate();
 
             System.out.println("删除成功！");

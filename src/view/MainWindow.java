@@ -1,10 +1,7 @@
 package view;
 
 import DAO.MySQLDAO;
-import model.Course;
-import model.News;
-import model.PreviewApp;
-import model.Purchase;
+import model.*;
 import model.account.Account;
 import model.account.EduOrg;
 import model.account.Parent;
@@ -24,6 +21,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,6 +35,7 @@ public class MainWindow {
     private List<News> newsList;
     private List<EduOrg> OrgRegApplyList;
     private List<Teacher> TeacherRegApplyList;
+    private List<Video> videoList;
     private int currentRow;
 
     private JPanel MainWindowPanel;
@@ -181,6 +182,7 @@ public class MainWindow {
         newsList = MySQLDAO.getInstance().getNewsInfo(user);
         OrgRegApplyList = MySQLDAO.getInstance().getReviewEduOrg();
         TeacherRegApplyList = MySQLDAO.getInstance().getReviewTeacher();
+        videoList = MySQLDAO.getInstance().getVideoInfo();
 
         NotificationButton.addActionListener(new ActionListener() {
             @Override
@@ -250,24 +252,70 @@ public class MainWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cl.show(CardPanel, "Video");
+
+                if (User.getUserType() == Account.UserType.SYSADMIN) {
+                    VideoAddButton.setVisible(true);
+                    VideoDeleteButton.setVisible(true);
+                }
+
+                currentRow = 1;
+                videoList.clear();
+                videoList = MySQLDAO.getInstance().getVideoInfo();
+
+                Vector rowDataSet = new Vector();
+                Vector names = new Vector();
+                names.add("ID");
+                names.add("日期");
+                names.add("URL");
+                for (Video video : videoList) {
+                    Vector rowData = new Vector();
+                    rowData.add(video.getmVideo_id());
+                    rowData.add(video.getmTime());
+                    rowData.add(video.getmUrl());
+                    rowDataSet.add(rowData);
+                }
+                DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                VideoTable.setModel(model);
+                VideoTable.setRowHeight(28);
+                VideoTable.getTableHeader().setPreferredSize(new Dimension(VideoTable.getTableHeader().getWidth(), 28));
+
             }
         });
         VideoTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                currentRow = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
+                if (e.getClickCount() == 2) {
+                    try {
+                        Desktop desktop = Desktop.getDesktop();
+                        desktop.browse(new URI(videoList.get(currentRow).getmUrl()));
+
+                    } catch (Exception r) {
+                        r.printStackTrace();
+                    }
+                }
             }
         });
         VideoAddButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new NewsBulletinWindow(User);
             }
         });
         VideoDeleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                if (User.getUserType() == Account.UserType.SYSADMIN || User.getUsername() == newsList.get(currentRow).getmPublisher()) {
+                    MySQLDAO.getInstance().deleteNews(newsList.get(currentRow).getmNewsId());
+                    NotificationButton.doClick();
+                } else {
+                    JOptionPane.showMessageDialog(null, "无权限！");
+                }
             }
         });
         AccountInfoButton.addActionListener(new ActionListener() {
