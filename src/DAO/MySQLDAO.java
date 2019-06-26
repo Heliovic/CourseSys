@@ -573,6 +573,36 @@ public class MySQLDAO {
         return courses;
     }
 
+    public List<Course> getAllCourse() {
+        String sql = "SELECT * FROM course";
+
+        List<Course> courses = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Course course = new Course();
+                course.setCourseId(rs.getString("course_id"));
+                course.setCourseName(rs.getString("course_name"));
+                course.setTime(rs.getString("time"));
+                course.setPlace(rs.getString("place"));
+                course.setContent(rs.getString("content"));
+                course.setTeachId(rs.getString("teach_id"));
+                course.setAgeRecommend(rs.getInt("age_recommend"));
+                course.setPrice(rs.getInt("price"));
+                course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
+                course.setHomeWork(rs.getString("homework"));
+
+                courses.add(course);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
     public List<Video> getVideoInfo() {
         String sql = "SELECT * FROM video";
         List<Video> videos = new ArrayList<>();
@@ -1021,7 +1051,7 @@ public class MySQLDAO {
             statement.setString(6,org.isQualified().toString());
             statement.setString(7, org.getUsername());
             statement.executeUpdate();
-
+            JOptionPane.showMessageDialog(null, "修改成功");
             System.out.println("更新成功！");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1047,7 +1077,7 @@ public class MySQLDAO {
             statement.setString(10,teacher.isQualified().toString());
             statement.setString(11,teacher.getUsername());
             statement.executeUpdate();
-
+            JOptionPane.showMessageDialog(null, "修改成功");
             System.out.println("更新成功！");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1071,7 +1101,7 @@ public class MySQLDAO {
             statement.setString(8,parent.getCoursePlace());
             statement.setString(9,parent.getUsername());
             statement.executeUpdate();
-
+            JOptionPane.showMessageDialog(null, "修改成功");
             System.out.println("更新成功！");
         } catch (SQLException e) {
             e.printStackTrace();

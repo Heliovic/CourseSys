@@ -729,6 +729,8 @@ public class MainWindow {
                 };
                 mCourseQueryTable.setModel(model);
                 mCourseQueryTable.setRowHeight(28);
+                if (courses.size() == 0)
+                    JOptionPane.showMessageDialog(null, "抱歉，未找到所需的结果");
             }
         });
 
@@ -798,7 +800,7 @@ public class MainWindow {
                     TableColumn column = mCourseTable.getColumn("课程类别");
                     TableCellEditor editor = new DefaultCellEditor(box);
                     column.setCellEditor(editor);
-                } else {
+                } else if (User.getUserType() == Account.UserType.TEACHER){
                     List<Course> courses = MySQLDAO.getInstance().getTeacherCourseList(User.getUsername());
                     Vector rowDataSet = new Vector();
                     Vector names = new Vector();
@@ -831,6 +833,89 @@ public class MainWindow {
                             if (column == 0 || column == 5)
                                 return false;
                             else return true;
+                        }
+                    };
+                    mCourseTable.setModel(model);
+                    mCourseTable.setRowHeight(28);
+
+                    JComboBox box = Constants.getCourseFieldCombo();
+                    TableColumn column = mCourseTable.getColumn("课程类别");
+                    TableCellEditor editor = new DefaultCellEditor(box);
+                    column.setCellEditor(editor);
+                } else if (User.getUserType() == Account.UserType.EDUORG){
+                    List<Course> courses = MySQLDAO.getInstance().getTeacherCourseList(User.getUsername());
+                    Vector rowDataSet = new Vector();
+                    Vector names = new Vector();
+                    names.add("课程ID");
+                    names.add("课程名称");
+                    names.add("上课时间");
+                    names.add("上课地点");
+                    names.add("课程内容");
+                    names.add("教师ID");
+                    names.add("推荐年龄");
+                    names.add("价格");
+                    names.add("课程类别");
+                    names.add("作业");
+                    for (Course course : courses){
+                        Vector rowData = new Vector();
+                        rowData.add(course.getCourseId());
+                        rowData.add(course.getCourseName());
+                        rowData.add(course.getTime());
+                        rowData.add(course.getPlace());
+                        rowData.add(course.getContent());
+                        rowData.add(course.getTeachId());
+                        rowData.add(course.getAgeRecommend());
+                        rowData.add(course.getPrice());
+                        rowData.add(course.getCourseField().toString());
+                        rowData.add(course.getHomeWork());
+                        rowDataSet.add(rowData);
+                    }
+                    DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
+                        public boolean isCellEditable(int row, int column) {
+                            if (column == 0 || column == 5)
+                                return false;
+                            else return true;
+                        }
+                    };
+                    mCourseTable.setModel(model);
+                    mCourseTable.setRowHeight(28);
+
+                    JComboBox box = Constants.getCourseFieldCombo();
+                    TableColumn column = mCourseTable.getColumn("课程类别");
+                    TableCellEditor editor = new DefaultCellEditor(box);
+                    column.setCellEditor(editor);
+                }
+                else {
+                    List<Course> courses = MySQLDAO.getInstance().getAllCourse();
+                    Vector rowDataSet = new Vector();
+                    Vector names = new Vector();
+                    names.add("课程ID");
+                    names.add("课程名称");
+                    names.add("上课时间");
+                    names.add("上课地点");
+                    names.add("课程内容");
+                    names.add("教师ID");
+                    names.add("推荐年龄");
+                    names.add("价格");
+                    names.add("课程类别");
+                    names.add("作业");
+                    for (Course course : courses){
+                        Vector rowData = new Vector();
+                        rowData.add(course.getCourseId());
+                        rowData.add(course.getCourseName());
+                        rowData.add(course.getTime());
+                        rowData.add(course.getPlace());
+                        rowData.add(course.getContent());
+                        rowData.add(course.getTeachId());
+                        rowData.add(course.getAgeRecommend());
+                        rowData.add(course.getPrice());
+                        rowData.add(course.getCourseField().toString());
+                        rowData.add(course.getHomeWork());
+                        rowDataSet.add(rowData);
+                    }
+                    DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
                         }
                     };
                     mCourseTable.setModel(model);
@@ -952,7 +1037,14 @@ public class MainWindow {
                 app.setmCourseId(course_id);
                 app.setmParentId(User.getUsername());
                 app.setmAgreement(false);
-                MySQLDAO.getInstance().insertPreviewApp(app);
+                PreviewApp previewApp = MySQLDAO.getInstance().getPreviewAppByPrimaryKey(course_id,User.getUsername());
+                if (previewApp.getmCourseId() == null) {
+                    MySQLDAO.getInstance().insertPreviewApp(app);
+                    JOptionPane.showMessageDialog(null, "申请试听成功");
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "已经申请过试听");
+                }
             }
         });
         mCancelPreviewButton.addActionListener(new ActionListener() {
