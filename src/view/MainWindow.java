@@ -266,11 +266,13 @@ public class MainWindow {
                 Vector rowDataSet = new Vector();
                 Vector names = new Vector();
                 names.add("ID");
+                names.add("发布者");
                 names.add("日期");
                 names.add("URL");
                 for (Video video : videoList) {
                     Vector rowData = new Vector();
                     rowData.add(video.getmVideo_id());
+                    rowData.add(video.getmPublisher());
                     rowData.add(video.getmTime());
                     rowData.add(video.getmUrl());
                     rowDataSet.add(rowData);

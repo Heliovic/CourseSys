@@ -4,6 +4,7 @@ public class Video {
     private String mVideo_id;
     private String mTime;
     private String mUrl;
+    private String mPublisher;
 
     public String getmVideo_id() { return mVideo_id; }
 
@@ -16,4 +17,8 @@ public class Video {
     public String getmUrl() { return mUrl; }
 
     public void setmUrl(String mUrl) { this.mUrl = mUrl; }
+
+    public String getmPublisher() { return mPublisher; }
+
+    public void setmPublisher(String mPublisher) { this.mPublisher = mPublisher; }
 }
