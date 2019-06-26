@@ -31,7 +31,6 @@ public class LogWindow {
 
                 if (a.getUserType() == Account.UserType.EDUORG) {
                     EduOrg org = MySQLDAO.getInstance().getEduOrgByUsername(a.getUsername());
-                    org.setUserType(Account.UserType.EDUORG);
                     if (org.getPassword().equals(password)) {
                         if (org.isQualified().toString().equals("YES")) {
                             new MainWindow(org);
@@ -44,14 +43,12 @@ public class LogWindow {
                     }
                 } else if (a.getUserType() == Account.UserType.PARENT) {
                     Parent par = MySQLDAO.getInstance().getParentByUsername(a.getUsername());
-                    par.setUserType(Account.UserType.PARENT);
                     if (par.getPassword().equals(password)) {
                         new MainWindow(par);
                         return;
                     }
                 } else if (a.getUserType() == Account.UserType.TEACHER) {
                     Teacher teacher = MySQLDAO.getInstance().getTeacherByUsername(a.getUsername());
-                    teacher.setUserType(Account.UserType.TEACHER);
                     if (teacher.getPassword().equals(password)){
                         if (teacher.isQualified().toString().equals("YES")) {
                             new MainWindow(teacher);
@@ -64,7 +61,6 @@ public class LogWindow {
                     }
                 } else if (a.getUserType() == Account.UserType.SYSADMIN) {
                     Sysadmin sysadmin = MySQLDAO.getInstance().getSyaadminByUsername(a.getUsername());
-                    sysadmin.setUserType(Account.UserType.SYSADMIN);
                     if (sysadmin.getPassword().equals(password)) {
                         new MainWindow(sysadmin);
                         return;
@@ -77,7 +73,7 @@ public class LogWindow {
         RegButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new RegView();
+                new RegWindow();
             }
         });
     }

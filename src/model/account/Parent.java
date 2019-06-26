@@ -114,4 +114,8 @@ public class Parent extends Account {
     public void setCoursePlace(String coursePlace) {
         mCoursePlace = coursePlace;
     }
+
+    public Parent() {
+        super.setUserType(UserType.PARENT);
+    }
 }

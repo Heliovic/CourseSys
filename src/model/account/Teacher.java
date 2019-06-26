@@ -8,8 +8,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Teacher extends Account{
-
-
     private String mTeacherName;
     private String mTeacherBirthday;
     private Gender mTeacherGender;
@@ -142,5 +140,9 @@ public class Teacher extends Account{
 
     public void setmTeacherIntroduction(String mTeacherIntroduction) {
         this.mTeacherIntroduction = mTeacherIntroduction;
+    }
+
+    public Teacher() {
+        super.setUserType(UserType.TEACHER);
     }
 }

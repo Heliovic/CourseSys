@@ -10,4 +10,8 @@ public class Sysadmin extends Account{
     public void setPageItemCount(String pageItemCount) {
         PageItemCount = pageItemCount;
     }
+
+    public Sysadmin() {
+        super.setUserType(UserType.SYSADMIN);
+    }
 }
