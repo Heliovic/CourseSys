@@ -3,6 +3,7 @@ package DAO;
 import model.*;
 import model.account.*;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -951,7 +952,7 @@ public class MySQLDAO {
             statement.setString(6,org.isQualified().toString());
             statement.setString(7, org.getUsername());
             statement.executeUpdate();
-
+            JOptionPane.showMessageDialog(null, "修改成功");
             System.out.println("更新成功！");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -977,7 +978,7 @@ public class MySQLDAO {
             statement.setString(10,teacher.isQualified().toString());
             statement.setString(11,teacher.getUsername());
             statement.executeUpdate();
-
+            JOptionPane.showMessageDialog(null, "修改成功");
             System.out.println("更新成功！");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1001,7 +1002,7 @@ public class MySQLDAO {
             statement.setString(8,parent.getCoursePlace());
             statement.setString(9,parent.getUsername());
             statement.executeUpdate();
-
+            JOptionPane.showMessageDialog(null, "修改成功");
             System.out.println("更新成功！");
         } catch (SQLException e) {
             e.printStackTrace();

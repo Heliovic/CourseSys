@@ -723,6 +723,8 @@ public class MainWindow {
                 };
                 mCourseQueryTable.setModel(model);
                 mCourseQueryTable.setRowHeight(28);
+                if (courses.size() == 0)
+                    JOptionPane.showMessageDialog(null, "抱歉，未找到所需的结果");
             }
         });
 
@@ -946,7 +948,14 @@ public class MainWindow {
                 app.setmCourseId(course_id);
                 app.setmParentId(User.getUsername());
                 app.setmAgreement(false);
-                MySQLDAO.getInstance().insertPreviewApp(app);
+                PreviewApp previewApp = MySQLDAO.getInstance().getPreviewAppByPrimaryKey(course_id,User.getUsername());
+                if (previewApp.getmCourseId() == null) {
+                    MySQLDAO.getInstance().insertPreviewApp(app);
+                    JOptionPane.showMessageDialog(null, "申请试听成功");
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "已经申请过试听");
+                }
             }
         });
         mCancelPreviewButton.addActionListener(new ActionListener() {
