@@ -14,7 +14,7 @@
     <children>
       <component id="e0816" class="javax.swing.JLabel" binding="TitleLabel">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <font size="28"/>
@@ -22,13 +22,16 @@
           <text value="标题"/>
         </properties>
       </component>
-      <component id="94e13" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
+      <component id="94e13" class="javax.swing.JTextArea" binding="IntroductionTextArea">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <editable value="false"/>
+          <text value="课程介绍"/>
+        </properties>
       </component>
       <scrollpane id="df7d5">
         <constraints>
@@ -37,7 +40,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="5997d" class="javax.swing.JTable" binding="table1" default-binding="true">
+          <component id="5997d" class="javax.swing.JTable" binding="CommentsTabel">
             <constraints/>
             <properties/>
           </component>
