@@ -169,6 +169,11 @@ public class MainWindow {
     private JButton TeacherRegApplyAgreeButton;
     private JButton TeacherRegApplyRejectButton;
     private JTable TeacherRegApplyTable;
+    private JButton VideoButton;
+    private JPanel VideoPanel;
+    private JButton VideoAddButton;
+    private JButton VideoDeleteButton;
+    private JTable VideoTable;
     private CardLayout cl;
 
     public MainWindow(Account user) {
@@ -239,6 +244,30 @@ public class MainWindow {
                 } else {
                     JOptionPane.showMessageDialog(null, "无权限！");
                 }
+            }
+        });
+        VideoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cl.show(CardPanel, "Video");
+            }
+        });
+        VideoTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+            }
+        });
+        VideoAddButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        VideoDeleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
         AccountInfoButton.addActionListener(new ActionListener() {
