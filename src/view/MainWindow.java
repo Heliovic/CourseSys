@@ -915,7 +915,9 @@ public class MainWindow {
                     }
                     DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
                         public boolean isCellEditable(int row, int column) {
-                            return false;
+                            if (column == 0 || column == 5)
+                                return false;
+                            else return true;
                         }
                     };
                     mCourseTable.setModel(model);

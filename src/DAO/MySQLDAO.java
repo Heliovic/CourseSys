@@ -859,7 +859,7 @@ public class MySQLDAO {
 
     public void insertCourse (Course course) {
         String sql = "INSERT INTO course (course_id, course_name, time, place, content, teach_id, age_recommend, price, course_field,"+
-                " homework, avg_mark, mark_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                " homework) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,course.getCourseId());
@@ -1111,7 +1111,7 @@ public class MySQLDAO {
     public void updateCourse(Course course) {
         try {
             String sql = "UPDATE course SET course_name = ?, time = ?, place = ?, content = ?, teach_id = ?, " +
-                    "age_recommend = ?, price = ?, course_field = ?, homework = ?, avg_mark = ?, mark_count = ?" +
+                    "age_recommend = ?, price = ?, course_field = ?, homework = ?" +
                     " WHERE course_id = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, course.getCourseName());
