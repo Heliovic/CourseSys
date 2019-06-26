@@ -21,9 +21,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -265,7 +262,7 @@ public class MainWindow {
 
                 Vector rowDataSet = new Vector();
                 Vector names = new Vector();
-                names.add("ID");
+                names.add("标题");
                 names.add("发布者");
                 names.add("日期");
                 names.add("URL");
@@ -294,28 +291,22 @@ public class MainWindow {
                 super.mouseClicked(e);
                 currentRow = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
                 if (e.getClickCount() == 2) {
-                    try {
-                        Desktop desktop = Desktop.getDesktop();
-                        desktop.browse(new URI(videoList.get(currentRow).getmUrl()));
-
-                    } catch (Exception r) {
-                        r.printStackTrace();
-                    }
+                    new VideoWindow(User, videoList.get(currentRow));
                 }
             }
         });
         VideoAddButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new NewsBulletinWindow(User);
+                new VideoWindow(User);
             }
         });
         VideoDeleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (User.getUserType() == Account.UserType.SYSADMIN || User.getUsername() == newsList.get(currentRow).getmPublisher()) {
-                    MySQLDAO.getInstance().deleteNews(newsList.get(currentRow).getmNewsId());
-                    NotificationButton.doClick();
+                if (User.getUserType() == Account.UserType.SYSADMIN) {
+                    MySQLDAO.getInstance().deleteVideo(videoList.get(currentRow).getmVideo_id());
+                    VideoButton.doClick();
                 } else {
                     JOptionPane.showMessageDialog(null, "无权限！");
                 }

@@ -17,6 +17,7 @@ public class NewsBulletinWindow {
     private JLabel TimeLabel;
     private JLabel AuthorLabel;
     private JTextField TitleField;
+    private JPanel ButtonPanel;
 
     public NewsBulletinWindow(Account user) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -27,14 +28,24 @@ public class NewsBulletinWindow {
         newsBulletin.setmTime(currentTime);
         newsBulletin.setmNewsId(currentTime + " " + user.getUsername());
 
+        SaveButton.setVisible(true);
         SaveButton.setEnabled(true);
         TitleField.setEditable(true);
         MainTextArea.setEditable(true);
 
+        TimeLabel.setText("时间：" + newsBulletin.getmTime());
+        AuthorLabel.setText("作者：" + newsBulletin.getmPublisher());
+
+        // JFrame界面
+        JFrame frame = new JFrame("课程中介系统");
+        frame.setContentPane(NewsBulletinWindowPanel);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+
         SaveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ChangeButton.setEnabled(true);
                 SaveButton.setEnabled(false);
                 TitleField.setEditable(false);
                 MainTextArea.setEditable(false);
@@ -44,15 +55,18 @@ public class NewsBulletinWindow {
                 JOptionPane.showMessageDialog(null, "添加成功！");
             }
         });
+    }
+
+    public NewsBulletinWindow(Account user, News newsBulletin) {
+        if (user.getUserType() == Account.UserType.SYSADMIN || user.getUsername() == newsBulletin.getmPublisher()) {
+            ChangeButton.setVisible(true);
+            SaveButton.setVisible(true);
+        }
 
         TitleField.setText(newsBulletin.getmTitle());
         TimeLabel.setText("时间：" + newsBulletin.getmTime());
         AuthorLabel.setText("作者：" + newsBulletin.getmPublisher());
         MainTextArea.setText(newsBulletin.getmContent());
-
-        if (user.getUserType() == Account.UserType.SYSADMIN || user.getUsername() == newsBulletin.getmPublisher()) {
-            SaveButton.setVisible(true);
-        }
 
         // JFrame界面
         JFrame frame = new JFrame("课程中介系统");
@@ -60,9 +74,7 @@ public class NewsBulletinWindow {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-    }
 
-    public NewsBulletinWindow(Account user, News newsBulletin) {
         ChangeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -84,22 +96,5 @@ public class NewsBulletinWindow {
                 MySQLDAO.getInstance().updateNews(newsBulletin);
             }
         });
-
-        TitleField.setText(newsBulletin.getmTitle());
-        TimeLabel.setText("时间：" + newsBulletin.getmTime());
-        AuthorLabel.setText("作者：" + newsBulletin.getmPublisher());
-        MainTextArea.setText(newsBulletin.getmContent());
-
-        if (user.getUserType() == Account.UserType.SYSADMIN || user.getUsername() == newsBulletin.getmPublisher()) {
-            ChangeButton.setVisible(true);
-            SaveButton.setVisible(true);
-        }
-
-        // JFrame界面
-        JFrame frame = new JFrame("课程中介系统");
-        frame.setContentPane(NewsBulletinWindowPanel);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
     }
 }
