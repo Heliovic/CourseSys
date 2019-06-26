@@ -18,7 +18,7 @@ public class Teacher extends Account{
     private Course.CourseField mCourseField = Course.CourseField.DEFAULT;
     private int mEduYear;
     private int mEduAge;
-    private boolean mQualified = false;
+    private Account.Qualified mQualified = Qualified.CHECK;
     private String mTeacherIntroduction;
 
     public String getmTeacherName() {
@@ -130,17 +130,11 @@ public class Teacher extends Account{
         this.mEduAge = mEduAge;
     }
 
-    public boolean getmQualified() {
-        return mQualified;
-    }
-
-    public void setmQualified(boolean mQualified) {
+    public void setmQualified(Account.Qualified mQualified) {
         this.mQualified = mQualified;
     }
 
-    public boolean isQualified() {
-        return mQualified;
-    }
+    public Account.Qualified isQualified() { return mQualified; }
 
     public String getmTeacherIntroduction() {
         return mTeacherIntroduction;

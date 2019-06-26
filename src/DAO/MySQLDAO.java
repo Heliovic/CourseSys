@@ -78,7 +78,7 @@ public class MySQLDAO {
             org.setOrgIntroduction(rs.getString("org_introduction"));
             org.setOrgEduField(Course.CourseField.valueOf(rs.getString("edu_field")));
             org.setOrgEduAge(rs.getInt("edu_age"));
-            org.setQualified(rs.getString("qualified").equals("YES"));
+            org.setQualified(Account.Qualified.valueOf(rs.getString("qualified")));
             return org;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -140,7 +140,7 @@ public class MySQLDAO {
             teacher.setmCourseField(Course.CourseField.valueOf((rs.getString("edu_field"))));
             teacher.setmEduYear(rs.getInt("edu_year"));
             teacher.setmEduAge(rs.getInt("edu_age"));
-            teacher.setmQualified(rs.getString("qualified").equals("YES"));
+            teacher.setmQualified(Account.Qualified.valueOf(rs.getString("qualified")));
             return teacher;
         }catch (SQLException e) {
             e.printStackTrace();
@@ -322,7 +322,7 @@ public class MySQLDAO {
         return previewApps;
     }
 
-    public List getPurchasedCourse (String username) {
+    public List<Purchase> getPurchasedCourse (String username) {
         String sql = "SELECT * FROM purchase WHERE parent_id = ? AND purchased = 'YES'";
         List<Purchase> purchases = new ArrayList<>();
         try {
@@ -344,7 +344,7 @@ public class MySQLDAO {
         return purchases;
     }
 
-    public List getNotPurchasedCourse (String username) {
+    public List<Purchase> getNotPurchasedCourse (String username) {
         String sql = "SELECT * FROM purchase WHERE parent_id = ? AND purchased = 'NO'";
         List<Purchase> purchases = new ArrayList<>();
         try {
@@ -395,7 +395,7 @@ public class MySQLDAO {
         return course;
     }
 
-    public List getPostInfo (String username) {
+    public List<News> getPostInfo (String username) {
         String sql = "SELECT * FROM news WHERE course_id IN (SELECT course_id FROM purchase WHERE parent_id = ? AND purchased = 'YES')";
         List<News> newsList = new ArrayList<>();
         try {
@@ -419,8 +419,8 @@ public class MySQLDAO {
         return newsList;
     }
 
-    public List getReviewTeacher () {
-        String sql = "SELECT * FROM teacher WHERE qualified = 'No'";
+    public List<Teacher> getReviewTeacher () {
+        String sql = "SELECT * FROM teacher WHERE qualified = 'CHECK'";
         List<Teacher> teachers = new ArrayList<>();
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -437,7 +437,7 @@ public class MySQLDAO {
                 teacher.setmCourseField(Course.CourseField.valueOf((rs.getString("edu_field"))));
                 teacher.setmEduYear(rs.getInt("edu_year"));
                 teacher.setmEduAge(rs.getInt("edu_age"));
-                teacher.setmQualified(rs.getString("qualified").equals("YES"));
+                teacher.setmQualified(Account.Qualified.valueOf(rs.getString("qualified")));
 
                 teachers.add(teacher);
             }
@@ -470,8 +470,8 @@ public class MySQLDAO {
         return previewApps;
     }
 
-    public List getReviewEduOrg () {
-        String sql = "SELECT * FROM eduorg WHERE qualified = 'No'";
+    public List<EduOrg> getReviewEduOrg () {
+        String sql = "SELECT * FROM eduorg WHERE qualified = 'CHECK'";
         List<EduOrg> eduOrgs = new ArrayList<>();
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -485,7 +485,7 @@ public class MySQLDAO {
                 org.setOrgIntroduction(rs.getString("org_introduction"));
                 org.setOrgEduField(Course.CourseField.valueOf(rs.getString("edu_field")));
                 org.setOrgEduAge(rs.getInt("edu_age"));
-                org.setQualified(rs.getString("qualified").equals("YES"));
+                org.setQualified(Account.Qualified.valueOf(rs.getString("qualified")));
 
                 eduOrgs.add(org);
             }
@@ -526,7 +526,6 @@ public class MySQLDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return courses;
     }
 
@@ -589,7 +588,7 @@ public class MySQLDAO {
             statement.setString(5, org.getOrgIntroduction());
             statement.setString(6, org.getOrgEduField().toString());
             statement.setString(7, Integer.toString(org.getOrgEduAge()));
-            statement.setString(8, org.isQualified() ? "YES" : "NO");
+            statement.setString(8, org.isQualified().toString());
             statement.executeUpdate();
 
             System.out.println("插入成功！");
@@ -602,7 +601,7 @@ public class MySQLDAO {
         insertAccount(teacher);
 
         String sql = "INSERT INTO teacher (user_name, tea_name, tea_gender, tea_birthday, tea_id_number, " +
-                "tea_contact, edu_field, edu_year, edu_age, tea_introduction) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "tea_contact, edu_field, edu_year, edu_age, tea_introduction, qualified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, teacher.getUsername());
@@ -615,6 +614,7 @@ public class MySQLDAO {
             statement.setInt(8, teacher.getmEduYear());
             statement.setInt(9, teacher.getmEduAge());
             statement.setString(10, teacher.getmTeacherIntroduction());
+            statement.setString(11,teacher.isQualified().toString());
             statement.executeUpdate();
 
             System.out.println("插入成功！");

@@ -32,11 +32,13 @@ public class LogWindow {
                     EduOrg org = MySQLDAO.getInstance().getEduOrgByUsername(a.getUsername());
                     org.setUserType(Account.UserType.EDUORG);
                     if (org.getPassword().equals(password)) {
-                        if (org.isQualified()) {
+                        if (org.isQualified().toString().equals("YES")) {
                             new MainWindow(org);
                             JOptionPane.showMessageDialog(null, "教育机构登录成功！");
-                        } else {
-                            JOptionPane.showMessageDialog(null, "等待审核");
+                        } else if (org.isQualified().toString().equals("CHECK")){
+                            JOptionPane.showMessageDialog(null, "正在审核中");
+                        } else if (org.isQualified().toString().equals("NO")) {
+                            JOptionPane.showMessageDialog(null, "未通过申请");
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "用户名或密码错误！");
@@ -58,11 +60,13 @@ public class LogWindow {
                     Teacher teacher = MySQLDAO.getInstance().getTeacherByUsername(a.getUsername());
                     teacher.setUserType(Account.UserType.TEACHER);
                     if (teacher.getPassword().equals(password)){
-                        if (teacher.isQualified()) {
+                        if (teacher.isQualified().toString().equals("YES")) {
                             new MainWindow(teacher);
                             JOptionPane.showMessageDialog(null, "个人教师登录成功！");
-                        } else {
-                            JOptionPane.showMessageDialog(null, "等待审核");
+                        } else if (teacher.isQualified().toString().equals("CHECK")){
+                            JOptionPane.showMessageDialog(null, "正在审核中");
+                        } else if (teacher.isQualified().toString().equals("NO")) {
+                            JOptionPane.showMessageDialog(null, "未通过申请");
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "用户名或密码错误！");
