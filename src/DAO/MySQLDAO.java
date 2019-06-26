@@ -739,14 +739,15 @@ public class MySQLDAO {
 
         try {
 
-            String sql = "UPDATE eduorg SET org_address = ?, org_contact = ?, org_introduction = ?, edu_field = ?, edu_age = ? WHERE user_name = ?";
+            String sql = "UPDATE eduorg SET org_address = ?, org_contact = ?, org_introduction = ?, edu_field = ?, edu_age = ?, qualified = ? WHERE user_name = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, org.getOrgAddress());
             statement.setString(2, org.getOrgContact());
             statement.setString(3, org.getOrgIntroduction());
             statement.setString(4, org.getOrgEduField().toString());
             statement.setInt(5, org.getOrgEduAge());
-            statement.setString(6, org.getUsername());
+            statement.setString(6,org.isQualified().toString());
+            statement.setString(7, org.getUsername());
             statement.executeUpdate();
 
             System.out.println("更新成功！");
@@ -760,7 +761,7 @@ public class MySQLDAO {
         updateAccount(teacher);
 
         try {
-            String sql = "UPDATE teacher SET tea_name = ?, tea_gender = ?, tea_birthday = ?, tea_id_number = ?, tea_contact = ?, edu_field = ?, edu_year = ?, edu_age = ?, tea_introduction = ? where user_name = ?";
+            String sql = "UPDATE teacher SET tea_name = ?, tea_gender = ?, tea_birthday = ?, tea_id_number = ?, tea_contact = ?, edu_field = ?, edu_year = ?, edu_age = ?, tea_introduction = ?, quelified = ? where user_name = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,teacher.getmTeacherName());
             statement.setString(2,teacher.getmTeacherGender().toString());
@@ -771,7 +772,8 @@ public class MySQLDAO {
             statement.setInt(7,teacher.getmEduYear());
             statement.setInt(8,teacher.getmEduAge());
             statement.setString(9, teacher.getmTeacherIntroduction());
-            statement.setString(10,teacher.getUsername());
+            statement.setString(10,teacher.isQualified().toString());
+            statement.setString(11,teacher.getUsername());
             statement.executeUpdate();
 
             System.out.println("更新成功！");
