@@ -157,6 +157,7 @@ public class MainWindow {
     private JButton PreviewAppButton;
     private JTable mPreviewAppTable;
     private JButton mPermitButton;
+    private JButton mCommentButton;
     private CardLayout cl;
 
     public MainWindow(Account user) {
@@ -568,7 +569,7 @@ public class MainWindow {
                     rowData.add(course.getPrice());
                     rowData.add(course.getCourseField().toString());
                     rowData.add(course.getHomeWork());
-                    rowData.add(course.getAvgMark());
+                    rowData.add((double) course.getTotalScore() / course.getScoreCount());
                     rowDataSet.add(rowData);
                 }
                 DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
@@ -624,7 +625,7 @@ public class MainWindow {
                     rowData.add(course.getPrice());
                     rowData.add(course.getCourseField().toString());
                     rowData.add(course.getHomeWork());
-                    rowData.add(course.getAvgMark());
+                    rowData.add((double) course.getTotalScore() / course.getScoreCount());
                     rowDataSet.add(rowData);
                 }
                 DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
@@ -912,6 +913,21 @@ public class MainWindow {
                 previewApp.setmAgreement(true);
                 MySQLDAO.getInstance().updatePreviewApp(previewApp);
                 ((DefaultTableModel) mPreviewAppTable.getModel()).removeRow(row);
+            }
+        });
+        mCommentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = mMyPreviewTable.getSelectedRow();
+                String course_id = mMyPreviewTable.getValueAt(row, 0).toString();
+                String parent_id = User.getUsername();
+                PreviewApp previewApp = MySQLDAO.getInstance().getPreviewAppByPrimaryKey(course_id, parent_id);
+                if (previewApp.ismAgreement()) {
+                    CourseCommentWindow courseCommentWindow = new CourseCommentWindow((Parent) User, MySQLDAO.getInstance().getCourseById(course_id));
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "尚未允许试听，无法打分！");
+                }
             }
         });
         initUI();
