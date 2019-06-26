@@ -945,7 +945,7 @@ public class MainWindow {
                     course.setTime(mCourseTable.getValueAt(i, 2).toString());
                     course.setPlace(mCourseTable.getValueAt(i, 3).toString());
                     course.setContent(mCourseTable.getValueAt(i, 4).toString());
-                    course.setTeachId(User.getUsername());
+                    course.setTeachId(mCourseTable.getValueAt(i, 5).toString());
                     course.setAgeRecommend(Integer.parseInt(mCourseTable.getValueAt(i, 6).toString()));
                     course.setPrice(Integer.parseInt(mCourseTable.getValueAt(i, 7).toString()));
                     course.setCourseField(Course.CourseField.valueOf(mCourseTable.getValueAt(i, 8).toString()));
