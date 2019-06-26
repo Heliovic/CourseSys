@@ -33,6 +33,8 @@ import java.util.Vector;
 public class MainWindow {
     private Account User;
     private List<News> newsList;
+    private List<EduOrg> OrgRegApplyList;
+    private List<Teacher> TeacherRegApplyList;
     private int currentRow;
 
     private JPanel MainWindowPanel;
@@ -157,11 +159,28 @@ public class MainWindow {
     private JButton PreviewAppButton;
     private JTable mPreviewAppTable;
     private JButton mPermitButton;
+    private JButton OrgRegApplyButton;
+    private JButton TeacherRegApplyButton;
+    private JPanel OrgRegApplyPanel;
+    private JPanel TeacherRegApplyPanel;
+    private JButton OrgRegApplyAgreeButton;
+    private JButton OrgRegApplyRejectButton;
+    private JTable OrgRegApplyTable;
+    private JButton TeacherRegApplyAgreeButton;
+    private JButton TeacherRegApplyRejectButton;
+    private JTable TeacherRegApplyTable;
+    private JButton VideoButton;
+    private JPanel VideoPanel;
+    private JButton VideoAddButton;
+    private JButton VideoDeleteButton;
+    private JTable VideoTable;
     private CardLayout cl;
 
     public MainWindow(Account user) {
         User = user;
         newsList = MySQLDAO.getInstance().getNewsInfo(user);
+        OrgRegApplyList = MySQLDAO.getInstance().getReviewEduOrg();
+        TeacherRegApplyList = MySQLDAO.getInstance().getReviewTeacher();
 
         NotificationButton.addActionListener(new ActionListener() {
             @Override
@@ -173,6 +192,7 @@ public class MainWindow {
                     DeleteButton.setVisible(true);
                 }
 
+                currentRow = 1;
                 newsList.clear();
                 newsList = MySQLDAO.getInstance().getNewsInfo(user);
 
@@ -224,6 +244,30 @@ public class MainWindow {
                 } else {
                     JOptionPane.showMessageDialog(null, "无权限！");
                 }
+            }
+        });
+        VideoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cl.show(CardPanel, "Video");
+            }
+        });
+        VideoTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+            }
+        });
+        VideoAddButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        VideoDeleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
         AccountInfoButton.addActionListener(new ActionListener() {
@@ -914,6 +958,146 @@ public class MainWindow {
                 ((DefaultTableModel) mPreviewAppTable.getModel()).removeRow(row);
             }
         });
+        OrgRegApplyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cl.show(CardPanel, "OrgRegApply");
+
+                currentRow = 1;
+                OrgRegApplyList.clear();
+                OrgRegApplyList = MySQLDAO.getInstance().getReviewEduOrg();
+
+                Vector rowDataSet = new Vector();
+                Vector names = new Vector();
+                names.add("用户名");
+                names.add("标示码");
+                names.add("店面地址");
+                names.add("联系方式");
+                names.add("教育领域");
+                names.add("教育适龄");
+                names.add("介绍");
+                for (EduOrg org : OrgRegApplyList) {
+                    Vector rowData = new Vector();
+                    rowData.add(org.getUsername());
+                    rowData.add(org.getOrgCode());
+                    rowData.add(org.getOrgAddress());
+                    rowData.add(org.getOrgContact());
+                    rowData.add(org.getOrgEduField().toString());
+                    rowData.add(org.getOrgEduAge());
+                    rowData.add(org.getOrgIntroduction());
+                    rowDataSet.add(rowData);
+                }
+                DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                OrgRegApplyTable.setModel(model);
+                OrgRegApplyTable.getColumnModel().getColumn(6).setPreferredWidth(300);
+                OrgRegApplyTable.setRowHeight(28);
+                OrgRegApplyTable.getTableHeader().setPreferredSize(new Dimension(OrgRegApplyTable.getTableHeader().getWidth(), 28));
+            }
+        });
+        OrgRegApplyTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                currentRow = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
+            }
+        });
+        OrgRegApplyAgreeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EduOrg temp = OrgRegApplyList.get(currentRow);
+                temp.setQualified(Account.Qualified.YES);
+                MySQLDAO.getInstance().updateEduOrg(temp);
+                OrgRegApplyButton.doClick();
+                JOptionPane.showMessageDialog(null, "已同意！");
+            }
+        });
+        OrgRegApplyRejectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EduOrg temp = OrgRegApplyList.get(currentRow);
+                temp.setQualified(Account.Qualified.NO);
+                MySQLDAO.getInstance().updateEduOrg(temp);
+                OrgRegApplyButton.doClick();
+                JOptionPane.showMessageDialog(null, "已拒绝！");
+            }
+        });
+        TeacherRegApplyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cl.show(CardPanel, "TeacherRegApply");
+
+                currentRow = 1;
+                TeacherRegApplyList.clear();
+                TeacherRegApplyList = MySQLDAO.getInstance().getReviewTeacher();
+
+                Vector rowDataSet = new Vector();
+                Vector names = new Vector();
+                names.add("用户名");
+                names.add("姓名");
+                names.add("年龄");
+                names.add("性别");
+                names.add("身份证号");
+                names.add("联系方式");
+                names.add("教育领域");
+                names.add("教育适龄");
+                names.add("从教年限");
+                names.add("介绍");
+                for (Teacher tea : TeacherRegApplyList) {
+                    Vector rowData = new Vector();
+                    rowData.add(tea.getUsername());
+                    rowData.add(tea.getmTeacherName());
+                    rowData.add(tea.getTeaAge());
+                    rowData.add(tea.getmTeacherGender().toString());
+                    rowData.add(tea.getmTeacherIdNumber());
+                    rowData.add(tea.getmTeacherContact());
+                    rowData.add(tea.getmCourseField().toString());
+                    rowData.add(tea.getmEduAge());
+                    rowData.add(tea.getmEduYear());
+                    rowData.add(tea.getmTeacherIntroduction());
+                    rowDataSet.add(rowData);
+                }
+                DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                TeacherRegApplyTable.setModel(model);
+                TeacherRegApplyTable.getColumnModel().getColumn(9).setPreferredWidth(200);
+                TeacherRegApplyTable.setRowHeight(28);
+                TeacherRegApplyTable.getTableHeader().setPreferredSize(new Dimension(TeacherRegApplyTable.getTableHeader().getWidth(), 28));
+            }
+        });
+        TeacherRegApplyTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                currentRow = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
+            }
+        });
+        TeacherRegApplyAgreeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Teacher temp = TeacherRegApplyList.get(currentRow);
+                temp.setmQualified(Account.Qualified.YES);
+                MySQLDAO.getInstance().updateTeacher(temp);
+                TeacherRegApplyButton.doClick();
+                JOptionPane.showMessageDialog(null, "已同意！");
+            }
+        });
+        TeacherRegApplyRejectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Teacher temp = TeacherRegApplyList.get(currentRow);
+                temp.setmQualified(Account.Qualified.NO);
+                MySQLDAO.getInstance().updateTeacher(temp);
+                TeacherRegApplyButton.doClick();
+                JOptionPane.showMessageDialog(null, "已拒绝！");
+            }
+        });
         initUI();
     }
 
@@ -924,6 +1108,8 @@ public class MainWindow {
         // 各个用户界面
         switch (User.getUserType()) {
             case SYSADMIN:
+                OrgRegApplyButton.setVisible(true);
+                TeacherRegApplyButton.setVisible(true);
                 break;
             case EDUORG:
                 CourseInsertButton.setVisible(true);

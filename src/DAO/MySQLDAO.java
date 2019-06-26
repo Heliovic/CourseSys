@@ -428,6 +428,7 @@ public class MySQLDAO {
 
             while (rs.next()) {
                 Teacher teacher = new Teacher();
+                teacher.setUsername(rs.getString("user_name"));
                 teacher.setmTeacherName(rs.getString("tea_name"));
                 teacher.setmTeacherGender(Account.Gender.valueOf(rs.getString("tea_gender")));
                 teacher.setmTeacherBirthday(rs.getString("tea_birthday"));
@@ -479,6 +480,7 @@ public class MySQLDAO {
 
             while (rs.next()) {
                 EduOrg org = new EduOrg();
+                org.setUsername(rs.getString("user_name"));
                 org.setOrgCode(rs.getString("org_code"));
                 org.setOrgAddress(rs.getString("org_address"));
                 org.setOrgContact(rs.getString("org_contact"));
@@ -761,7 +763,7 @@ public class MySQLDAO {
         updateAccount(teacher);
 
         try {
-            String sql = "UPDATE teacher SET tea_name = ?, tea_gender = ?, tea_birthday = ?, tea_id_number = ?, tea_contact = ?, edu_field = ?, edu_year = ?, edu_age = ?, tea_introduction = ?, quelified = ? where user_name = ?";
+            String sql = "UPDATE teacher SET tea_name = ?, tea_gender = ?, tea_birthday = ?, tea_id_number = ?, tea_contact = ?, edu_field = ?, edu_year = ?, edu_age = ?, tea_introduction = ?, qualified = ? where user_name = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,teacher.getmTeacherName());
             statement.setString(2,teacher.getmTeacherGender().toString());
