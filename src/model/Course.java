@@ -20,12 +20,12 @@ public class Course {
     private int mPrice;
     private CourseField mCourseField;
     private String mHomeWork;
-    private double mAvgMark;
-    private int mMarkCount;
+    private int mTotalScore;
+    private int mScoreCount;
 
     public Course() {
-        mAvgMark = 3.0;
-        mMarkCount = 1;
+        mTotalScore = 3;
+        mScoreCount = 1;
     }
 
     public String getCourseId() {
@@ -108,19 +108,19 @@ public class Course {
         mHomeWork = homeWork;
     }
 
-    public double getAvgMark() {
-        return mAvgMark;
+    public int getTotalScore() {
+        return mTotalScore;
     }
 
-    public void setAvgMark(double avgMark) {
-        mAvgMark = avgMark;
+    public void setTotalScore(int totalScore) {
+        mTotalScore = totalScore;
     }
 
-    public int getMarkCount() {
-        return mMarkCount;
+    public int getScoreCount() {
+        return mScoreCount;
     }
 
-    public void setMarkCount(int markCount) {
-        mMarkCount = markCount;
+    public void setScoreCount(int markCount) {
+        mScoreCount = markCount;
     }
 }

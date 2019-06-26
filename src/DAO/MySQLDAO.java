@@ -3,6 +3,10 @@ package DAO;
 import model.*;
 import model.account.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -206,8 +210,8 @@ public class MySQLDAO {
                 course.setPrice(rs.getInt("price"));
                 course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
                 course.setHomeWork(rs.getString("homework"));
-                course.setAvgMark(rs.getDouble("avg_mark"));
-                course.setMarkCount(rs.getInt("mark_count"));
+                course.setTotalScore(rs.getInt("total_score"));
+                course.setScoreCount(rs.getInt("score_count"));
 
                 courses.add(course);
             }
@@ -385,8 +389,8 @@ public class MySQLDAO {
                 course.setPrice(rs.getInt("price"));
                 course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
                 course.setHomeWork(rs.getString("homework"));
-                course.setAvgMark(rs.getDouble("avg_mark"));
-                course.setMarkCount(rs.getInt("mark_count"));
+                course.setTotalScore(rs.getInt("total_score"));
+                course.setScoreCount(rs.getInt("score_count"));
 
             }
         } catch (SQLException e) {
@@ -471,6 +475,28 @@ public class MySQLDAO {
         return previewApps;
     }
 
+    public PreviewApp getPreviewAppByPrimaryKey(String course_id, String parent_id) {
+        String sql = "SELECT  * FROM previewapp WHERE course_id = ? AND parent_id = ?";
+        PreviewApp previewApp = new PreviewApp();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            statement.setString(2, parent_id);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                previewApp.setmParentId(rs.getString("parent_id"));
+                previewApp.setmCourseId(rs.getString("course_id"));
+                previewApp.setmAgreement(rs.getString("agreement").equals("YES") ? true : false);
+
+                return previewApp;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return previewApp;
+    }
+
     public List<EduOrg> getReviewEduOrg () {
         String sql = "SELECT * FROM eduorg WHERE qualified = 'CHECK'";
         List<EduOrg> eduOrgs = new ArrayList<>();
@@ -520,8 +546,8 @@ public class MySQLDAO {
                 course.setPrice(rs.getInt("price"));
                 course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
                 course.setHomeWork(rs.getString("homework"));
-                course.setAvgMark(rs.getDouble("avg_mark"));
-                course.setMarkCount(rs.getInt("mark_count"));
+                course.setTotalScore(rs.getInt("total_score"));
+                course.setScoreCount(rs.getInt("score_count"));
 
                 courses.add(course);
             }
@@ -529,6 +555,73 @@ public class MySQLDAO {
             e.printStackTrace();
         }
         return courses;
+    }
+
+    public List<Video> getVideoInfo() {
+        String sql = "SELECT * FROM video";
+        List<Video> videos = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Video video = new Video();
+                video.setmVideo_id(rs.getString("video_id"));
+                video.setmTime(rs.getString("time"));
+                video.setmUrl(rs.getString("video_url"));
+
+                videos.add(video);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return videos;
+    }
+
+    public CourseComment getCourseCommentByPrimaryKey(String course_id, String publisher) {
+        String sql = "SELECT  * FROM coursecomment WHERE course_id = ? AND publisher = ?";
+        CourseComment courseComment = new CourseComment();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, course_id);
+            statement.setString(2, publisher);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                courseComment.setCourseId(rs.getString("course_id"));
+                courseComment.setPublisher(rs.getString("publisher"));
+                courseComment.setContent(rs.getString("content"));
+                courseComment.setScore(rs.getInt("score"));
+                courseComment.setPicId(rs.getString("picture_id"));
+                return courseComment;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courseComment;
+    }
+
+    public TeachComment getTeachCommentByPrimaryKey(String teachId, String publisher) {
+        String sql = "SELECT  * FROM teachcomment WHERE teach_id = ? AND publisher = ?";
+        TeachComment teachComment = new TeachComment();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, teachId);
+            statement.setString(2, publisher);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                teachComment.setTeachId(rs.getString("teach_id"));
+                teachComment.setPublisher(rs.getString("publisher"));
+                teachComment.setContent(rs.getString("content"));
+                teachComment.setScore(rs.getInt("score"));
+                teachComment.setPicId(rs.getString("picture_id"));
+                return teachComment;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return teachComment;
     }
 
     //数据库的插入操作
@@ -641,8 +734,8 @@ public class MySQLDAO {
             statement.setInt(8,course.getPrice());
             statement.setString(9,course.getCourseField().toString());
             statement.setString(10,course.getHomeWork());
-            statement.setDouble(11, course.getAvgMark());
-            statement.setInt(12, course.getMarkCount());
+            statement.setInt(11, course.getTotalScore());
+            statement.setInt(12, course.getScoreCount());
             statement.executeUpdate();
 
             System.out.println("插入成功！");
@@ -713,6 +806,75 @@ public class MySQLDAO {
 
             System.out.println("插入成功！");
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertVideo (Video video) {
+        String sql = "INSERT INTO video (video_id, time, video_url) VALUES (?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,video.getmVideo_id());
+            statement.setString(2,video.getmTime());
+            statement.setString(3,video.getmUrl());
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertCourseComment(CourseComment comment) {
+        String sql = "INSERT INTO coursecomment (course_id, publisher, content, score, picture_id) VALUES (?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, comment.getCourseId());
+            statement.setString(2, comment.getPublisher());
+            statement.setString(3, comment.getContent());
+            statement.setInt(4, comment.getScore());
+            statement.setString(5, comment.getPicId());
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertTeachComment(TeachComment comment) {
+        String sql = "INSERT INTO teachcomment (teach_id, publisher, content, score, picture_id) VALUES (?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, comment.getTeachId());
+            statement.setString(2, comment.getPublisher());
+            statement.setString(3, comment.getContent());
+            statement.setInt(4, comment.getScore());
+            statement.setString(5, comment.getPicId());
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertPicture(String picId, String filePath) {
+        String sql = "INSERT INTO pictures (picture_id, pic_blob) VALUES (?, ?)";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            File file = new File(filePath);
+            InputStream stream = new FileInputStream(file);
+
+            statement.setString(1, picId);
+            statement.setBinaryStream(2, stream, (int) file.length());
+            statement.executeUpdate();
+
+            System.out.println("插入成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -823,8 +985,8 @@ public class MySQLDAO {
             statement.setInt(7, course.getPrice());
             statement.setString(8, course.getCourseField().toString());
             statement.setString(9, course.getHomeWork());
-            statement.setDouble(10, course.getAvgMark());
-            statement.setInt(11, course.getMarkCount());
+            statement.setInt(10, course.getTotalScore());
+            statement.setInt(11, course.getScoreCount());
             statement.setString(12, course.getCourseId());
             statement.executeUpdate();
 
@@ -884,7 +1046,7 @@ public class MySQLDAO {
     }
 
     public void updateNewsComment (NewsComment newsComment) {
-        String sql = "newscomment SET content = ? WHERE comment_id = ?";
+        String sql = "UPDATE newscomment SET content = ? WHERE comment_id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,newsComment.getmContent());
@@ -895,6 +1057,126 @@ public class MySQLDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void updateVideo (Video video) {
+        String sql = "UPDATE video SET time = ?, video_url = ? WHERE video_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,video.getmTime());
+            statement.setString(2,video.getmUrl());
+            statement.setString(3,video.getmVideo_id());
+            statement.executeUpdate();
+
+            System.out.println("更新成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updatePicture(String picId, String filePath) {
+        String sql = "UPDATE pictures SET pic_blob = ? WHERE picture_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            File file = new File(filePath);
+            InputStream stream = new FileInputStream(file);
+
+            statement.setBinaryStream(1, stream, (int) file.length());
+            statement.setString(2, picId);
+            statement.executeUpdate();
+
+            System.out.println("更新成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateCourseComment(CourseComment comment) {
+        String sql = "UPDATE coursecomment SET content = ?, score = ?, picture_id = ? WHERE course_id = ? AND publisher = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, comment.getContent());
+            statement.setInt(2, comment.getScore());
+            statement.setString(3, comment.getPicId());
+            statement.setString(4, comment.getCourseId());
+            statement.setString(5, comment.getPublisher());
+            statement.executeUpdate();
+
+            System.out.println("更新成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateTeachComment(TeachComment comment) {
+        String sql = "UPDATE teachcomment SET content = ?, score = ?, picture_id = ? WHERE teach_id = ? AND publisher = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, comment.getContent());
+            statement.setInt(2, comment.getScore());
+            statement.setString(3, comment.getPicId());
+            statement.setString(4, comment.getTeachId());
+            statement.setString(5, comment.getPublisher());
+            statement.executeUpdate();
+
+            System.out.println("更新成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletePicture(String picId) {
+        String sql = "DELETE FROM pictures WHERE picture_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, picId);
+            statement.executeUpdate();
+
+            System.out.println("删除成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteCourseComment(String courseId, String publisher) {
+
+        CourseComment courseComment = getCourseCommentByPrimaryKey(courseId, publisher);
+
+        String sql = "DELETE FROM coursecomment WHERE course_id = ? AND publisher = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, courseId);
+            statement.setString(2, publisher);
+            statement.executeUpdate();
+
+            System.out.println("删除成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (!courseComment.getPicId().equals("NO_PIC"))
+            deletePicture(courseComment.getPicId());
+    }
+
+    public void deleteTeachComment(String teachId, String publisher) {
+
+        TeachComment teachComment = getTeachCommentByPrimaryKey(teachId, publisher);
+
+        String sql = "DELETE FROM teachcomment WHERE teach_id = ? AND publisher = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, teachId);
+            statement.setString(2, publisher);
+            statement.executeUpdate();
+
+            System.out.println("删除成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (!teachComment.getPicId().equals("NO_PIC"))
+            deletePicture(teachComment.getPicId());
     }
 
     public void deleteAccount (String user_name) {
@@ -1008,6 +1290,19 @@ public class MySQLDAO {
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,newcomment_id);
+            statement.executeUpdate();
+
+            System.out.println("删除成功！");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteVideo (String video_id) {
+        String sql = "DELETE FROM video WHERE video_id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,video_id);
             statement.executeUpdate();
 
             System.out.println("删除成功！");
