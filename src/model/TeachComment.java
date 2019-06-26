@@ -6,6 +6,7 @@ public class TeachComment {
     String mContent;
     int mScore;
     String mPicId;
+    String mCourseId;
 
     public TeachComment() {
         mContent = "";
@@ -49,5 +50,13 @@ public class TeachComment {
 
     public void setPicId(String picId) {
         mPicId = picId;
+    }
+
+    public String getCourseId() {
+        return mCourseId;
+    }
+
+    public void setCourseId(String courseId) {
+        mCourseId = courseId;
     }
 }

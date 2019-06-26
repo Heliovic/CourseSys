@@ -95,6 +95,21 @@
               <visible value="false"/>
             </properties>
           </component>
+          <component id="f4899" class="javax.swing.JButton" binding="EditCourseCommentButton">
+            <constraints/>
+            <properties>
+              <actionCommand value="修改用户课程评论"/>
+              <text value="修改用户评论"/>
+              <visible value="false"/>
+            </properties>
+          </component>
+          <component id="515f3" class="javax.swing.JButton" binding="EditTeachCommentButton">
+            <constraints/>
+            <properties>
+              <text value="修改用户课程/机构评论"/>
+              <visible value="false"/>
+            </properties>
+          </component>
         </children>
       </grid>
       <grid id="f07b8" binding="CardPanel" layout-manager="CardLayout" hgap="0" vgap="0" show="208ee">
@@ -1194,6 +1209,51 @@
                 <border type="none"/>
                 <children>
                   <component id="62844" class="javax.swing.JTable" binding="VideoTable">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+          <grid id="26237" binding="EditCourseCommentPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <card name="EditCourseCommentPanel"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="28d7c">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="42a4" class="javax.swing.JTable" binding="mParentCourseCommentTable">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+          <grid id="3db25" binding="EditTeachCommentPanel" layout-manager="CardLayout" hgap="0" vgap="0">
+            <constraints>
+              <card name="EditTeachCommentPanel"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="116c6">
+                <constraints>
+                  <card name="Card1"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="cc5e5" class="javax.swing.JTable" binding="mParentTeachCommentTable">
                     <constraints/>
                     <properties/>
                   </component>

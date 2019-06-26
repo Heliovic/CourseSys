@@ -31,12 +31,14 @@ public class CourseCommentWindow {
     private JButton mCommentEditButton;
     private JButton mUndoCommentButton;
 
+    public JComboBox getCommentToComboBox() {
+        return mCommentToComboBox;
+    }
 
     public CourseCommentWindow(Parent p, Course c) {
 
         mParent = p;
         mCourse = c;
-
 
         JFrame frame = new JFrame("评论打分");
         frame.setContentPane(CourseCommentPanel);
@@ -66,6 +68,7 @@ public class CourseCommentWindow {
                     comment.setScore(mScoreComboBox.getSelectedIndex());
                     comment.setPicId(GeneralGenerator.getPicId(mParent.getUsername()));
                     comment.setContent(mCommentContentTextArea.getText());
+                    comment.setCourseId(mCourse.getCourseId());
 
                     File file = new File(mPicPathTextField.getText());
                     if (file.exists())
@@ -96,7 +99,7 @@ public class CourseCommentWindow {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (mCommentToComboBox.getSelectedIndex() == 0) {
-                    TeachComment teachComment = MySQLDAO.getInstance().getTeachCommentByPrimaryKey(mCourse.getTeachId(), mParent.getUsername());
+                    TeachComment teachComment = MySQLDAO.getInstance().getTeachCommentByPrimaryKey(mCourse.getTeachId(), mParent.getUsername(), mCourse.getCourseId());
                     mCommentContentTextArea.setText(teachComment.getContent());
                 } else {
                     CourseComment courseComment = MySQLDAO.getInstance().getCourseCommentByPrimaryKey(mCourse.getCourseId(), mParent.getUsername());
@@ -110,9 +113,10 @@ public class CourseCommentWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (mCommentToComboBox.getSelectedIndex() == 0) {
-                    TeachComment comment = MySQLDAO.getInstance().getTeachCommentByPrimaryKey(mCourse.getTeachId(), mParent.getUsername());
+                    TeachComment comment = MySQLDAO.getInstance().getTeachCommentByPrimaryKey(mCourse.getTeachId(), mParent.getUsername(), mCourse.getCourseId());
                     comment.setTeachId(mCourse.getTeachId());
                     comment.setPublisher(mParent.getUsername());
+                    comment.setCourseId(mCourse.getCourseId());
                     comment.setScore(mScoreComboBox.getSelectedIndex());
 
                     String oldPicId = comment.getPicId();
@@ -159,11 +163,12 @@ public class CourseCommentWindow {
                     TeachComment comment = new TeachComment();
                     comment.setTeachId(mCourse.getTeachId());
                     comment.setPublisher(mParent.getUsername());
+                    comment.setCourseId(mCourse.getCourseId());
                     comment.setScore(mScoreComboBox.getSelectedIndex());
                     comment.setPicId(GeneralGenerator.getPicId(mParent.getUsername()));
                     comment.setContent(mCommentContentTextArea.getText());
 
-                    MySQLDAO.getInstance().deleteTeachComment(comment.getTeachId(), comment.getPublisher());
+                    MySQLDAO.getInstance().deleteTeachComment(comment.getTeachId(), comment.getPublisher(), comment.getCourseId());
                 } else {
                     CourseComment comment = new CourseComment();
                     comment.setCourseId(mCourse.getCourseId());
@@ -192,8 +197,11 @@ public class CourseCommentWindow {
 
     private void updateButtonEnable() {
         if (mCommentToComboBox.getSelectedIndex() == 0) {
-            TeachComment teachComment = MySQLDAO.getInstance().getTeachCommentByPrimaryKey(mCourse.getTeachId(), mParent.getUsername());
-            if (teachComment.getTeachId() != null && teachComment.getTeachId().equals(mCourse.getTeachId()) && teachComment.getPublisher() != null && teachComment.getPublisher().equals(mParent.getUsername())) {
+            TeachComment teachComment = MySQLDAO.getInstance().getTeachCommentByPrimaryKey(mCourse.getTeachId(), mParent.getUsername(), mCourse.getCourseId());
+            if (teachComment.getTeachId() != null && teachComment.getTeachId().equals(mCourse.getTeachId()) &&
+                teachComment.getPublisher() != null && teachComment.getPublisher().equals(mParent.getUsername()) &&
+                teachComment.getCourseId() != null && teachComment.getCourseId().equals(mCourse.getCourseId())
+            ) {
                 mCommentEditButton.setEnabled(true);
                 mUndoCommentButton.setEnabled(true);
                 mSubmitCommentButton.setEnabled(false);

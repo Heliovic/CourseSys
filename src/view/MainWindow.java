@@ -173,6 +173,12 @@ public class MainWindow {
     private JButton VideoDeleteButton;
     private JTable VideoTable;
     private JButton mCommentButton;
+    private JButton EditCourseCommentButton;
+    private JPanel EditCourseCommentPanel;
+    private JTable mParentCourseCommentTable;
+    private JButton EditTeachCommentButton;
+    private JPanel EditTeachCommentPanel;
+    private JTable mParentTeachCommentTable;
     private CardLayout cl;
 
     public MainWindow(Account user) {
@@ -1177,6 +1183,110 @@ public class MainWindow {
                 }
             }
         });
+        EditCourseCommentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cl.show(CardPanel, "EditCourseCommentPanel");
+
+                List<CourseComment> comments = MySQLDAO.getInstance().getAllCourseComment();
+                //System.out.println(field.toString() + place + String.valueOf(age) + minPrice + maxPrice);
+                Vector rowDataSet = new Vector();
+                Vector names = new Vector();
+                names.add("课程ID");
+                names.add("发布人ID");
+                names.add("内容");
+                names.add("分数");
+                names.add("图片ID");
+                for (CourseComment comment : comments){
+                    Vector rowData = new Vector();
+
+                    rowData.add(comment.getCourseId());
+                    rowData.add(comment.getPublisher());
+                    rowData.add(comment.getContent());
+                    rowData.add(comment.getScore());
+                    rowData.add(comment.getPicId());
+                    rowDataSet.add(rowData);
+                }
+                DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                mParentCourseCommentTable.setModel(model);
+                mParentCourseCommentTable.setRowHeight(28);
+            }
+        });
+        EditTeachCommentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cl.show(CardPanel, "EditTeachCommentPanel");
+
+                List<TeachComment> comments = MySQLDAO.getInstance().getAllTeachComment();
+                //System.out.println(field.toString() + place + String.valueOf(age) + minPrice + maxPrice);
+                Vector rowDataSet = new Vector();
+                Vector names = new Vector();
+                names.add("教师ID");
+                names.add("课程ID");
+                names.add("发布人ID");
+                names.add("内容");
+                names.add("分数");
+                names.add("图片ID");
+                for (TeachComment comment : comments){
+                    Vector rowData = new Vector();
+
+                    rowData.add(comment.getTeachId());
+                    rowData.add(comment.getCourseId());
+                    rowData.add(comment.getPublisher());
+                    rowData.add(comment.getContent());
+                    rowData.add(comment.getScore());
+                    rowData.add(comment.getPicId());
+                    rowDataSet.add(rowData);
+                }
+                DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                mParentTeachCommentTable.setModel(model);
+                mParentTeachCommentTable.setRowHeight(28);
+            }
+        });
+        mParentCourseCommentTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                if (e.getClickCount() == 2) {
+                    int row = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
+                    String course_id = mParentCourseCommentTable.getValueAt(row, 0).toString();
+                    String publisher = mParentCourseCommentTable.getValueAt(row, 1).toString();
+                    //List<CourseComment> courseComments = MySQLDAO.getInstance().getCourseComment(course_id);
+                    CourseCommentWindow window = new CourseCommentWindow(MySQLDAO.getInstance().getParentByUsername(publisher), MySQLDAO.getInstance().getCourseById(course_id));
+                    window.getCommentToComboBox().setSelectedIndex(1);
+                    window.getCommentToComboBox().setEnabled(false);
+                }
+            }
+        });
+
+        mParentTeachCommentTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                if (e.getClickCount() == 2) {
+                    int row = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
+                    String teach_id = mParentTeachCommentTable.getValueAt(row, 0).toString();
+                    String course_id = mParentTeachCommentTable.getValueAt(row, 1).toString();
+                    String publisher = mParentTeachCommentTable.getValueAt(row, 2).toString();
+                    //List<CourseComment> courseComments = MySQLDAO.getInstance().getCourseComment(course_id);
+                    Course course = new Course();
+                    course.setTeachId(teach_id);
+                    CourseCommentWindow window = new CourseCommentWindow(MySQLDAO.getInstance().getParentByUsername(publisher), MySQLDAO.getInstance().getCourseById(course_id));
+                    window.getCommentToComboBox().setSelectedIndex(0);
+                    window.getCommentToComboBox().setEnabled(false);
+                }
+            }
+        });
         initUI();
     }
 
@@ -1189,6 +1299,8 @@ public class MainWindow {
             case SYSADMIN:
                 OrgRegApplyButton.setVisible(true);
                 TeacherRegApplyButton.setVisible(true);
+                EditCourseCommentButton.setVisible(true);
+                EditTeachCommentButton.setVisible(true);
                 break;
             case EDUORG:
                 CourseInsertButton.setVisible(true);

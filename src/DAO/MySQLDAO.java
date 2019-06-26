@@ -618,18 +618,20 @@ public class MySQLDAO {
         return courseComment;
     }
 
-    public TeachComment getTeachCommentByPrimaryKey(String teachId, String publisher) {
-        String sql = "SELECT  * FROM teachcomment WHERE teach_id = ? AND publisher = ?";
+    public TeachComment getTeachCommentByPrimaryKey(String teachId, String publisher, String courseId) {
+        String sql = "SELECT  * FROM teachcomment WHERE teach_id = ? AND publisher = ? AND course_id = ?";
         TeachComment teachComment = new TeachComment();
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, teachId);
             statement.setString(2, publisher);
+            statement.setString(3, courseId);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
                 teachComment.setTeachId(rs.getString("teach_id"));
                 teachComment.setPublisher(rs.getString("publisher"));
+                teachComment.setCourseId(rs.getString("course_id"));
                 teachComment.setContent(rs.getString("content"));
                 teachComment.setScore(rs.getInt("score"));
                 teachComment.setPicId(rs.getString("picture_id"));
@@ -662,6 +664,51 @@ public class MySQLDAO {
             e.printStackTrace();
         }
         return courseComments;
+    }
+
+    public List<CourseComment> getAllCourseComment () {
+        String sql = "SELECT * FROM coursecomment";
+        List<CourseComment> courseComments = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                CourseComment courseComment = new CourseComment();
+                courseComment.setCourseId(rs.getString("course_id"));
+                courseComment.setPublisher(rs.getString("publisher"));
+                courseComment.setContent(rs.getString("content"));
+                courseComment.setScore(rs.getInt("score"));
+                courseComment.setPicId(rs.getString("picture_id"));
+
+                courseComments.add(courseComment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courseComments;
+    }
+
+    public List<TeachComment> getAllTeachComment () {
+        String sql = "SELECT * FROM teachcomment";
+        List<TeachComment> teachComments = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                TeachComment teachComment = new TeachComment();
+                teachComment.setTeachId(rs.getString("teach_id"));
+                teachComment.setPublisher(rs.getString("publisher"));
+                teachComment.setCourseId(rs.getString("course_id"));
+                teachComment.setContent(rs.getString("content"));
+                teachComment.setScore(rs.getInt("score"));
+                teachComment.setPicId(rs.getString("picture_id"));
+
+                teachComments.add(teachComment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return teachComments;
     }
 
     public ImageIcon getPictureById(String id) {
@@ -903,7 +950,7 @@ public class MySQLDAO {
     }
 
     public void insertTeachComment(TeachComment comment) {
-        String sql = "INSERT INTO teachcomment (teach_id, publisher, content, score, picture_id) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO teachcomment (teach_id, publisher, content, score, picture_id, course_id) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, comment.getTeachId());
@@ -911,6 +958,7 @@ public class MySQLDAO {
             statement.setString(3, comment.getContent());
             statement.setInt(4, comment.getScore());
             statement.setString(5, comment.getPicId());
+            statement.setString(6, comment.getCourseId());
             statement.executeUpdate();
 
             System.out.println("插入成功！");
@@ -1171,7 +1219,7 @@ public class MySQLDAO {
     }
 
     public void updateTeachComment(TeachComment comment) {
-        String sql = "UPDATE teachcomment SET content = ?, score = ?, picture_id = ? WHERE teach_id = ? AND publisher = ?";
+        String sql = "UPDATE teachcomment SET content = ?, score = ?, picture_id = ? WHERE teach_id = ? AND publisher = ? AND course_id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, comment.getContent());
@@ -1179,6 +1227,7 @@ public class MySQLDAO {
             statement.setString(3, comment.getPicId());
             statement.setString(4, comment.getTeachId());
             statement.setString(5, comment.getPublisher());
+            statement.setString(6, comment.getCourseId());
             statement.executeUpdate();
 
             System.out.println("更新成功！");
@@ -1219,15 +1268,17 @@ public class MySQLDAO {
             deletePicture(courseComment.getPicId());
     }
 
-    public void deleteTeachComment(String teachId, String publisher) {
+    public void deleteTeachComment(String teachId, String publisher, String courseId) {
 
-        TeachComment teachComment = getTeachCommentByPrimaryKey(teachId, publisher);
+        TeachComment teachComment = getTeachCommentByPrimaryKey(teachId, publisher, courseId);
 
-        String sql = "DELETE FROM teachcomment WHERE teach_id = ? AND publisher = ?";
+        String sql = "DELETE FROM teachcomment WHERE teach_id = ? AND publisher = ? AND course_id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, teachId);
             statement.setString(2, publisher);
+
+            statement.setString(3, courseId);
             statement.executeUpdate();
 
             System.out.println("删除成功！");
