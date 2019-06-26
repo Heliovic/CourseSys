@@ -25,63 +25,53 @@ public class LogWindow {
                 String password = new String(passwordField.getPassword());
                 Account a = MySQLDAO.getInstance().getAccountByUsername(username);
                 if (a == null) {
-                    JOptionPane.showMessageDialog(null, "用户名不存在");
+                    JOptionPane.showMessageDialog(null, "用户名不存在!");
                     return;
                 }
+
                 if (a.getUserType() == Account.UserType.EDUORG) {
                     EduOrg org = MySQLDAO.getInstance().getEduOrgByUsername(a.getUsername());
                     org.setUserType(Account.UserType.EDUORG);
                     if (org.getPassword().equals(password)) {
                         if (org.isQualified().toString().equals("YES")) {
                             new MainWindow(org);
-                            JOptionPane.showMessageDialog(null, "教育机构登录成功！");
                         } else if (org.isQualified().toString().equals("CHECK")){
-                            JOptionPane.showMessageDialog(null, "正在审核中");
+                            JOptionPane.showMessageDialog(null, "正在审核中!");
                         } else if (org.isQualified().toString().equals("NO")) {
-                            JOptionPane.showMessageDialog(null, "未通过申请");
+                            JOptionPane.showMessageDialog(null, "未通过申请!");
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "用户名或密码错误！");
+                        return;
                     }
-
-                }
-                if (a.getUserType() == Account.UserType.PARENT) {
+                } else if (a.getUserType() == Account.UserType.PARENT) {
                     Parent par = MySQLDAO.getInstance().getParentByUsername(a.getUsername());
                     par.setUserType(Account.UserType.PARENT);
                     if (par.getPassword().equals(password)) {
                         new MainWindow(par);
-                        JOptionPane.showMessageDialog(null, "学生家长登录成功！");
+                        return;
                     }
-                    else {
-                        JOptionPane.showMessageDialog(null, "用户名或密码错误！");
-                    }
-                }
-                if (a.getUserType() == Account.UserType.TEACHER) {
+                } else if (a.getUserType() == Account.UserType.TEACHER) {
                     Teacher teacher = MySQLDAO.getInstance().getTeacherByUsername(a.getUsername());
                     teacher.setUserType(Account.UserType.TEACHER);
                     if (teacher.getPassword().equals(password)){
                         if (teacher.isQualified().toString().equals("YES")) {
                             new MainWindow(teacher);
-                            JOptionPane.showMessageDialog(null, "个人教师登录成功！");
                         } else if (teacher.isQualified().toString().equals("CHECK")){
-                            JOptionPane.showMessageDialog(null, "正在审核中");
+                            JOptionPane.showMessageDialog(null, "正在审核中!");
                         } else if (teacher.isQualified().toString().equals("NO")) {
-                            JOptionPane.showMessageDialog(null, "未通过申请");
+                            JOptionPane.showMessageDialog(null, "未通过申请!");
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "用户名或密码错误！");
+                        return;
                     }
-                }
-                if (a.getUserType() == Account.UserType.SYSADMIN) {
+                } else if (a.getUserType() == Account.UserType.SYSADMIN) {
                     Sysadmin sysadmin = MySQLDAO.getInstance().getSyaadminByUsername(a.getUsername());
                     sysadmin.setUserType(Account.UserType.SYSADMIN);
                     if (sysadmin.getPassword().equals(password)) {
                         new MainWindow(sysadmin);
-                        JOptionPane.showMessageDialog(null, "系统管理员登陆成功");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "用户名或密码错误！");
+                        return;
                     }
                 }
+
+                JOptionPane.showMessageDialog(null, "密码错误!");
             }
         });
         RegButton.addActionListener(new ActionListener() {

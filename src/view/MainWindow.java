@@ -1172,6 +1172,20 @@ public class MainWindow {
                 }
             }
         });
+        mCourseQueryTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                if (e.getClickCount() == 2) {
+                    int row = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
+                    String course_id = mCourseQueryTable.getValueAt(row, 0).toString();
+
+                    //List<CourseComment> courseComments = MySQLDAO.getInstance().getCourseComment(course_id);
+                    new CourseWindow(MySQLDAO.getInstance().getCourseById(course_id));
+                }
+            }
+        });
         initUI();
     }
 

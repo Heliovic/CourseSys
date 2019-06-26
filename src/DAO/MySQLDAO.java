@@ -664,6 +664,27 @@ public class MySQLDAO {
         return courseComments;
     }
 
+    public ImageIcon getPictureById(String id) {
+        String sql = "SELECT pic_blob FROM pictures WHERE picture_id = ?";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Blob blob = rs.getBlob(1);
+                blob.getBinaryStream();
+                ImageIcon imageIcon = new ImageIcon(blob.getBytes(1, (int) blob.length()));
+                return imageIcon;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return new ImageIcon();
+    }
+
     //数据库的插入操作
     public void insertAccount(Account account) {
         String sql = "INSERT INTO account (user_name, password, tel, email, user_type) " +
