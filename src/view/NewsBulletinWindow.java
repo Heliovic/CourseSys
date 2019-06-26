@@ -3,6 +3,7 @@ package view;
 import DAO.MySQLDAO;
 import model.News;
 import model.account.Account;
+import utils.GeneralGenerator;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -26,7 +27,7 @@ public class NewsBulletinWindow {
         News newsBulletin = new News();
         newsBulletin.setmPublisher(user.getUsername());
         newsBulletin.setmTime(currentTime);
-        newsBulletin.setmNewsId(currentTime + " " + user.getUsername());
+        newsBulletin.setmNewsId(GeneralGenerator.getPicId(user.getUsername()));
 
         SaveButton.setVisible(true);
         SaveButton.setEnabled(true);

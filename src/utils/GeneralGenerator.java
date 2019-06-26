@@ -1,7 +1,12 @@
 package utils;
 
+import java.text.SimpleDateFormat;
+
 public class GeneralGenerator {
     public static String getPicId(String username) {
-        return username + System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String currentTime = sdf.format(System.currentTimeMillis());
+
+        return currentTime + username;
     }
 }
