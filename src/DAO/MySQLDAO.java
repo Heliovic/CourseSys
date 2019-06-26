@@ -624,6 +624,29 @@ public class MySQLDAO {
         return teachComment;
     }
 
+    public List<CourseComment> getCourseComment (String course_id) {
+        String sql = "SELECT * FROM coursecomment WHERE course_id = ? ORDER BY score DESC";
+        List<CourseComment> courseComments = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,course_id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                CourseComment courseComment = new CourseComment();
+                courseComment.setCourseId(course_id);
+                courseComment.setPublisher(rs.getString("publisher"));
+                courseComment.setContent(rs.getString("content"));
+                courseComment.setScore(rs.getInt("score"));
+                courseComment.setPicId(rs.getString("picture_id"));
+
+                courseComments.add(courseComment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courseComments;
+    }
+
     //数据库的插入操作
     public void insertAccount(Account account) {
         String sql = "INSERT INTO account (user_name, password, tel, email, user_type) " +
