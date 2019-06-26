@@ -636,6 +636,7 @@ public class MainWindow {
                 for (int i = 0; i < p.size(); i++) {
                     courses.add(MySQLDAO.getInstance().getCourseById(p.get(i).getmCourseId()));
                 }
+                courses.sort(new Course.CourseComparator());
                 Vector rowDataSet = new Vector();
                 Vector names = new Vector();
                 names.add("课程ID");
@@ -661,7 +662,7 @@ public class MainWindow {
                     rowData.add(course.getPrice());
                     rowData.add(course.getCourseField().toString());
                     rowData.add(course.getHomeWork());
-                    rowData.add((double) course.getTotalScore() / course.getScoreCount());
+                    rowData.add(course.getAvgScore());
                     rowDataSet.add(rowData);
                 }
                 DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
@@ -670,6 +671,7 @@ public class MainWindow {
                     }
                 };
                 mShoppingCartTable.setModel(model);
+                mShoppingCartTable.setRowHeight(28);
 
                 JComboBox box = Constants.getCourseFieldCombo();
                 TableColumn column = mShoppingCartTable.getColumn("课程类别");
@@ -692,6 +694,7 @@ public class MainWindow {
                 int maxPrice = maxprice[index];
                 List<Course> courses = MySQLDAO.getInstance().getCourseInfo(field, place, age, minPrice, maxPrice);
                 //System.out.println(field.toString() + place + String.valueOf(age) + minPrice + maxPrice);
+                courses.sort(new Course.CourseComparator());
                 Vector rowDataSet = new Vector();
                 Vector names = new Vector();
                 names.add("课程ID");
@@ -717,7 +720,7 @@ public class MainWindow {
                     rowData.add(course.getPrice());
                     rowData.add(course.getCourseField().toString());
                     rowData.add(course.getHomeWork());
-                    rowData.add((double) course.getTotalScore() / course.getScoreCount());
+                    rowData.add(course.getAvgScore());
                     rowDataSet.add(rowData);
                 }
                 DefaultTableModel model = new DefaultTableModel(rowDataSet, names) {
@@ -726,6 +729,7 @@ public class MainWindow {
                     }
                 };
                 mCourseQueryTable.setModel(model);
+                mCourseQueryTable.setRowHeight(28);
             }
         });
 
@@ -789,6 +793,7 @@ public class MainWindow {
                         }
                     };
                     mCourseTable.setModel(model);
+                    mCourseTable.setRowHeight(28);
 
                     JComboBox box = Constants.getCourseFieldCombo();
                     TableColumn column = mCourseTable.getColumn("课程类别");
@@ -830,6 +835,7 @@ public class MainWindow {
                         }
                     };
                     mCourseTable.setModel(model);
+                    mCourseTable.setRowHeight(28);
 
                     JComboBox box = Constants.getCourseFieldCombo();
                     TableColumn column = mCourseTable.getColumn("课程类别");
@@ -935,6 +941,7 @@ public class MainWindow {
                     }
                 };
                 mMyPreviewTable.setModel(model);
+                mMyPreviewTable.setRowHeight(28);
             }
         });
         mPreviewButton.addActionListener(new ActionListener() {
@@ -991,6 +998,7 @@ public class MainWindow {
                     }
                 };
                 mPreviewAppTable.setModel(model);
+                mPreviewAppTable.setRowHeight(28);
             }
         });
         mPermitButton.addActionListener(new ActionListener() {

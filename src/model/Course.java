@@ -1,6 +1,18 @@
 package model;
 
+import DAO.MySQLDAO;
+
+import java.util.Comparator;
+
 public class Course {
+
+    public static class CourseComparator implements Comparator<Course> {
+
+        @Override
+        public int compare(Course o1, Course o2) {
+            return (int) (o2.getAvgScore() - o1.getAvgScore());
+        }
+    }
 
     public enum CourseField {
         MATH,
@@ -20,13 +32,6 @@ public class Course {
     private int mPrice;
     private CourseField mCourseField;
     private String mHomeWork;
-    private int mTotalScore;
-    private int mScoreCount;
-
-    public Course() {
-        mTotalScore = 3;
-        mScoreCount = 1;
-    }
 
     public String getCourseId() {
         return mCourseId;
@@ -108,19 +113,7 @@ public class Course {
         mHomeWork = homeWork;
     }
 
-    public int getTotalScore() {
-        return mTotalScore;
-    }
-
-    public void setTotalScore(int totalScore) {
-        mTotalScore = totalScore;
-    }
-
-    public int getScoreCount() {
-        return mScoreCount;
-    }
-
-    public void setScoreCount(int markCount) {
-        mScoreCount = markCount;
+    public double getAvgScore() {
+        return MySQLDAO.getInstance().getCourseAvgScoreById(mCourseId);
     }
 }

@@ -181,10 +181,10 @@ public class MySQLDAO {
 
         if (place.equals(""))
             sql = "SELECT * FROM course WHERE course_field = ? AND (place LIKE '%' OR place = ?) AND age_recommend = ? " +
-                    "AND price >= ? AND price <= ? ORDER BY avg_mark DESC";
+                    "AND price >= ? AND price <= ?";
         else
             sql = "SELECT * FROM course WHERE course_field = ? AND place = ? AND age_recommend = ? " +
-                    "AND price >= ? AND price <= ? ORDER BY avg_mark DESC";
+                    "AND price >= ? AND price <= ?";
 
         List<Course> courses = new ArrayList<>();
         try {
@@ -210,8 +210,6 @@ public class MySQLDAO {
                 course.setPrice(rs.getInt("price"));
                 course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
                 course.setHomeWork(rs.getString("homework"));
-                course.setTotalScore(rs.getInt("total_score"));
-                course.setScoreCount(rs.getInt("score_count"));
 
                 courses.add(course);
             }
@@ -220,6 +218,27 @@ public class MySQLDAO {
         }
 
         return courses;
+    }
+
+    public double getCourseAvgScoreById(String courseId) {
+        String sql = "SELECT  * FROM coursecomment WHERE course_id = ?";
+        double total = 0;
+        int count = 0;
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, courseId);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                if (rs.getDouble("score") == 0)
+                    continue;
+                total += rs.getDouble("score");
+                count++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count == 0 ? 3 : total / count;
     }
 
     public List getNewsInfo (Account account){
@@ -389,8 +408,6 @@ public class MySQLDAO {
                 course.setPrice(rs.getInt("price"));
                 course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
                 course.setHomeWork(rs.getString("homework"));
-                course.setTotalScore(rs.getInt("total_score"));
-                course.setScoreCount(rs.getInt("score_count"));
 
             }
         } catch (SQLException e) {
@@ -546,8 +563,6 @@ public class MySQLDAO {
                 course.setPrice(rs.getInt("price"));
                 course.setCourseField(Course.CourseField.valueOf(rs.getString("course_field")));
                 course.setHomeWork(rs.getString("homework"));
-                course.setTotalScore(rs.getInt("total_score"));
-                course.setScoreCount(rs.getInt("score_count"));
 
                 courses.add(course);
             }
@@ -757,8 +772,6 @@ public class MySQLDAO {
             statement.setInt(8,course.getPrice());
             statement.setString(9,course.getCourseField().toString());
             statement.setString(10,course.getHomeWork());
-            statement.setInt(11, course.getTotalScore());
-            statement.setInt(12, course.getScoreCount());
             statement.executeUpdate();
 
             System.out.println("插入成功！");
@@ -1008,9 +1021,7 @@ public class MySQLDAO {
             statement.setInt(7, course.getPrice());
             statement.setString(8, course.getCourseField().toString());
             statement.setString(9, course.getHomeWork());
-            statement.setInt(10, course.getTotalScore());
-            statement.setInt(11, course.getScoreCount());
-            statement.setString(12, course.getCourseId());
+            statement.setString(10, course.getCourseId());
             statement.executeUpdate();
 
             System.out.println("更新成功！");
