@@ -46,20 +46,21 @@ public class CourseWindow {
         CommentsTabel.setRowHeight(28);
         CommentsTabel.getTableHeader().setPreferredSize(new Dimension(CommentsTabel.getTableHeader().getWidth(), 28));
 
-        // JFrame界面
-        JFrame frame = new JFrame("课程中介系统");
-        frame.setContentPane(CourseWindowPanel);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
         CommentsTabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 currentRow = ((JTable) e.getSource()).rowAtPoint(e.getPoint());
                 if (e.getClickCount() == 2) {
+                    new CommentWindow(courseCommentsList.get(currentRow));
                 }
             }
         });
+        // JFrame界面
+        JFrame frame = new JFrame("课程中介系统");
+        frame.setContentPane(CourseWindowPanel);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

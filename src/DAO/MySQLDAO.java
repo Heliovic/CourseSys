@@ -3,6 +3,7 @@ package DAO;
 import model.*;
 import model.account.*;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -661,6 +662,27 @@ public class MySQLDAO {
             e.printStackTrace();
         }
         return courseComments;
+    }
+
+    public ImageIcon getPictureById(String id) {
+        String sql = "SELECT pic_blob FROM pictures WHERE picture_id = ?";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Blob blob = rs.getBlob(1);
+                blob.getBinaryStream();
+                ImageIcon imageIcon = new ImageIcon(blob.getBytes(1, (int) blob.length()));
+                return imageIcon;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return new ImageIcon();
     }
 
     //数据库的插入操作
