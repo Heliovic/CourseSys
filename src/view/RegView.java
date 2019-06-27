@@ -6,6 +6,7 @@ import model.account.Account;
 import model.account.EduOrg;
 import model.account.Parent;
 import model.account.Teacher;
+import utils.Constants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -80,12 +81,13 @@ abstract class RegPanel extends JPanel{
 class EduOrgPanel extends RegPanel {
 
     private JTextField
-            mEduFieldTextField = new JTextField(10),
             mCodeTextField = new JTextField(10),
             mAddressTextField = new JTextField(10),
-            mEduAgeTextField = new JTextField(10),
             mContactTextField = new JTextField(10),
             mIntroTextField = new JTextField(10);
+
+    private JSpinner mEduAgeSpin = new JSpinner();
+    private JComboBox mEduFieldCombo = Constants.getCourseFieldCombo();
 
 
     public EduOrgPanel() {
@@ -93,7 +95,7 @@ class EduOrgPanel extends RegPanel {
 
         JPanel eduFieldPanel = new JPanel();
         eduFieldPanel.add(new JLabel(LABEL_TEXT_ORG_EDU_FIELD));
-        eduFieldPanel.add(mEduFieldTextField);
+        eduFieldPanel.add(mEduFieldCombo);
 
         JPanel codePanel = new JPanel();
         codePanel.add(new JLabel(LABEL_TEXT_ORG_CODE));
@@ -104,8 +106,10 @@ class EduOrgPanel extends RegPanel {
         addressPanel.add(mAddressTextField);
 
         JPanel eduAgePanel = new JPanel();
+        SpinnerNumberModel spinnerAge = new SpinnerNumberModel(0, 0, 100, 1);
+        mEduAgeSpin.setModel(spinnerAge);
         eduAgePanel.add(new JLabel(LABEL_TEXT_ORG_EDU_AGE));
-        eduAgePanel.add(mEduAgeTextField);
+        eduAgePanel.add(mEduAgeSpin);
 
         JPanel contactPanel = new JPanel();
         contactPanel.add(new JLabel(LABEL_TEXT_ORG_CONTACT));
@@ -145,8 +149,8 @@ class EduOrgPanel extends RegPanel {
         org.setOrgAddress(mAddressTextField.getText());
         org.setOrgContact(mContactTextField.getText());
         org.setOrgIntroduction(mIntroTextField.getText());
-        org.setOrgEduField(Course.CourseField.DEFAULT);
-        org.setOrgEduAge(Integer.parseInt(mEduAgeTextField.getText()));
+        org.setOrgEduField(Course.CourseField.valueOf(mEduFieldCombo.getSelectedItem().toString()));
+        org.setOrgEduAge(Integer.parseInt(mEduAgeSpin.getValue().toString()));
         MySQLDAO.getInstance().insertEduOrg(org);
     }
 }
@@ -154,13 +158,15 @@ class EduOrgPanel extends RegPanel {
 class TeaPanel extends RegPanel {
     private JTextField
             mTeacherNameTextField = new JTextField(10),
-            mTeacherBirthdayTextField = new JTextField(10),
-            mEduField = new JTextField(10),
-            mEduYear = new JTextField(10),
-            mEduAge = new JTextField(10),
+
             mTeacherIdNumber = new JTextField(10),
             mTeacherContact = new JTextField(10),
             mTeacherIntroduction = new JTextField(10);
+
+    private JSpinner mEduAgeSpin = Constants.getAgeSpinner();
+    private JSpinner mEduYearSpin = Constants.getAgeSpinner();
+    private JSpinner mTeaAgeSpin = Constants.getAgeSpinner();
+    private JComboBox mEduFieldCombo = Constants.getCourseFieldCombo();
     private JComboBox mTeacherGenderCombox = new JComboBox();
     public TeaPanel() {
         setLayout(new GridLayout(12, 1));
@@ -178,19 +184,19 @@ class TeaPanel extends RegPanel {
 
         JPanel teaBirthdayPanel = new JPanel();
         teaBirthdayPanel.add(new JLabel(LABEL_TEXT_TEA_BIRTHDAY));
-        teaBirthdayPanel.add(mTeacherBirthdayTextField);
+        teaBirthdayPanel.add(mTeaAgeSpin);
 
         JPanel teaFieldPanel = new JPanel();
         teaFieldPanel.add(new JLabel(LABEL_TEXT_TEA_EDU_FIELD));
-        teaFieldPanel.add(mEduField);
+        teaFieldPanel.add(mEduFieldCombo);
 
         JPanel eduYearPanel = new JPanel();
         eduYearPanel.add(new JLabel(LABEL_TEXT_TEA_EDU_YEAR));
-        eduYearPanel.add(mEduYear);
+        eduYearPanel.add(mEduYearSpin);
 
         JPanel eduAgePanel = new JPanel();
         eduAgePanel.add(new JLabel(LABEL_TEXT_TEA_EDU_AGE));
-        eduAgePanel.add(mEduAge);
+        eduAgePanel.add(mEduAgeSpin);
 
         JPanel idNumberPanel = new JPanel();
         idNumberPanel.add(new JLabel(LABEL_TEXT_TEA_ID_NUMBER));
@@ -235,13 +241,14 @@ class TeaPanel extends RegPanel {
         p.setUserType(Account.UserType.TEACHER);
         p.setmTeacherName(mTeacherNameTextField.getText());
         p.setmTeacherGender(mTeacherGenderCombox.getSelectedItem().equals("男") ? Account.Gender.MALE: Account.Gender.FEMALE);
-        p.setTeaAge(mTeacherBirthdayTextField.getText());
+        p.setTeaAge(mTeaAgeSpin.getValue().toString());
         p.setmTeacherIdNumber(mTeacherIdNumber.getText());
         p.setmTeacherContact(mTeacherContact.getText());
         p.setmTeacherIntroduction(mTeacherIntroduction.getText());
-        p.setmEduAge(Integer.parseInt(mEduAge.getText()));
-        p.setmEduYear(Integer.parseInt(mEduYear.getText()));
+        p.setmEduAge(Integer.parseInt(mEduAgeSpin.getValue().toString()));
+        p.setmEduYear(Integer.parseInt(mEduYearSpin.getValue().toString()));
         p.setmTeacherIntroduction(mTeacherIntroduction.getText());
+        p.setmCourseField(Course.CourseField.valueOf(mEduFieldCombo.getSelectedItem().toString()));
         MySQLDAO.getInstance().insertTeacher(p);
     }
 }
@@ -250,10 +257,10 @@ class ParPanel extends RegPanel {
 
     private JTextField
             mChildNameTextField = new JTextField(10),
-            mChildBirthdayTextField = new JTextField(10),
             mParentNameTextField = new JTextField(10),
             mParentContactTextField = new JTextField(10);
     private JComboBox mChildGenderCombox = new JComboBox();
+    private JSpinner mChildAgeSpin = Constants.getAgeSpinner();
 
     public ParPanel() {
         setLayout(new GridLayout(9, 1));
@@ -264,7 +271,7 @@ class ParPanel extends RegPanel {
 
         JPanel childBirthdayPanel = new JPanel();
         childBirthdayPanel.add(new JLabel(LABEL_TEXT_CHILD_BIRTHDAY));
-        childBirthdayPanel.add(mChildBirthdayTextField);
+        childBirthdayPanel.add(mChildAgeSpin);
 
         JPanel childGenderPanel = new JPanel();
         mChildGenderCombox.addItem("男");
@@ -305,7 +312,7 @@ class ParPanel extends RegPanel {
         p.setTel(mTelTextField.getText());
         p.setUserType(Account.UserType.PARENT);
         p.setChildName(mChildNameTextField.getText());
-        p.setChildAge(mChildBirthdayTextField.getText());
+        p.setChildAge(mChildAgeSpin.getValue().toString());
         p.setChildGender(mChildGenderCombox.getSelectedItem().equals("男") ? Account.Gender.MALE: Account.Gender.FEMALE);
         p.setParentName(mParentNameTextField.getText());
         p.setParentContact(mParentContactTextField.getText());

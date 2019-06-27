@@ -19,4 +19,11 @@ public class Constants {
         comboBox.addItem("FEMALE");
         return comboBox;
     }
+
+    public static JSpinner getAgeSpinner() {
+        JSpinner spinner = new JSpinner();
+        SpinnerNumberModel spinnerAge = new SpinnerNumberModel(0, 0, 100, 1);
+        spinner.setModel(spinnerAge);
+        return spinner;
+    }
 }
