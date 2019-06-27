@@ -450,6 +450,14 @@ public class MySQLDAO {
 
             while (rs.next()) {
                 Teacher teacher = new Teacher();
+
+                Account account = getAccountByUsername(rs.getString("user_name"));
+                teacher.setUsername(account.getUsername());
+                teacher.setPassword(account.getPassword());
+                teacher.setEmail(account.getEmail());
+                teacher.setTel(account.getTel());
+                teacher.setUserType(account.getUserType());
+
                 teacher.setUsername(rs.getString("user_name"));
                 teacher.setmTeacherName(rs.getString("tea_name"));
                 teacher.setmTeacherGender(Account.Gender.valueOf(rs.getString("tea_gender")));
@@ -524,6 +532,14 @@ public class MySQLDAO {
 
             while (rs.next()) {
                 EduOrg org = new EduOrg();
+
+                Account account = getAccountByUsername(rs.getString("user_name"));
+                org.setUsername(account.getUsername());
+                org.setPassword(account.getPassword());
+                org.setEmail(account.getEmail());
+                org.setTel(account.getTel());
+                org.setUserType(account.getUserType());
+
                 org.setUsername(rs.getString("user_name"));
                 org.setOrgCode(rs.getString("org_code"));
                 org.setOrgAddress(rs.getString("org_address"));
