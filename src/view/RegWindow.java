@@ -98,18 +98,45 @@ public class RegWindow {
                 }
                 switch (User.getUserType()) {
                     case PARENT:
+
+                        if (
+                                ContactField.getText().equals("")
+                                || ParentNameField.getText().equals("")
+                                || ChildNameField.getText().equals("")
+                                || ChildBirthdayField.getText().equals("")
+                                || ParentCostField.getText().equals("")
+                                || ParentPlaceField.getText().equals("")
+                        ) {
+                            JOptionPane.showMessageDialog(null, "信息不完整，请检查！");
+                            return;
+                        }
+
                         ((Parent) User).setParentContact(ContactField.getText());
                         ((Parent) User).setParentName(ParentNameField.getText());
                         ((Parent) User).setChildName(ChildNameField.getText());
                         ((Parent) User).setChildBirthday(ChildBirthdayField.getText());
                         ((Parent) User).setChildGender(Account.Gender.valueOf(ChildGenderComboBox.getSelectedItem().toString()));
                         ((Parent) User).setCourseField(Course.CourseField.valueOf(ChildCourseComboBox.getSelectedItem().toString()));
-                        ((Parent) User).setCourseCost(Integer.parseInt(ParentCostField.getText()));
+                        ((Parent) User).setCourseCost(Integer.parseInt(ParentCostField.getText().replaceAll(",", "")));
                         ((Parent) User).setCoursePlace(ParentPlaceField.getText());
                         MySQLDAO.getInstance().insertParent((Parent) User);
                         JOptionPane.showMessageDialog(null, "注册成功！");
                         break;
                     case TEACHER:
+
+                        if (
+                                ContactField.getText().equals("")
+                                        || TeacherNameField.getText().equals("")
+                                        || TeacherBirthdayField.getText().equals("")
+                                        || TeacherIDField.getText().equals("")
+                                        || TeacherEduYearField.getText().equals("")
+                                        || TeacherEduAgeField.getText().equals("")
+                                        || TeacherIntroductionField.getText().equals("")
+                        ) {
+                            JOptionPane.showMessageDialog(null, "信息不完整，请检查！");
+                            return;
+                        }
+
                         ((Teacher) User).setmTeacherContact(ContactField.getText());
                         ((Teacher) User).setmTeacherName(TeacherNameField.getText());
                         ((Teacher) User).setmTeacherBirthday(TeacherBirthdayField.getText());
@@ -123,6 +150,17 @@ public class RegWindow {
                         JOptionPane.showMessageDialog(null, "已提交申请，请等待审核。");
                         break;
                     case EDUORG:
+
+                        if (
+                                ContactField.getText().equals("")
+                                        || EduOrgEduAgeField.getText().equals("")
+                                        || EduOrgPlaceField.getText().equals("")
+                                        || EduOrgIntroductionField.getText().equals("")
+                        ) {
+                            JOptionPane.showMessageDialog(null, "信息不完整，请检查！");
+                            return;
+                        }
+
                         ((EduOrg) User).setOrgContact(ContactField.getText());
                         ((EduOrg) User).setOrgCode(GeneralGenerator.getPicId(User.getUsername()));
                         ((EduOrg) User).setOrgEduAge(Integer.parseInt(EduOrgEduAgeField.getText()));
