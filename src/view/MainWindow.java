@@ -336,7 +336,7 @@ public class MainWindow {
                     ChildAgeField.setFormatterFactory(Numform);
                     TelephoneField.setFormatterFactory(phoneform);
                     OrgEduAgeField.setFormatterFactory(Numform);
-                    TeacherYearLabelField.setFormatterFactory(yearform);
+                    TeacherYearLabelField.setFormatterFactory(Numform);
                     TeacherEduAgeField.setFormatterFactory(Numform);
                     TeacherAgeField.setFormatterFactory(Numform);
                     TeacherIDField.setFormatterFactory(IDform);
