@@ -64,4 +64,8 @@ public class EduOrg extends Account {
     public void setQualified(Account.Qualified qualified) {
         this.qualified = qualified;
     }
+
+    public EduOrg() {
+        super.setUserType(UserType.EDUORG);
+    }
 }

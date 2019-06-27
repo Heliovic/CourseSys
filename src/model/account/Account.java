@@ -1,7 +1,6 @@
 package model.account;
 
 public class Account {
-
     public static enum UserType {
         PARENT,
         EDUORG,
