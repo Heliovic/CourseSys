@@ -78,8 +78,6 @@ public class NewsBulletinWindow {
         IDField.setText("课程ID：" + newsBulletin.getmCourseId());
         MainTextArea.setText(newsBulletin.getmContent());
 
-        System.out.println(IDField.getText());
-
         if (IDField.getText().equals("课程ID：null")) {
             IDField.setVisible(false);
         }
