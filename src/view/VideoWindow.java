@@ -3,6 +3,7 @@ package view;
 import DAO.MySQLDAO;
 import model.Video;
 import model.account.Account;
+import utils.GeneralGenerator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,7 +53,8 @@ public class VideoWindow {
                 SaveButton.setEnabled(false);
                 TitleField.setEditable(false);
                 MainTextArea.setEditable(false);
-                video.setmVideo_id(TitleField.getText());
+                video.setmTitle(TitleField.getText());
+                video.setmVideo_id(GeneralGenerator.getPicId(user.getUsername()));
                 video.setmUrl(MainTextArea.getText());
                 MySQLDAO.getInstance().insertVideo(video);
                 JOptionPane.showMessageDialog(null, "添加成功！");
@@ -66,13 +68,13 @@ public class VideoWindow {
             SaveButton.setVisible(true);
         }
 
-        TitleField.setText(video.getmVideo_id());
+        TitleField.setText(video.getmTitle());
         TimeLabel.setText("时间：" + video.getmTime());
         AuthorLabel.setText("作者：" + video.getmPublisher());
         MainTextArea.setText(video.getmUrl());
 
         // JFrame界面
-        JFrame frame = new JFrame("课程中介系统");
+        JFrame frame = new JFrame("视频播放");
         frame.setContentPane(VideoWindowPanel);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
@@ -94,7 +96,7 @@ public class VideoWindow {
                 SaveButton.setEnabled(false);
                 TitleField.setEditable(false);
                 MainTextArea.setEditable(false);
-                video.setmVideo_id(TitleField.getText());
+                video.setmTitle(TitleField.getText());
                 video.setmUrl(MainTextArea.getText());
                 MySQLDAO.getInstance().updateVideo(video);
             }

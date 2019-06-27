@@ -632,6 +632,7 @@ public class MySQLDAO {
                 video.setmTime(rs.getString("time"));
                 video.setmUrl(rs.getString("video_url"));
                 video.setmPublisher(rs.getString("publisher"));
+                video.setmTitle(rs.getString("title"));
 
                 videos.add(video);
             }
@@ -963,13 +964,14 @@ public class MySQLDAO {
     }
 
     public void insertVideo (Video video) {
-        String sql = "INSERT INTO video (video_id, time, video_url, publisher) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO video (video_id, time, video_url, publisher, title) VALUES (?, ?, ?, ?, ?)";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,video.getmVideo_id());
             statement.setString(2,video.getmTime());
             statement.setString(3,video.getmUrl());
             statement.setString(4,video.getmPublisher());
+            statement.setString(5,video.getmTitle());
             statement.executeUpdate();
 
             System.out.println("插入成功！");
@@ -1212,12 +1214,13 @@ public class MySQLDAO {
     }
 
     public void updateVideo (Video video) {
-        String sql = "UPDATE video SET time = ?, video_url = ?, publisher = ? WHERE video_id = ?";
+        String sql = "UPDATE video SET time = ?, video_url = ?, publisher = ?, title = ? WHERE video_id = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,video.getmTime());
             statement.setString(2,video.getmUrl());
-            statement.setString(4,video.getmVideo_id());
+            statement.setString(5,video.getmVideo_id());
+            statement.setString(4,video.getmTitle());
             statement.setString(3,video.getmPublisher());
             statement.executeUpdate();
 
