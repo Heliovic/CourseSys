@@ -246,7 +246,7 @@ public class MySQLDAO {
         String sql_sys = "SELECT * FROM news ORDER BY time DESC ";
         String sql_eduorg = "SELECT * FROM news WHERE publisher IN (SELECT user_name FROM account WHERE user_type = 'EDUORG') " +
                 "OR publisher IN (SELECT  user_name FROM account WHERE user_type = 'SYSADMIN') ORDER BY time DESC ";
-        String sql_teacher = "SELECT * FROM news WHERE publisher IN (SELECT user_name FROM account WHERE user_type = 'TEACHER') " +
+        String sql_teacher = "SELECT * FROM news WHERE publisher IN (SELECT user_name FROM account WHERE user_type = 'TEACHER' AND user_name = ?) " +
                 "OR publisher IN (SELECT  user_name FROM account WHERE user_type = 'SYSADMIN') ORDER BY time DESC ";
         String sql_parent = "SELECT * FROM news WHERE publisher IN (SELECT  user_name FROM account WHERE user_type = 'SYSADMIN')" +
                 "OR course_id IN (SELECT course_id FROM purchase WHERE parent_id = ? AND purchased = 'YES') ORDER BY time DESC ";
@@ -287,6 +287,7 @@ public class MySQLDAO {
             }
             if (account.getUserType().toString().equals("TEACHER")) {
                 PreparedStatement statement = connection.prepareStatement(sql_teacher);
+                statement.setString(1,account.getUsername());
                 ResultSet rs = statement.executeQuery();
 
                 while (rs.next()) {
