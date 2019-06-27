@@ -19,6 +19,7 @@ public class NewsBulletinWindow {
     private JLabel AuthorLabel;
     private JTextField TitleField;
     private JPanel ButtonPanel;
+    private JTextField IDField;
 
     public NewsBulletinWindow(Account user) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -32,7 +33,12 @@ public class NewsBulletinWindow {
         SaveButton.setVisible(true);
         SaveButton.setEnabled(true);
         TitleField.setEditable(true);
+        IDField.setEditable(true);
         MainTextArea.setEditable(true);
+
+        if (user.getUserType() == Account.UserType.SYSADMIN) {
+            IDField.setVisible(false);
+        }
 
         TimeLabel.setText("时间：" + newsBulletin.getmTime());
         AuthorLabel.setText("作者：" + newsBulletin.getmPublisher());
@@ -49,6 +55,7 @@ public class NewsBulletinWindow {
             public void actionPerformed(ActionEvent e) {
                 SaveButton.setEnabled(false);
                 TitleField.setEditable(false);
+                IDField.setEditable(false);
                 MainTextArea.setEditable(false);
                 newsBulletin.setmTitle(TitleField.getText());
                 newsBulletin.setmContent(MainTextArea.getText());
@@ -59,8 +66,6 @@ public class NewsBulletinWindow {
     }
 
     public NewsBulletinWindow(Account user, News newsBulletin) {
-        System.out.println(user.getUsername());
-        System.out.println(newsBulletin.getmPublisher());
         if (user.getUserType() == Account.UserType.SYSADMIN || user.getUsername().equals(newsBulletin.getmPublisher())) {
             ChangeButton.setVisible(true);
             SaveButton.setVisible(true);
@@ -69,7 +74,14 @@ public class NewsBulletinWindow {
         TitleField.setText(newsBulletin.getmTitle());
         TimeLabel.setText("时间：" + newsBulletin.getmTime());
         AuthorLabel.setText("作者：" + newsBulletin.getmPublisher());
+        IDField.setText("课程ID：" + newsBulletin.getmCourseId());
         MainTextArea.setText(newsBulletin.getmContent());
+
+        System.out.println(IDField.getText());
+
+        if (IDField.getText().equals("课程ID：null")) {
+            IDField.setVisible(false);
+        }
 
         // JFrame界面
         JFrame frame = new JFrame("课程中介系统");
