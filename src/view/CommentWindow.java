@@ -25,6 +25,7 @@ public class CommentWindow {
         if (!comment.getPicId().equals("NO_PIC"))
             mImageLabel.setText("");
         mImageLabel.setIcon(MySQLDAO.getInstance().getPictureById(comment.getPicId()));
+        ContentTextArea.setText(comment.getContent());
 
         // JFrame界面
         JFrame frame = new JFrame("课程中介系统");
