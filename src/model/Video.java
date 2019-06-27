@@ -5,6 +5,7 @@ public class Video {
     private String mTime;
     private String mUrl;
     private String mPublisher;
+    private String mTitle;
 
     public String getmVideo_id() { return mVideo_id; }
 
@@ -21,4 +22,8 @@ public class Video {
     public String getmPublisher() { return mPublisher; }
 
     public void setmPublisher(String mPublisher) { this.mPublisher = mPublisher; }
+
+    public String getmTitle() { return mTitle; }
+
+    public void setmTitle(String mTitle) { this.mTitle = mTitle; }
 }

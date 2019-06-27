@@ -274,7 +274,7 @@ public class MainWindow {
                 names.add("URL");
                 for (Video video : videoList) {
                     Vector rowData = new Vector();
-                    rowData.add(video.getmVideo_id());
+                    rowData.add(video.getmTitle());
                     rowData.add(video.getmPublisher());
                     rowData.add(video.getmTime());
                     rowData.add(video.getmUrl());
