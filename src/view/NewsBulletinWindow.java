@@ -58,6 +58,7 @@ public class NewsBulletinWindow {
                 IDField.setEditable(false);
                 MainTextArea.setEditable(false);
                 newsBulletin.setmTitle(TitleField.getText());
+                newsBulletin.setmCourseId(IDField.getText());
                 newsBulletin.setmContent(MainTextArea.getText());
                 MySQLDAO.getInstance().insertNews(newsBulletin);
                 JOptionPane.showMessageDialog(null, "添加成功！");
@@ -96,6 +97,7 @@ public class NewsBulletinWindow {
                 ChangeButton.setEnabled(false);
                 SaveButton.setEnabled(true);
                 TitleField.setEditable(true);
+                IDField.setEditable(true);
                 MainTextArea.setEditable(true);
             }
         });
@@ -105,8 +107,10 @@ public class NewsBulletinWindow {
                 ChangeButton.setEnabled(true);
                 SaveButton.setEnabled(false);
                 TitleField.setEditable(false);
+                IDField.setEditable(false);
                 MainTextArea.setEditable(false);
                 newsBulletin.setmTitle(TitleField.getText());
+                newsBulletin.setmCourseId(IDField.getText());
                 newsBulletin.setmContent(MainTextArea.getText());
                 MySQLDAO.getInstance().updateNews(newsBulletin);
             }
