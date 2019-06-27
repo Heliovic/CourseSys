@@ -244,7 +244,7 @@ public class MainWindow {
         DeleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (User.getUserType() == Account.UserType.SYSADMIN || User.getUsername() == newsList.get(currentRow).getmPublisher()) {
+                if (User.getUserType() == Account.UserType.SYSADMIN || User.getUsername().equals(newsList.get(currentRow).getmPublisher())) {
                     MySQLDAO.getInstance().deleteNews(newsList.get(currentRow).getmNewsId());
                     NotificationButton.doClick();
                 } else {

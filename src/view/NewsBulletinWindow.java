@@ -59,7 +59,9 @@ public class NewsBulletinWindow {
     }
 
     public NewsBulletinWindow(Account user, News newsBulletin) {
-        if (user.getUserType() == Account.UserType.SYSADMIN || user.getUsername() == newsBulletin.getmPublisher()) {
+        System.out.println(user.getUsername());
+        System.out.println(newsBulletin.getmPublisher());
+        if (user.getUserType() == Account.UserType.SYSADMIN || user.getUsername().equals(newsBulletin.getmPublisher())) {
             ChangeButton.setVisible(true);
             SaveButton.setVisible(true);
         }
